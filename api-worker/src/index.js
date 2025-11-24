@@ -1,31 +1,39 @@
-// --- api-worker/src/index.js (CODICE COMPLETO CHE DEVI INSERIRE) ---
+// AGGIORNA api-worker/src/index.js in questo modo:
 
 export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
+    async fetch(request, env) {
+        const url = new URL(request.url);
+        const corsHeaders = {
+            'Access-Control-Allow-Origin': 'https://greenersolventflow.pages.dev', // Più sicuro che usare '*'
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+        };
 
-    // Controlla il percorso /solvents
-    if (url.pathname === '/solvents') {
-      try {
-        // Esegui la query sul database D1. 'DB' è l'associazione che hai configurato
-        const { results } = await env.DB.prepare('SELECT * FROM solvents').all();
+        // 1. Gestione richiesta OPTIONS (pre-flight)
+        if (request.method === 'OPTIONS') {
+            return new Response(null, {
+                status: 204, // No Content
+                headers: corsHeaders
+            });
+        }
 
-        // Restituisci i risultati in formato JSON
-        return new Response(JSON.stringify(results), {
-          headers: {
-            'Content-Type': 'application/json',
-            // Headers CORS necessari per Pages
-            'Access-Control-Allow-Origin': '*', 
-            'Access-Control-Allow-Methods': 'GET',
-          },
-        });
-      } catch (e) {
-        // Gestione errore database
-        return new Response(e.message || 'Error fetching solvents', { status: 500 });
-      }
-    }
+        // 2. Gestione richiesta GET /solvents
+        if (url.pathname === '/solvents') {
+            try {
+                const { results } = await env.DB.prepare('SELECT * FROM solventi').all();
 
-    // Se l'URL non è /solvents, restituisce un errore 404
-    return new Response('API Endpoint Not Found', { status: 404 });
-  },
+                return new Response(JSON.stringify(results), {
+                    headers: {
+                        ...corsHeaders, // Includi gli stessi header CORS anche qui
+                        'Content-Type': 'application/json',
+                    },
+                });
+            } catch (e) {
+                return new Response(e.message || 'Error fetching solvents', { status: 500, headers: corsHeaders });
+            }
+        }
+
+        // 3. Fallback per altre rotte
+        return new Response('API Endpoint Not Found', { status: 404 });
+    },
 };
