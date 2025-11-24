@@ -25,7 +25,10 @@ function getQueryString() {
 
 async function caricaSolventi() {
     const query = getQueryString();
-    const endpoint = `${API_URL}/?${query}`; // Costruisce l'URL completo per la chiamata API
+    
+    // CORREZIONE QUI: Se la query esiste, aggiungi solo il punto interrogativo.
+    // Altrimenti, usa l'API_URL senza niente.
+    const endpoint = query ? `${API_URL}?${query}` : API_URL; // <--- MODIFICA CRITICA
     
     const tbody = document.getElementById('tabella-corpo');
     const countElement = document.getElementById('risultati-count');
