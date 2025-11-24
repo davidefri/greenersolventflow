@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Solveti Chimici</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Catalogo Solventi Chimici</h1>
+        
+        <div id="filtri">
+            <input type="text" id="search" placeholder="Cerca Nome o CAS...">
+            <select id="polarita">
+                <option value="">-- Polarità --</option>
+                <option value="Polare">Polare</option>
+                <option value="Non Polare">Non Polare</option>
+            </select>
+            <select id="categoria">
+                <option value="">-- Categoria --</option>
+                <option value="Protic">Protic</option>
+                <option value="Aprotico">Aprotico</option>
+            </select>
+            
+            <label>Punto Ebollizione (°C):</label>
+            <input type="number" id="min_bp" placeholder="Min">
+            <input type="number" id="max_bp" placeholder="Max">
+            
+            <button onclick="caricaSolventi()">Cerca</button>
+            <button onclick="resetFiltri()">Reset</button>
+        </div>
+
+        <p id="risultati-count"></p>
+
+        <table id="risultati-tabella">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CAS</th>
+                    <th>Formula</th>
+                    <th>P. Eboll. (°C)</th>
+                    <th>Densità (g/cm³)</th>
+                    <th>Costante Dielett.</th>
+                    <th>Polarità</th>
+                    <th>Categoria</th>
+                </tr>
+            </thead>
+            <tbody id="tabella-corpo">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
