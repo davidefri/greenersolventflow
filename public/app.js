@@ -88,7 +88,7 @@ async function caricaSolventi() {
                 
                 // 7. Alpha (α)
                 const alpha = parseFloat(solvente.alpha);
-                row.insertCell().textContent = !isNaN(alpha) ? alpha.toFixed(2) : '-'; 
+                row.insertCell().textContent = solvente.alpha : '-'; 
 
                 // 8. Beta (β)
                 const beta = parseFloat(solvente.beta);
