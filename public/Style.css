@@ -166,3 +166,23 @@ h1 {
     margin-bottom: 10px;
     display: block;
 }
+/* Stili per mostrare l'ordine di ordinamento concatenato */
+#risultati-tabella th[data-sort-order] {
+    position: relative; /* Assicurati che sia relative per posizionare il ::before */
+}
+
+#risultati-tabella th[data-sort-order]::before {
+    content: attr(data-sort-order);
+    position: absolute;
+    top: 0px; /* Posizione in alto a sinistra */
+    left: 5px;
+    font-size: 0.75em;
+    font-weight: bold;
+    background-color: #ffffff; /* Sfondo bianco per risaltare */
+    color: #004d99;
+    padding: 2px 5px;
+    border-radius: 4px;
+    line-height: 1;
+    z-index: 10;
+    border: 1px solid #004d99;
+}
