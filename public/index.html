@@ -1,92 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greener Solvent Flow</title>
-    <link rel="stylesheet" href="/Style.css"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greener Solvent Flow</title>
+    <link rel="stylesheet" href="/Style.css"> 
+    <style>
+        /* Aggiungi questo CSS temporaneo o inseriscilo in Style.css */
+        .hidden { display: none; }
+        .kt-slider-group { position: relative; padding: 10px 0; }
+        .kt-slider-group input[type="range"] {
+            width: 100%;
+            pointer-events: none; /* Rende la barra non cliccabile direttamente */
+            position: absolute;
+            height: 5px;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        .kt-slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #4CAF50; /* Colore maniglia */
+            cursor: pointer;
+            margin-top: -5px; /* Centra la maniglia sulla traccia */
+            pointer-events: all; /* Rende la maniglia cliccabile */
+        }
+        /* Stile per la barra centrale (simulazione) */
+        .range-track {
+            position: absolute;
+            top: 25px; /* Adatta in base all'altezza dell'etichetta */
+            height: 5px;
+            background: #ddd;
+            width: 100%;
+            border-radius: 5px;
+        }
+        .kt-min-slider, .kt-max-slider { 
+            /* Sposta gli slider per allinearli alla traccia simulata */
+            top: 25px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Greener Solvent Flow</h1>
-        
-        <div id="filtri">
-            <input type="text" id="search" placeholder="Search by Name or CAS...">
-            
-            <select id="water_miscibility"> <option value="">-- Water Miscibility --</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-                <option value="Slightly">Slightly</option>
-            </select>
-            
-            <select id="categoria">
-                <option value="">-- Category --</option>
-                <option value="Protic">Protic</option>
-                <option value="Aprotico">Aprotic</option>
-            </select>
-            
-            <label>Boiling Point (°C):</label>
-            <input type="number" id="min_bp" placeholder="Min">
-            <input type="number" id="max_bp" placeholder="Max">
-            
-            
-            <button onclick="caricaSolventi()">Search</button>
-            <button onclick="resetFiltri()">Reset</button>
+    <div class="container">
+        <h1>Greener Solvent Flow</h1>
+        
+        <div id="filtri">
+            <input type="text" id="search" placeholder="Search by Name or CAS..." oninput="caricaSolventi()">
+            
+            <select id="water_miscibility" onchange="caricaSolventi()">
+                <option value="">-- Water Miscibility --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Slightly">Slightly</option>
+            </select>
+            
+            <select id="categoria" onchange="caricaSolventi()">
+                <option value="">-- Polarity Class --</option>
+                <option value="Protic">Protic</option>
+                <option value="Aprotico">Aprotic</option>
+            </select>
+            
+            <label>Boiling Point (°C):</label>
+            <input type="number" id="min_bp" placeholder="Min" oninput="caricaSolventi()">
+            <input type="number" id="max_bp" placeholder="Max" oninput="caricaSolventi()">
+            
+            
+            <button onclick="toggleKTSliders()">Kamlet-Taft Parameter Selector</button>
+            <button onclick="resetFiltri()">Reset All Filters</button>
+            <button onclick="caricaSolventi()">Apply Filters</button>
 
-<div id="kt-slider-filters">
-    <h3>Kamlet-Taft Range Filter</h3>
-    <p class="description">Filtra per proprietà del solvente. Muovi gli slider per impostare il range.</p>
 
-    <div class="kt-slider-group" data-param="alpha">
-        <label>Alpha (Acidità) <span class="range-display" id="alpha-range-display">0.00 - 1.20</span></label>
-        <input type="range" min="0" max="120" value="0" class="kt-min-slider">
-        <input type="range" min="0" max="120" value="120" class="kt-max-slider">
-        <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
+            <div id="kt-slider-filters" class="hidden">
+                <h3>Kamlet-Taft Range Filter</h3>
+                <p class="description">Filter by solvent properties. Move the sliders to set the range.</p>
+
+                <div class="kt-slider-group" data-param="alpha">
+                    <label>Alpha (Acidity) <span class="range-display" id="alpha-range-display">0.00 - 1.20</span></label>
+                    <div class="range-track"></div> <input type="range" min="0" max="120" value="0" class="kt-min-slider">
+                    <input type="range" min="0" max="120" value="120" class="kt-max-slider">
+                    <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
+                </div>
+
+                <div class="kt-slider-group" data-param="beta">
+                    <label>Beta (Basicity) <span class="range-display" id="beta-range-display">0.00 - 1.00</span></label>
+                    <div class="range-track"></div>
+                    <input type="range" min="0" max="100" value="0" class="kt-min-slider">
+                    <input type="range" min="0" max="100" value="100" class="kt-max-slider">
+                    <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
+                </div>
+
+                <div class="kt-slider-group" data-param="pistar">
+                    <label>Pi Star (Polarity) <span class="range-display" id="pistar-range-display">-0.20 - 1.50</span></label>
+                    <div class="range-track"></div>
+                    <input type="range" min="-20" max="150" value="-20" class="kt-min-slider">
+                    <input type="range" min="-20" max="150" value="150" class="kt-max-slider">
+                    <div class="kt-labels"><span>Low Polarizability</span><span>Highly Polarizability</span></div>
+                </div>
+                
+            </div>
+        </div>
+
+        <p id="risultati-count"></p>
+
+        <table id="risultati-tabella">
+            <thead>
+                <tr>
+                    <th data-sort="iupac_name" class="sortable">Name</th>
+                    <th data-sort="cas" class="sortable">CAS</th>
+                    <th data-sort="boiling_point" class="sortable">Boiling Point (°C)</th>
+                    <th data-sort="density" class="sortable">Density (g/cm³)</th>
+                    <th data-sort="dielectric_constant" class="sortable">Dielectric Constant</th>
+                    <th data-sort="water_miscibility" class="sortable">Water Miscibility</th>
+                    <th data-sort="alpha" class="sortable">Alpha (α)</th>
+                    <th data-sort="beta" class="sortable">Beta (β)</th>
+                    <th data-sort="pistar" class="sortable">Pi Star (π*)</th>
+                    <th>H Phrases</th>
+                    <th>Oxidation Resistant</th>
+                    <th>Reduction Resistant</th>
+                    <th>Acid Resistant</th>
+                    <th>Basic Resistant</th>
+                </tr>
+            </thead>
+            <tbody id="tabella-corpo">
+            </tbody>
+        </table>
     </div>
 
-    <div class="kt-slider-group" data-param="beta">
-        <label>Beta (Basicità) <span class="range-display" id="beta-range-display">0.00 - 1.00</span></label>
-        <input type="range" min="0" max="100" value="0" class="kt-min-slider">
-        <input type="range" min="0" max="100" value="100" class="kt-max-slider">
-        <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
-    </div>
-
-    <div class="kt-slider-group" data-param="pistar">
-        <label>Pi Star (Polarità) <span class="range-display" id="pistar-range-display">-0.20 - 1.50</span></label>
-        <input type="range" min="-20" max="150" value="-20" class="kt-min-slider">
-        <input type="range" min="-20" max="150" value="150" class="kt-max-slider">
-        <div class="kt-labels"><span>Low Polarizability</span><span>Highly Polarizability</span></div>
-    </div>
-    
-</div>
-        </div>
-
-        <p id="risultati-count"></p>
-
-        <table id="risultati-tabella">
-            <thead>
-                <tr>
-                    <th data-sort="iupac_name" class="sortable">Name</th>
-                    <th data-sort="cas" class="sortable">CAS</th>
-                    <th data-sort="boiling_point" class="sortable">Boiling Point (°C)</th>
-                    <th data-sort="density" class="sortable">Density (g/cm³)</th>
-                    <th data-sort="dielectric_constant" class="sortable">Dielectric Constant</th>
-                    <th data-sort="water_miscibility" class="sortable">Water Miscibility</th>
-                    <th data-sort="alpha" class="sortable">Alpha (α)</th>
-                    <th data-sort="beta" class="sortable">Beta (β)</th>
-                    <th data-sort="pistar" class="sortable">Pi Star (π*)</th>
-                    <th>H Phrases</th>
-                    <th>Oxidation Resistant</th>
-                    <th>Reduction Resistant</th>
-                    <th>Acid Resistant</th>
-                    <th>Basic Resistant</th>
-                </tr>
-            </thead>
-            <tbody id="tabella-corpo">
-            </tbody>
-        </table>
-    </div>
-
-    <script src="app.js"></script> 
+    <script src="app.js"></script> 
 </body>
 </html>

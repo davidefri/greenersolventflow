@@ -13,13 +13,30 @@ document.addEventListener('DOMContentLoaded', () => {
     caricaSolventi();
     // Aggiunge i listener per l'ordinamento
     document.getElementById('risultati-tabella').addEventListener('click', handleSort);
-    // NUOVO: Inizializza gli slider Kamlet-Taft
+    // Inizializza gli slider Kamlet-Taft
     setupKTSliders();
+
+    // Listener per i filtri standard non-slider per l'aggiornamento istantaneo
+    document.getElementById('search').addEventListener('input', caricaSolventi);
+    document.getElementById('water_miscibility').addEventListener('change', caricaSolventi);
+    document.getElementById('categoria').addEventListener('change', caricaSolventi);
+    document.getElementById('min_bp').addEventListener('input', caricaSolventi);
+    document.getElementById('max_bp').addEventListener('input', caricaSolventi);
+    
+    // Assicurati che il blocco KT sia nascosto all'inizio (la classe 'hidden' è nell'HTML)
+    // Se non vuoi vederlo subito, verifica che la classe 'hidden' sia presente nell'HTML.
 });
 
 // --- NUOVE FUNZIONI PER I FILTRI SLIDER ---
 
-// Funzione helper per mappare il valore dello slider (da int 0-120 a float 0.00-1.20)
+// Funzione per mostrare/nascondere il blocco Kamlet-Taft
+function toggleKTSliders() {
+    const ktFiltersDiv = document.getElementById('kt-slider-filters');
+    ktFiltersDiv.classList.toggle('hidden');
+}
+
+
+// Funzione helper per mappare il valore dello slider (da int N a float)
 function mapSliderValue(sliderValue) {
     // La scala è stata impostata moltiplicando per 100 per gestire i decimali
     return (parseFloat(sliderValue) / 100).toFixed(2);
@@ -32,16 +49,28 @@ function updateSliderDisplayAndFilter(param) {
     const display = document.getElementById(`${param}-range-display`);
     
     if (minSlider && maxSlider) {
-        // Forza min <= max per evitare inversione dei thumb
-        if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
-            minSlider.value = maxSlider.value;
+        // Logica per forzare min <= max (Simulazione slider a doppio manico)
+        let minValue = parseInt(minSlider.value);
+        let maxValue = parseInt(maxSlider.value);
+
+        if (minValue > maxValue) {
+             const focusedSlider = document.activeElement;
+             if (focusedSlider === minSlider) {
+                 // L'utente sta muovendo il minSlider, il max deve seguirlo
+                 maxSlider.value = minValue;
+                 maxValue = minValue;
+             } else {
+                 // L'utente sta muovendo il maxSlider, il min deve seguirlo
+                 minSlider.value = maxValue;
+                 minValue = maxValue;
+             }
         }
 
-        const minVal = mapSliderValue(minSlider.value);
-        const maxVal = mapSliderValue(maxSlider.value);
+        const minVal = mapSliderValue(minValue);
+        const maxVal = mapSliderValue(maxValue);
         
         display.textContent = `${minVal} - ${maxVal}`;
-        caricaSolventi(); // Chiama la ricerca ad ogni rilascio/cambio
+        // La chiamata a caricaSolventi è gestita dai listener 'mouseup'/'touchend' in setupKTSliders
     }
 }
 
@@ -52,7 +81,7 @@ function setupKTSliders() {
         
         if (group) {
             group.querySelectorAll('input[type="range"]').forEach(slider => {
-                // 'input' per aggiornare il display in tempo reale
+                // 'input' per aggiornare il display in tempo reale (mentre si trascina)
                 slider.addEventListener('input', () => {
                     updateSliderDisplayAndFilter(param);
                 });
@@ -62,7 +91,7 @@ function setupKTSliders() {
                 slider.addEventListener('touchend', caricaSolventi);
             });
             
-            // Inizializza la visualizzazione al caricamento
+            // Inizializza la visualizzazione al caricamento e chiama la ricerca iniziale
             updateSliderDisplayAndFilter(param);
         }
     });
@@ -94,6 +123,7 @@ function getQueryString() {
         const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
 
         if (minSlider && maxSlider) {
+            // mapSliderValue usa il valore corrente del DOM
             const minVal = mapSliderValue(minSlider.value);
             const maxVal = mapSliderValue(maxSlider.value);
             
@@ -106,7 +136,7 @@ function getQueryString() {
     return params.toString(); 
 }
 
-// Funzione di ordinamento multi-livello (MANTENUTA per il sort manuale delle colonne)
+// Funzione di ordinamento multi-livello (MANTENUTA)
 function multiSort(data) {
     if (sortCriteria.length === 0) {
         return data;
@@ -293,7 +323,7 @@ function resetFiltri() {
             // Usa min e max definiti nell'HTML per resettare al range completo
             minSlider.value = minSlider.getAttribute('min');
             maxSlider.value = maxSlider.getAttribute('max');
-            updateSliderDisplayAndFilter(param); // Aggiorna il display e ricarica i solventi
+            updateSliderDisplayAndFilter(param); // Aggiorna il display (e caricaSolventi è chiamata da updateSliderDisplayAndFilter al rilascio, ma la forziamo)
         }
     });
 
@@ -301,5 +331,3 @@ function resetFiltri() {
     updateSortVisuals();
     caricaSolventi();
 }
-
-// !!! Le vecchie funzioni Kamlet-Taft (toggleKamletTaftFilters, applyKamletTaftSort, resetKamletTaftSort) sono state rimosse !!!
