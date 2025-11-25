@@ -2,7 +2,7 @@
 
 // !!! IMPORTANTE: DEVI USARE IL TUO URL DI DEPLOY !!!
 const API_URL = 'https://api-worker.davide-frigatti.workers.dev/solvents'; 
-const TOTAL_COLUMNS = 14; // AGGIORNATO A 14 COLONNE
+const TOTAL_COLUMNS = 14; 
 
 document.addEventListener('DOMContentLoaded', caricaSolventi);
 
@@ -36,6 +36,12 @@ async function caricaSolventi() {
 
     try {
         const response = await fetch(endpoint);
+        
+        // Se la risposta non è OK, potrebbe essere un errore API o CORS
+        if (!response.ok) {
+             throw new Error(`API non accessibile o errore HTTP ${response.status}`);
+        }
+        
         const data = await response.json(); 
 
         tbody.innerHTML = '';
@@ -63,29 +69,36 @@ async function caricaSolventi() {
                 // 2. CAS
                 row.insertCell().textContent = solvente.cas || '-';
 
-                // *** RIMOZIONE DELLA FORMULA ***
-                // riga eliminata: row.insertCell().textContent = solvente.formula || '-'; 
+                // *** CAMPI NUMERICI CORRETTI CON PARSEFLOAT E !ISNAN ***
                 
                 // 3. P. Eboll. (°C)
-                row.insertCell().textContent = solvente.boiling_point ? solvente.boiling_point.toFixed(1) : '-';
+                const bp = parseFloat(solvente.boiling_point);
+                row.insertCell().textContent = !isNaN(bp) ? bp.toFixed(1) : '-';
                 
                 // 4. Densità (g/cm³)
-                row.insertCell().textContent = solvente.density ? solvente.density.toFixed(3) : '-';
+                const density = parseFloat(solvente.density);
+                row.insertCell().textContent = !isNaN(density) ? density.toFixed(3) : '-';
                 
                 // 5. Costante Dielett.
-                row.insertCell().textContent = solvente.dielectric_constant ? solvente.dielectric_constant.toFixed(1) : '-';
+                const dc = parseFloat(solvente.dielectric_constant);
+                row.insertCell().textContent = !isNaN(dc) ? dc.toFixed(1) : '-';
                 
-                // 6. Miscibilità H₂O
+                // 6. Miscibilità H₂O (Campo stringa/booleano)
                 row.insertCell().textContent = solvente.water_miscibility || '-'; 
                 
                 // 7. Alpha (α)
-                row.insertCell().textContent = solvente.alpha ? solvente.alpha.toFixed(2) : '-';
+                const alpha = parseFloat(solvente.alpha);
+                row.insertCell().textContent = !isNaN(alpha) ? alpha.toFixed(2) : '-';
                 
                 // 8. Beta (β)
-                row.insertCell().textContent = solvente.beta ? solvente.beta.toFixed(2) : '-';
+                const beta = parseFloat(solvente.beta);
+                row.insertCell().textContent = !isNaN(beta) ? beta.toFixed(2) : '-';
                 
                 // 9. Pi Star (π*)
-                row.insertCell().textContent = solvente.pistar ? solvente.pistar.toFixed(2) : '-';
+                const piStar = parseFloat(solvente.pistar);
+                row.insertCell().textContent = !isNaN(piStar) ? piStar.toFixed(2) : '-';
+                
+                // *** CAMPI STRINGA ***
                 
                 // 10. Frasi H
                 row.insertCell().textContent = solvente.h_phrases || '-';
@@ -108,7 +121,7 @@ async function caricaSolventi() {
     } catch (error) {
         // Cattura errori di rete, deploy, o connessione fallita
         console.error('Errore nel caricamento dei dati dal Worker:', error);
-        tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: red;">Errore di Rete: Impossibile raggiungere l'API. (Controlla il Log del Worker)</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: red;">Errore nel caricamento dei dati: ${error.message || 'Impossibile raggiungere l\'API.'}</td></tr>`;
         countElement.textContent = 'Errore di Rete';
     }
 }
