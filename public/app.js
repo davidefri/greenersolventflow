@@ -55,13 +55,17 @@ function multiSort(data) {
                 valA = parseFloat(valA);
                 valB = parseFloat(valB);
                 
-                // NOTA SU PISTAR: Se Pi Star non funziona, è probabile che qui fallisca 
-                // a causa di dati non numerici non gestiti correttamente.
-                
-                // Gestione valori non numerici (es. '-' o stringhe)
-                if (isNaN(valA) && isNaN(valB)) continue; // Se entrambi non sono numeri, passa al criterio successivo
-                if (isNaN(valA)) return dir; // Sposta i non-numeri alla fine (o all'inizio se decrescente)
-                if (isNaN(valB)) return -dir;
+                // --- MODIFICA CRITICA QUI: Gestione valori NaN ---
+                const aIsNaN = isNaN(valA);
+                const bIsNaN = isNaN(valB);
+
+                if (aIsNaN && bIsNaN) continue; // Se entrambi non sono numeri, passa al criterio successivo
+
+                // I valori NaN vengono sempre spinti in fondo alla lista (return 1 o -1),
+                // ignorando la direzione (dir) del sort.
+                if (aIsNaN) return 1; 
+                if (bIsNaN) return -1;
+                // --- FINE MODIFICA ---
             }
 
             if (valA < valB) return -1 * dir;
