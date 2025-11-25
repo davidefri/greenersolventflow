@@ -4,18 +4,16 @@ DROP TABLE IF EXISTS solventi;
 CREATE TABLE solventi (
     cas TEXT PRIMARY KEY UNIQUE,
     iupac_name TEXT NOT NULL,       -- ORA TUTTO MINUSCOLO
-    formula TEXT,
     boiling_point REAL,
     density REAL,
     dielectric_constant REAL,
-    water_miscible INTEGER,
     alpha REAL,
     beta REAL,
     pistar REAL,
-    viscosity REAL,
+    water_miscibility REAL,
     h_phrases TEXT,
-    p_phrases TEXT,
-    oxidation_stability TEXT,
-    reduction_stability TEXT,
-    acid_stability TEXT
+    oxidation_resistance TEXT,
+    reduction_resistance TEXT,
+    acid_resistance TEXT,
+    basic_resistance TEXT
 );
