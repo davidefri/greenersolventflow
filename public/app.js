@@ -50,33 +50,37 @@ function multiSort(data) {
             let valA = a[field];
             let valB = b[field];
 
-            // Conversione a numero se il campo è numerico
+            // 1. GESTIONE CAMPI NUMERICI (inclusi Kamlet-Taft)
             if (['boiling_point', 'density', 'dielectric_constant', 'alpha', 'beta', 'pistar'].includes(field)) {
+                
                 valA = parseFloat(valA);
                 valB = parseFloat(valB);
                 
                 const aIsNaN = isNaN(valA);
                 const bIsNaN = isNaN(valB);
 
-                if (aIsNaN && bIsNaN) continue; // Entrambi non numerici: passa al criterio successivo
-
+                if (aIsNaN && bIsNaN) continue; 
                 // Sposta sempre i non-numerici (trattini, ecc.) in fondo
                 if (aIsNaN) return 1; 
                 if (bIsNaN) return -1;
                 
-                // *** CORREZIONE CRITICA PER ORDINAMENTO NUMERICO (SOSTITUZIONE CONFRONTO CON SOTTRAZIONE) ***
+                // CONFRONTO NUMERICO ROBUSTO (SOTTRAZIONE)
                 const diff = valA - valB;
                 if (diff !== 0) return diff * dir;
-                // ******************************************************************************************
-            } else {
-                // Confronto alfabetico standard per gli altri campi
+                
+            } else { // 2. GESTIONE CAMPI STRINGA
+                
+                // Conversione a stringa e lower-case per confronto alfabetico
+                valA = String(valA || '').toLowerCase();
+                valB = String(valB || '').toLowerCase();
+                
                 if (valA < valB) return -1 * dir;
                 if (valA > valB) return 1 * dir;
             }
 
             // Se sono uguali, passa al criterio successivo
         }
-        return 0; // Se tutti i criteri sono uguali
+        return 0;
     });
 }
 
