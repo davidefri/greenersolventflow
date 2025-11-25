@@ -4,43 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greener Solvent Flow</title>
-    <link rel="stylesheet" href="/Style.css"> 
+    <link rel="stylesheet" href="style.css"> 
     <style>
-        /* Aggiungi questo CSS temporaneo o inseriscilo in Style.css */
+        /* CSS essenziale per il funzionamento, ma dovrebbe essere in style.css per lo stile finale */
         .hidden { display: none; }
-        .kt-slider-group { position: relative; padding: 10px 0; }
-        .kt-slider-group input[type="range"] {
-            width: 100%;
-            pointer-events: none; /* Rende la barra non cliccabile direttamente */
-            position: absolute;
-            height: 5px;
-            -webkit-appearance: none;
-            background: transparent;
-        }
-        .kt-slider-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #4CAF50; /* Colore maniglia */
-            cursor: pointer;
-            margin-top: -5px; /* Centra la maniglia sulla traccia */
-            pointer-events: all; /* Rende la maniglia cliccabile */
-        }
-        /* Stile per la barra centrale (simulazione) */
-        .range-track {
-            position: absolute;
-            top: 25px; /* Adatta in base all'altezza dell'etichetta */
-            height: 5px;
-            background: #ddd;
-            width: 100%;
-            border-radius: 5px;
-        }
-        .kt-min-slider, .kt-max-slider { 
-            /* Sposta gli slider per allinearli alla traccia simulata */
-            top: 25px;
-        }
     </style>
 </head>
 <body>
@@ -79,7 +46,9 @@
 
                 <div class="kt-slider-group" data-param="alpha">
                     <label>Alpha (Acidity) <span class="range-display" id="alpha-range-display">0.00 - 1.20</span></label>
-                    <div class="range-track"></div> <input type="range" min="0" max="120" value="0" class="kt-min-slider">
+                    <div class="range-track"></div> 
+                    <div class="range-fill"></div>
+                    <input type="range" min="0" max="120" value="0" class="kt-min-slider">
                     <input type="range" min="0" max="120" value="120" class="kt-max-slider">
                     <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
                 </div>
@@ -87,6 +56,7 @@
                 <div class="kt-slider-group" data-param="beta">
                     <label>Beta (Basicity) <span class="range-display" id="beta-range-display">0.00 - 1.00</span></label>
                     <div class="range-track"></div>
+                    <div class="range-fill"></div>
                     <input type="range" min="0" max="100" value="0" class="kt-min-slider">
                     <input type="range" min="0" max="100" value="100" class="kt-max-slider">
                     <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
@@ -95,6 +65,7 @@
                 <div class="kt-slider-group" data-param="pistar">
                     <label>Pi Star (Polarity) <span class="range-display" id="pistar-range-display">-0.20 - 1.50</span></label>
                     <div class="range-track"></div>
+                    <div class="range-fill"></div>
                     <input type="range" min="-20" max="150" value="-20" class="kt-min-slider">
                     <input type="range" min="-20" max="150" value="150" class="kt-max-slider">
                     <div class="kt-labels"><span>Low Polarizability</span><span>Highly Polarizability</span></div>

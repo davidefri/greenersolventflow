@@ -23,8 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('min_bp').addEventListener('input', caricaSolventi);
     document.getElementById('max_bp').addEventListener('input', caricaSolventi);
     
-    // Assicurati che il blocco KT sia nascosto all'inizio (la classe 'hidden' è nell'HTML)
-    // Se non vuoi vederlo subito, verifica che la classe 'hidden' sia presente nell'HTML.
 });
 
 // --- NUOVE FUNZIONI PER I FILTRI SLIDER ---
@@ -42,10 +40,12 @@ function mapSliderValue(sliderValue) {
     return (parseFloat(sliderValue) / 100).toFixed(2);
 }
 
-// Funzione per aggiornare la visualizzazione del range sulla UI e chiamare la ricerca
+// Funzione AGGIORNATA per gestire il doppio manico e il riempimento
 function updateSliderDisplayAndFilter(param) {
-    const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
-    const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
+    const group = document.querySelector(`.kt-slider-group[data-param="${param}"]`);
+    const minSlider = group.querySelector('.kt-min-slider');
+    const maxSlider = group.querySelector('.kt-max-slider');
+    const fill = group.querySelector('.range-fill'); // Seleziona il nuovo elemento fill
     const display = document.getElementById(`${param}-range-display`);
     
     if (minSlider && maxSlider) {
@@ -56,21 +56,34 @@ function updateSliderDisplayAndFilter(param) {
         if (minValue > maxValue) {
              const focusedSlider = document.activeElement;
              if (focusedSlider === minSlider) {
-                 // L'utente sta muovendo il minSlider, il max deve seguirlo
                  maxSlider.value = minValue;
                  maxValue = minValue;
              } else {
-                 // L'utente sta muovendo il maxSlider, il min deve seguirlo
                  minSlider.value = maxValue;
                  minValue = maxValue;
              }
         }
+        
+        // --- LOGICA DI RIEMPIMENTO (Nuova) ---
+        const minAttr = parseInt(minSlider.getAttribute('min'));
+        const maxAttr = parseInt(minSlider.getAttribute('max'));
+        const range = maxAttr - minAttr;
+        
+        // Calcola la posizione percentuale di inizio e fine
+        const percentMin = ((minValue - minAttr) / range) * 100;
+        const percentMax = ((maxValue - minAttr) / range) * 100;
+
+        // Applica stili per il riempimento dinamico
+        if (fill) {
+            fill.style.left = percentMin + '%';
+            fill.style.width = (percentMax - percentMin) + '%';
+        }
+        // ------------------------------------
 
         const minVal = mapSliderValue(minValue);
         const maxVal = mapSliderValue(maxValue);
         
         display.textContent = `${minVal} - ${maxVal}`;
-        // La chiamata a caricaSolventi è gestita dai listener 'mouseup'/'touchend' in setupKTSliders
     }
 }
 
@@ -81,7 +94,7 @@ function setupKTSliders() {
         
         if (group) {
             group.querySelectorAll('input[type="range"]').forEach(slider => {
-                // 'input' per aggiornare il display in tempo reale (mentre si trascina)
+                // 'input' per aggiornare il display in tempo reale (mentre si trascina) e il riempimento
                 slider.addEventListener('input', () => {
                     updateSliderDisplayAndFilter(param);
                 });
@@ -91,7 +104,7 @@ function setupKTSliders() {
                 slider.addEventListener('touchend', caricaSolventi);
             });
             
-            // Inizializza la visualizzazione al caricamento e chiama la ricerca iniziale
+            // Inizializza la visualizzazione e il riempimento al caricamento 
             updateSliderDisplayAndFilter(param);
         }
     });
@@ -117,7 +130,7 @@ function getQueryString() {
     if (min_bp) params.append('min_bp', min_bp);
     if (max_bp) params.append('max_bp', max_bp);
 
-    // --- NUOVI FILTRI SLIDER KT ---
+    // --- FILTRI SLIDER KT ---
     KT_SLIDER_PARAMS.forEach(param => {
         const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
         const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
@@ -323,7 +336,7 @@ function resetFiltri() {
             // Usa min e max definiti nell'HTML per resettare al range completo
             minSlider.value = minSlider.getAttribute('min');
             maxSlider.value = maxSlider.getAttribute('max');
-            updateSliderDisplayAndFilter(param); // Aggiorna il display (e caricaSolventi è chiamata da updateSliderDisplayAndFilter al rilascio, ma la forziamo)
+            updateSliderDisplayAndFilter(param); // Aggiorna il display e il riempimento
         }
     });
 
