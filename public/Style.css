@@ -210,7 +210,7 @@ h1 {
 }
 
 /* ------------------------------------------------------------------- */
-/* FIX SLIDER: Pista, Riempimento e Manici */
+/* FIX SLIDER: Pista, Riempimento e Manici (Cross-Browser) */
 /* ------------------------------------------------------------------- */
 
 .range-track {
@@ -239,7 +239,10 @@ h1 {
 
 .kt-min-slider, .kt-max-slider {
     width: 100%;
+    /* Reset default appearance */
     -webkit-appearance: none;
+    -moz-appearance: none; 
+    appearance: none; 
     height: 6px; 
     background: transparent;
     outline: none;
@@ -249,7 +252,7 @@ h1 {
     pointer-events: none;
 }
 
-/* Manici dello Slider (Thumb) */
+/* Manici dello Slider (Thumb) - Webkit (Chrome, Safari) */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -262,19 +265,37 @@ h1 {
     border: 3px solid var(--color-dark-bg); 
     box-shadow: var(--color-neon-shadow);
     transition: all 0.2s ease;
-    pointer-events: all; 
+    pointer-events: all; /* Important for clicking the overlay slider */
     
     z-index: 5; 
     position: relative;
     margin-top: -5px; 
 }
 
+/* Manici dello Slider (Thumb) - Firefox */
+.kt-min-slider::-moz-range-thumb,
+.kt-max-slider::-moz-range-thumb {
+    width: 16px; 
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-neon-blue);
+    cursor: grab; 
+    border: 3px solid var(--color-dark-bg); 
+    box-shadow: var(--color-neon-shadow);
+    transition: all 0.2s ease;
+    /* Firefox does not support pointer-events on pseudo-elements, 
+       but typically handles stacking better, requiring less hackery. */
+}
+
 .kt-min-slider::-webkit-slider-thumb:hover, 
-.kt-max-slider::-webkit-slider-thumb:hover {
+.kt-max-slider::-webkit-slider-thumb:hover,
+.kt-min-slider::-moz-range-thumb:hover,
+.kt-max-slider::-moz-range-thumb:hover {
     background: var(--color-primary-deep);
     box-shadow: 0 0 15px var(--color-neon-blue);
     cursor: grabbing;
 }
+
 
 .kt-labels {
     display: flex;
