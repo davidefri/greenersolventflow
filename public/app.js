@@ -78,8 +78,8 @@ function multiSort(data) {
                 if (!isLastCriterion && ['alpha', 'beta', 'pistar'].includes(field)) {
                     // Arrotonda a 1 cifra decimale per il raggruppamento (es. 0.54 diventa 0.5)
                     // Puoi cambiare (1) in (0) se vuoi raggruppamenti ancora più ampi
-                    const roundedA = Number(valA.toFixed(1)); 
-                    const roundedB = Number(valB.toFixed(1));
+                    const roundedA = Number(valA.toFixed(0)); 
+                    const roundedB = Number(valB.toFixed(0));
                     
                     if (roundedA < roundedB) return -1 * dir;
                     if (roundedA > roundedB) return 1 * dir;
