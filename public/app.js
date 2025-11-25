@@ -47,29 +47,39 @@ function multiSort(data) {
             const field = criterion.field;
             const dir = criterion.direction === 'asc' ? 1 : -1;
 
-            let valA = a[field];
-            let valB = b[field];
-
             // 1. GESTIONE CAMPI NUMERICI (inclusi Kamlet-Taft)
             if (['boiling_point', 'density', 'dielectric_constant', 'alpha', 'beta', 'pistar'].includes(field)) {
                 
-                valA = parseFloat(valA);
-                valB = parseFloat(valB);
+                // Tratta valori nulli/vuoti/undefined come 0, poi esegui parseFloat
+                let valA = parseFloat(a[field] || 0); // Usa 0 come fallback temporaneo per coerenza nel parsing
+                let valB = parseFloat(b[field] || 0);
                 
+                // Rileva se il valore originale era non numerico (NaN, -, ecc.)
                 const aIsNaN = isNaN(valA);
                 const bIsNaN = isNaN(valB);
-
-                if (aIsNaN && bIsNaN) continue; 
-                // Sposta sempre i non-numerici (trattini, ecc.) in fondo
-                if (aIsNaN) return 1; 
-                if (bIsNaN) return -1;
                 
+                // Controllo essenziale: Se i dati originali erano stringhe vuote/trattini, 
+                // dobbiamo gestirle per mandarle in fondo, indipendentemente dal parseFloat.
+                const aIsBlank = !a[field] || a[field] === '-';
+                const bIsBlank = !b[field] || b[field] === '-';
+
+                // Se entrambi i dati originali erano vuoti, passa al criterio successivo.
+                if (aIsBlank && bIsBlank) continue; 
+                
+                // Sposta sempre i valori vuoti/non validi originali in fondo
+                if (aIsBlank) return 1; 
+                if (bIsBlank) return -1;
+                
+                // Se sono validi (numeri)
                 // CONFRONTO NUMERICO ROBUSTO (SOTTRAZIONE)
                 const diff = valA - valB;
                 if (diff !== 0) return diff * dir;
                 
             } else { // 2. GESTIONE CAMPI STRINGA
-                
+                // Usa sempre i valori non modificati per i campi stringa
+                let valA = a[field];
+                let valB = b[field];
+
                 // Conversione a stringa e lower-case per confronto alfabetico
                 valA = String(valA || '').toLowerCase();
                 valB = String(valB || '').toLowerCase();
