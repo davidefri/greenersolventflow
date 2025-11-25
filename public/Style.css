@@ -1,72 +1,168 @@
-/* public/style.css */
+/* public/style.css - Versione Elegante & Formale */
+
+/* ---------------------------------- */
+/* GLOBAL STYLES & TYPOGRAPHY */
+/* ---------------------------------- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    padding: 20px;
+    /* Font più formale e leggibile */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Colore di sfondo neutro e leggero */
+    background-color: #f8f9fa;
+    padding: 30px;
+    color: #343a40; /* Testo scuro */
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1300px; /* Larghezza leggermente aumentata */
     margin: auto;
     background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 12px; /* Angoli più morbidi */
+    /* Ombra più profonda ma diffusa per un effetto "floating" */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); 
+    transition: box-shadow 0.3s ease;
 }
 
+/* Stile per l'intestazione */
 h1 {
-    color: #007bff;
+    /* Blu istituzionale e profondo */
+    color: #004d99; 
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    font-weight: 300; /* Leggermente più sottile per eleganza */
+    letter-spacing: 1px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
 }
 
+/* ---------------------------------- */
+/* FILTER SECTION (FILTRI) */
+/* ---------------------------------- */
 #filtri {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px; /* Spazio maggiore tra gli elementi */
     align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #e9ecef;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Effetto leggero incassato */
 }
 
-#filtri input, #filtri select, #filtri button {
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+#filtri input, #filtri select {
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+    min-width: 120px; /* Larghezza minima per coerenza */
+}
+
+#filtri input:focus, #filtri select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
 }
 
 #filtri button {
+    padding: 10px 18px;
+    border-radius: 6px;
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 #filtri button:hover {
     background-color: #0056b3;
 }
 
+#filtri button:active {
+    transform: translateY(1px);
+}
+
+/* ---------------------------------- */
+/* TABLE STYLES (TABELLA) */
+/* ---------------------------------- */
 #risultati-tabella {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 25px;
+    /* Angoli arrotondati solo sulla tabella esterna */
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 #risultati-tabella th, #risultati-tabella td {
-    border: 1px solid #ddd;
-    padding: 12px;
+    border: none; /* Rimuoviamo il bordo interno per un look più pulito */
+    padding: 14px 12px;
     text-align: left;
+    /* Linea sottile tra le righe */
+    border-bottom: 1px solid #e9ecef; 
 }
 
+/* Intestazioni - Scuro istituzionale */
 #risultati-tabella th {
-    background-color: #007bff;
+    background-color: #004d99; 
     color: white;
-    font-weight: bold;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
 }
 
+/* Stile per il corpo della tabella */
+#risultati-tabella tbody tr:hover {
+    background-color: #f0f8ff; /* Evidenziazione al passaggio del mouse */
+}
+
+/* Colori alternati leggerissimi per leggibilità */
 #risultati-tabella tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f7f9fb;
+}
+
+#risultati-tabella tr:last-child td {
+    border-bottom: none;
+}
+
+/* Stili per l'ordinamento */
+#risultati-tabella th.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 25px; 
+    transition: background-color 0.2s ease;
+}
+
+#risultati-tabella th.sortable:hover {
+    background-color: #0056b3; /* Leggera variazione al passaggio del mouse */
+}
+
+/* Icona per l'ordinamento crescente (ASC) */
+#risultati-tabella th.sorted-asc::after {
+    content: ' ▲'; 
+    position: absolute;
+    right: 8px;
+    font-size: 0.7em;
+    color: #ffffff; /* Bianco per contrasto */
+}
+
+/* Icona per l'ordinamento decrescente (DESC) */
+#risultati-tabella th.sorted-desc::after {
+    content: ' ▼'; 
+    position: absolute;
+    right: 8px;
+    font-size: 0.7em;
+    color: #ffffff;
+}
+
+/* Contatore risultati */
+#risultati-count {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 10px;
+    display: block;
 }

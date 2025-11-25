@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,55 +8,57 @@
 </head>
 <body>
     <div class="container">
-        <h1>Catalogo Solventi Chimici</h1>
+        <h1>Greener Solvent Flow</h1>
         
         <div id="filtri">
-            <input type="text" id="search" placeholder="Cerca Nome o CAS...">
-            <select id="polarita">
-                <option value="">-- Polarità --</option>
-                <option value="Polare">Polare</option>
-                <option value="Non Polare">Non Polare</option>
-            </select>
-            <select id="categoria">
-                <option value="">-- Categoria --</option>
-                <option value="Protic">Protic</option>
-                <option value="Aprotico">Aprotico</option>
+            <input type="text" id="search" placeholder="Search by Name or CAS...">
+            
+            <select id="water_miscibility"> <option value="">-- Water Miscibility --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Slightly">Slightly</option>
             </select>
             
-            <label>Punto Ebollizione (°C):</label>
+            <select id="categoria">
+                <option value="">-- Category --</option>
+                <option value="Protic">Protic</option>
+                <option value="Aprotico">Aprotic</option>
+            </select>
+            
+            <label>Boiling Point (°C):</label>
             <input type="number" id="min_bp" placeholder="Min">
             <input type="number" id="max_bp" placeholder="Max">
             
-            <button onclick="caricaSolventi()">Cerca</button>
+            <button onclick="caricaSolventi()">Search</button>
             <button onclick="resetFiltri()">Reset</button>
         </div>
 
         <p id="risultati-count"></p>
 
         <table id="risultati-tabella">
-           <thead>
-    <tr>
-        <th>Name</th>
-        <th>CAS</th>
-        <th>Boiling Point (°C)</th>
-        <th>Density (g/cm³)</th>
-        <th>Dielectric Constant</th>
-        <th>Water Miscibility</th>
-        <th>Alpha (α)</th>
-        <th>Beta (β)</th>
-        <th>Pi Star (π*)</th>
-        <th>H Phrases</th>
-        <th>Oxidation Resistant</th>
-        <th>Reduction Resistant</th>
-        <th>Acid Resistant</th>
-        <th>Basic Resistant</th>
-    </tr>
-</thead>
+            <thead>
+                <tr>
+                    <th data-sort="iupac_name" class="sortable">Name</th>
+                    <th data-sort="cas" class="sortable">CAS</th>
+                    <th data-sort="boiling_point" class="sortable">Boiling Point (°C)</th>
+                    <th data-sort="density" class="sortable">Density (g/cm³)</th>
+                    <th data-sort="dielectric_constant" class="sortable">Dielectric Constant</th>
+                    <th data-sort="water_miscibility" class="sortable">Water Miscibility</th>
+                    <th data-sort="alpha" class="sortable">Alpha (α)</th>
+                    <th data-sort="beta" class="sortable">Beta (β)</th>
+                    <th data-sort="pistar" class="sortable">Pi Star (π*)</th>
+                    <th>H Phrases</th>
+                    <th>Oxidation Resistant</th>
+                    <th>Reduction Resistant</th>
+                    <th>Acid Resistant</th>
+                    <th>Basic Resistant</th>
+                </tr>
+            </thead>
             <tbody id="tabella-corpo">
-                </tbody>
+            </tbody>
         </table>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app_finale.js"></script> 
 </body>
 </html>
