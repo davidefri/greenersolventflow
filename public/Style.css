@@ -1,47 +1,67 @@
-/* public/style.css - Versione Elegante & Formale (Ottimizzata) */
+/* public/style.css - Versione Dark Mode, Glassmorphism & Neon Blue */
 
 /* ---------------------------------- */
 /* GLOBAL STYLES & TYPOGRAPHY 🌎 */
 /* ---------------------------------- */
+:root {
+    /* Definizioni dei colori */
+    --color-dark-bg: #141E30; /* Blu/Nero Scuro Profondo */
+    --color-mid-bg: #243B55; /* Blu Scuro/Medio */
+    --color-glass-primary: rgba(36, 59, 85, 0.4); /* Base Glassmorphism */
+    --color-glass-secondary: rgba(0, 77, 153, 0.3); /* Glassmorphism per elementi interattivi */
+    --color-neon-blue: #00BFFF; /* Blu Neon Ciano */
+    --color-neon-shadow: 0 0 10px var(--color-neon-blue), 0 0 20px rgba(0, 191, 255, 0.6); /* Ombra Neon */
+    --color-text-light: #E0E7FF; /* Testo Bianco/Blu Chiaro */
+    --color-text-muted: #B0C4DE; /* Testo Secondario */
+    --color-primary-deep: #004D99; /* Blu Profondo Istituzionale */
+    --color-primary-bright: #007bff; /* Blu Standard */
+}
+
 body {
-    /* Font più formale e leggibile (Mantenuto) */
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    /* Colore di sfondo neutro e leggero (Mantenuto) */
-    background-color: #f8f9fa;
+    /* Sfondo scuro e profondo con un leggero gradiente */
+    background: linear-gradient(135deg, var(--color-dark-bg) 0%, #000000 100%);
     padding: 30px;
-    color: #343a40; /* Testo scuro (Mantenuto) */
-    /* Aggiunto: Migliora il rendering del testo */
+    color: var(--color-text-light); /* Testo chiaro su sfondo scuro */
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; /* Assicura che il gradiente copra tutta la pagina */
 }
 
 .container {
     max-width: 1300px; 
     margin: auto;
-    background: white;
     padding: 40px;
-    border-radius: 12px; 
-    /* Ombra raffinata: Mantenuta, ma leggermente più delicata e moderna */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05); 
-    transition: box-shadow 0.3s ease;
+    border-radius: 18px; /* Aumentato per l'effetto vetro */
+    
+    /* GLASSMORPHISM EFFECT */
+    background: var(--color-glass-primary);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo semi-trasparente */
+    
+    transition: all 0.5s ease;
 }
 
 /* Hover per enfatizzare l'effetto "floating" */
 .container:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5); 
 }
 
 /* Stile per l'intestazione */
 h1 {
-    /* Blu istituzionale e profondo (Mantenuto) */
-    color: #004d99; 
+    color: var(--color-neon-blue); 
     text-align: center;
     margin-bottom: 40px;
     font-weight: 300; 
-    letter-spacing: 1px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 15px; /* Aumentato il padding per maggiore respiro */
-    font-size: 2.5rem; /* Aggiunto: Dimensione esplicita per coerenza */
+    letter-spacing: 2px; /* Aumentato per l'estetica neon */
+    padding-bottom: 15px; 
+    font-size: 2.8rem;
+    
+    /* EFFETTO NEON LEGGERO sul titolo */
+    text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+    border-bottom: 2px solid rgba(0, 191, 255, 0.4);
 }
 
 /* ---------------------------------- */
@@ -50,50 +70,68 @@ h1 {
 #filtri {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Aumentato lo spazio per maggiore separazione visiva */
+    gap: 20px; 
     align-items: center;
     margin-bottom: 30px;
     padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background-color: #ffffff; /* Passato a bianco per creare contrasto con il body */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); /* Ombra esterna leggera al posto dell'inset */
+    border-radius: 12px;
+    
+    /* Glassmorphism più scuro per contrasto */
+    background: var(--color-mid-bg); 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#filtri label {
+    color: var(--color-text-light);
+    font-weight: 400;
 }
 
 #filtri input, #filtri select {
     padding: 10px 14px;
     border-radius: 6px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Aggiunto box-shadow alla transizione */
-    min-width: 140px; /* Larghezza minima leggermente aumentata */
-    font-size: 1rem; /* Aggiunto: Dimensione font esplicita */
+    background-color: var(--color-mid-bg); /* Sfondo coerente */
+    color: var(--color-text-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 150px; 
+    font-size: 1rem;
+}
+
+#filtri input::placeholder, #filtri select option {
+    color: var(--color-text-muted);
 }
 
 #filtri input:focus, #filtri select:focus {
-    border-color: #004d99; /* Usa il blu principale (profondo) per il focus */
-    box-shadow: 0 0 0 0.2rem rgba(0, 77, 153, 0.25); /* Ombra focus coerente con il blu principale */
+    border-color: var(--color-neon-blue); 
+    box-shadow: 0 0 5px var(--color-neon-blue); /* Ombra focus Neon */
     outline: none;
 }
 
+/* Stile Pulsanti Neon */
 #filtri button {
-    padding: 10px 20px; /* Leggermente più largo */
+    padding: 10px 20px; 
     border-radius: 6px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--color-primary-deep);
+    color: var(--color-neon-blue); /* Testo in colore neon */
     cursor: pointer;
-    border: none;
+    border: 2px solid var(--color-neon-blue); /* Bordo Neon */
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    text-transform: uppercase; /* Aggiunto: Per dare enfasi alla call to action */
-    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--color-neon-shadow); /* Ombra Neon sul bottone */
 }
 
 #filtri button:hover {
-    background-color: #0056b3;
+    background-color: var(--color-neon-blue);
+    color: var(--color-dark-bg); /* Testo scuro al passaggio del mouse */
+    box-shadow: 0 0 15px var(--color-neon-blue); 
+    transform: translateY(-2px);
 }
 
 #filtri button:active {
-    transform: translateY(1px);
+    transform: translateY(0);
+    box-shadow: 0 0 5px var(--color-neon-blue);
 }
 
 /* ---------------------------------- */
@@ -103,39 +141,43 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 25px;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    
+    /* Glassmorphism leggero sulla tabella */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    background: var(--color-glass-primary);
 }
 
 #risultati-tabella th, #risultati-tabella td {
     border: none; 
-    padding: 15px 15px; /* Aumentato leggermente il padding per ariosità */
+    padding: 15px 15px; 
     text-align: left;
-    border-bottom: 1px solid #e9ecef; 
-    vertical-align: middle; /* Aggiunto: Allinea il contenuto al centro verticale */
+    /* Bordo sottile e leggero */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    vertical-align: middle; 
 }
 
-/* Intestazioni - Scuro istituzionale */
+/* Intestazioni - Scuro principale, con tocco neon */
 #risultati-tabella th {
-    background-color: #004d99; 
-    color: white;
+    background-color: var(--color-primary-deep); 
+    color: var(--color-neon-blue);
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.85em; /* Leggermente ridotto per contrastare con il padding */
-    letter-spacing: 1px; /* Aumentato per enfasi */
-    border-bottom: 2px solid #004080; /* Bordo più scuro in basso per separazione netta */
+    font-size: 0.8em; 
+    letter-spacing: 1.5px; 
+    border-bottom: 2px solid var(--color-neon-blue); 
 }
 
 /* Stile per il corpo della tabella */
 #risultati-tabella tbody tr:hover {
-    background-color: #e6f3ff; /* Evidenziazione più luminosa e istituzionale */
-    cursor: default; /* Rimosso il cursore se non è cliccabile */
+    background-color: var(--color-glass-secondary); /* Effetto vetro più evidente */
+    cursor: default; 
 }
 
 /* Colori alternati leggerissimi per leggibilità */
 #risultati-tabella tr:nth-child(even) {
-    background-color: #f7f9fb;
+    background-color: rgba(0, 0, 0, 0.1); /* Strisce scure semi-trasparenti */
 }
 
 #risultati-tabella tr:last-child td {
@@ -146,39 +188,36 @@ h1 {
 #risultati-tabella th.sortable {
     cursor: pointer;
     position: relative;
-    padding-right: 30px; /* Aumentato lo spazio per l'icona e l'ordine */
+    padding-right: 30px; 
     transition: background-color 0.2s ease;
 }
 
 #risultati-tabella th.sortable:hover {
-    background-color: #0056b3; 
+    background-color: var(--color-mid-bg); 
 }
 
-/* Icona per l'ordinamento (Unificato per ASC/DESC) */
+/* Icona per l'ordinamento (Neon) */
 #risultati-tabella th.sorted-asc::after,
 #risultati-tabella th.sorted-desc::after {
     position: absolute;
     right: 10px;
     font-size: 0.7em;
-    color: #ffffff; 
-    transition: transform 0.2s ease; /* Aggiunta transizione per l'icona */
+    color: var(--color-neon-blue); 
+    text-shadow: 0 0 5px var(--color-neon-blue); /* Ombra per effetto Neon */
+    transition: transform 0.2s ease;
 }
 
-#risultati-tabella th.sorted-asc::after {
-    content: ' ▲'; 
-}
-
-#risultati-tabella th.sorted-desc::after {
-    content: ' ▼'; 
-}
+#risultati-tabella th.sorted-asc::after { content: ' ▲'; }
+#risultati-tabella th.sorted-desc::after { content: ' ▼'; }
 
 /* Contatore risultati */
 #risultati-count {
     font-weight: 600;
-    color: #495057;
-    margin-bottom: 15px; /* Aumentato il margine inferiore */
+    color: var(--color-neon-blue); /* Contatore Neon per risaltare */
+    text-shadow: 0 0 3px rgba(0, 191, 255, 0.4);
+    margin-bottom: 15px;
     display: block;
-    font-size: 1.1em; /* Leggermente più grande */
+    font-size: 1.1em;
 }
 
 /* Stili per mostrare l'ordine di ordinamento concatenato */
@@ -189,18 +228,18 @@ h1 {
 #risultati-tabella th[data-sort-order]::before {
     content: attr(data-sort-order);
     position: absolute;
-    top: 0px; 
+    top: -5px; /* Spostato più in alto per non interferire con il testo */
     left: 5px;
-    font-size: 0.75em;
+    font-size: 0.7em;
     font-weight: bold;
-    background-color: #ffffff; 
-    color: #004d99;
+    background-color: var(--color-neon-blue); 
+    color: var(--color-dark-bg);
     padding: 2px 5px;
     border-radius: 4px;
     line-height: 1;
     z-index: 10;
-    border: 1px solid #004d99;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Leggera ombra per separazione */
+    border: 1px solid var(--color-dark-bg);
+    box-shadow: 0 0 5px var(--color-neon-blue); 
 }
 
 /* ---------------------------------------------------- */
@@ -209,79 +248,88 @@ h1 {
 
 #kt-slider-filters {
     margin-top: 15px;
-    padding: 20px; /* Aumentato il padding interno */
-    border: 1px solid #dee2e6; 
-    border-radius: 8px;
-    background-color: #ffffff; /* Coerenza con il div #filtri */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    padding: 20px; 
+    border-radius: 12px;
+    
+    /* Glassmorphism di livello intermedio */
+    background: var(--color-glass-secondary); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
 #kt-slider-filters h3 {
-    margin-top: 0;
-    color: #004d99;
+    color: var(--color-neon-blue);
     font-weight: 500;
-    border-bottom: 1px solid #e9ecef; /* Aggiunto: Sottile separatore per l'intestazione */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
     padding-bottom: 10px;
     margin-bottom: 15px;
+    text-shadow: 0 0 3px rgba(0, 191, 255, 0.3);
 }
 
 .kt-slider-group {
-    margin-bottom: 25px; /* Aumentato il margine inferiore */
+    margin-bottom: 25px; 
     padding: 10px 0;
-    border-bottom: 1px dashed #ced4da; 
-}
-
-.kt-slider-group:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.15); 
 }
 
 .kt-slider-group label {
     font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-    color: #343a40;
-    font-size: 1em;
+    color: var(--color-text-light);
 }
 
 .range-display {
     float: right;
-    font-weight: 500; /* Aumentato leggermente il peso */
-    color: #004d99; /* Usa il blu principale per coerenza */
-    font-size: 1em; /* Leggermente aumentato */
+    font-weight: 500; 
+    color: var(--color-neon-blue); 
+    text-shadow: 0 0 3px rgba(0, 191, 255, 0.3);
 }
 
-/* Stile per i doppi slider */
+/* Traccia dello Slider (per renderlo una linea unica) */
+.range-track {
+    position: absolute;
+    height: 8px; 
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    border-radius: 5px;
+    top: 30px; /* Allineato ai thumb */
+}
+
+/* Stile per i doppi slider sovrapposti */
 .kt-min-slider, .kt-max-slider {
     width: 100%;
     margin-bottom: 5px;
     -webkit-appearance: none;
-    height: 8px; /* Leggermente più sottile per eleganza */
-    background: #e9ecef; 
+    height: 8px; 
+    background: transparent; /* Reso trasparente per usare il range-track sottostante */
     outline: none;
     opacity: 1;
     transition: opacity .2s;
     border-radius: 5px;
+    position: absolute;
+    top: 30px; /* Posizionato sopra il range-track */
 }
 
-/* Stile per il thumb (il "manico" dello slider) */
+/* Stile per il thumb (il "manico" dello slider) - Neon */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 18px; /* Leggermente più grande per facilità d'uso */
+    width: 18px; 
     height: 18px;
     border-radius: 50%;
-    background: #007bff;
-    cursor: grab; /* Cursore per indicare trascinamento */
-    border: 4px solid #fff; /* Bordo più spesso per risaltare */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombra più definita */
-    transition: background-color 0.2s ease;
+    background: var(--color-neon-blue);
+    cursor: grab; 
+    border: 4px solid var(--color-dark-bg); /* Bordo scuro per stacco */
+    box-shadow: var(--color-neon-shadow); /* Ombra Neon */
+    transition: all 0.2s ease;
+    pointer-events: all; /* Essenziale per l'interazione */
 }
 
 .kt-min-slider::-webkit-slider-thumb:hover, 
 .kt-max-slider::-webkit-slider-thumb:hover {
-    background: #0056b3;
+    background: var(--color-primary-bright);
+    box-shadow: 0 0 15px var(--color-neon-blue);
     cursor: grabbing;
 }
 
@@ -290,6 +338,10 @@ h1 {
     display: flex;
     justify-content: space-between;
     font-size: 0.85em;
-    color: #6c757d;
-    margin-top: 5px;
+    color: var(--color-text-muted);
+    margin-top: 15px; /* Aumentato il margine dato che gli slider sono posizionati assoluti */
+}
+
+.hidden {
+    display: none !important;
 }
