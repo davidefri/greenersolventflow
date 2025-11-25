@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function getQueryString() {
     // Raccoglie i valori inseriti dall'utente nei campi di filtro
     const search = document.getElementById('search').value;
-    // ID corretto nel file HTML (vedi index.html aggiornato)
     const waterMiscibility = document.getElementById('water_miscibility').value; 
     const categoria = document.getElementById('categoria').value;
     const min_bp = document.getElementById('min_bp').value;
@@ -24,8 +23,12 @@ function getQueryString() {
 
     const params = new URLSearchParams();
     if (search) params.append('search', search);
-    // 1. Filtro Water Miscibility: usa il nome della colonna del database
-    if (waterMiscibility) params.append('water_miscibility', waterMiscibility); 
+    
+    // CORREZIONE: Convertiamo il valore a minuscolo prima di inviarlo
+    if (waterMiscibility) {
+        params.append('water_miscibility', waterMiscibility.toLowerCase()); 
+    }
+    
     if (categoria) params.append('categoria', categoria);
     if (min_bp) params.append('min_bp', min_bp);
     if (max_bp) params.append('max_bp', max_bp);
