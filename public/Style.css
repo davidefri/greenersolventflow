@@ -4,233 +4,271 @@
 /* GLOBAL STYLES & TYPOGRAPHY */
 /* ---------------------------------- */
 body {
-    /* Font più formale e leggibile */
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    /* Colore di sfondo neutro e leggero */
-    background-color: #f8f9fa;
-    padding: 30px;
-    color: #343a40; /* Testo scuro */
+    /* Font più formale e leggibile */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Colore di sfondo neutro e leggero */
+    background-color: #f8f9fa;
+    padding: 30px;
+    color: #343a40; /* Testo scuro */
 }
 
 .container {
-    max-width: 1300px; /* Larghezza leggermente aumentata */
-    margin: auto;
-    background: white;
-    padding: 40px;
-    border-radius: 12px; /* Angoli più morbidi */
-    /* Ombra più profonda ma diffusa per un effetto "floating" */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); 
-    transition: box-shadow 0.3s ease;
+    max-width: 1300px; /* Larghezza leggermente aumentata */
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px; /* Angoli più morbidi */
+    /* Ombra più profonda ma diffusa per un effetto "floating" */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); 
+    transition: box-shadow 0.3s ease;
 }
 
 /* Stile per l'intestazione */
 h1 {
-    /* Blu istituzionale e profondo */
-    color: #004d99; 
-    text-align: center;
-    margin-bottom: 40px;
-    font-weight: 300; /* Leggermente più sottile per eleganza */
-    letter-spacing: 1px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 10px;
+    /* Blu istituzionale e profondo */
+    color: #004d99; 
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 300; /* Leggermente più sottile per eleganza */
+    letter-spacing: 1px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
 }
 
 /* ---------------------------------- */
 /* FILTER SECTION (FILTRI) */
 /* ---------------------------------- */
 #filtri {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Spazio maggiore tra gli elementi */
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Effetto leggero incassato */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Spazio maggiore tra gli elementi */
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Effetto leggero incassato */
 }
 
 #filtri input, #filtri select {
-    padding: 10px 14px;
-    border-radius: 6px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.3s ease;
-    min-width: 120px; /* Larghezza minima per coerenza */
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+    min-width: 120px; /* Larghezza minima per coerenza */
 }
 
 #filtri input:focus, #filtri select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
 }
 
 #filtri button {
-    padding: 10px 18px;
-    border-radius: 6px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    padding: 10px 18px;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 #filtri button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 #filtri button:active {
-    transform: translateY(1px);
+    transform: translateY(1px);
 }
 
 /* ---------------------------------- */
 /* TABLE STYLES (TABELLA) */
 /* ---------------------------------- */
 #risultati-tabella {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-    /* Angoli arrotondati solo sulla tabella esterna */
-    border-radius: 8px;
-    overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    /* Angoli arrotondati solo sulla tabella esterna */
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 #risultati-tabella th, #risultati-tabella td {
-    border: none; /* Rimuoviamo il bordo interno per un look più pulito */
-    padding: 14px 12px;
-    text-align: left;
-    /* Linea sottile tra le righe */
-    border-bottom: 1px solid #e9ecef; 
+    border: none; /* Rimuoviamo il bordo interno per un look più pulito */
+    padding: 14px 12px;
+    text-align: left;
+    /* Linea sottile tra le righe */
+    border-bottom: 1px solid #e9ecef; 
 }
 
 /* Intestazioni - Scuro istituzionale */
 #risultati-tabella th {
-    background-color: #004d99; 
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9em;
-    letter-spacing: 0.5px;
+    background-color: #004d99; 
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
 }
 
 /* Stile per il corpo della tabella */
 #risultati-tabella tbody tr:hover {
-    background-color: #f0f8ff; /* Evidenziazione al passaggio del mouse */
+    background-color: #f0f8ff; /* Evidenziazione al passaggio del mouse */
 }
 
 /* Colori alternati leggerissimi per leggibilità */
 #risultati-tabella tr:nth-child(even) {
-    background-color: #f7f9fb;
+    background-color: #f7f9fb;
 }
 
 #risultati-tabella tr:last-child td {
-    border-bottom: none;
+    border-bottom: none;
 }
 
 /* Stili per l'ordinamento */
 #risultati-tabella th.sortable {
-    cursor: pointer;
-    position: relative;
-    padding-right: 25px; 
-    transition: background-color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    padding-right: 25px; 
+    transition: background-color 0.2s ease;
 }
 
 #risultati-tabella th.sortable:hover {
-    background-color: #0056b3; /* Leggera variazione al passaggio del mouse */
+    background-color: #0056b3; /* Leggera variazione al passaggio del mouse */
 }
 
 /* Icona per l'ordinamento crescente (ASC) */
 #risultati-tabella th.sorted-asc::after {
-    content: ' ▲'; 
-    position: absolute;
-    right: 8px;
-    font-size: 0.7em;
-    color: #ffffff; /* Bianco per contrasto */
+    content: ' ▲'; 
+    position: absolute;
+    right: 8px;
+    font-size: 0.7em;
+    color: #ffffff; /* Bianco per contrasto */
 }
 
 /* Icona per l'ordinamento decrescente (DESC) */
 #risultati-tabella th.sorted-desc::after {
-    content: ' ▼'; 
-    position: absolute;
-    right: 8px;
-    font-size: 0.7em;
-    color: #ffffff;
+    content: ' ▼'; 
+    position: absolute;
+    right: 8px;
+    font-size: 0.7em;
+    color: #ffffff;
 }
 
 /* Contatore risultati */
 #risultati-count {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 10px;
-    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 10px;
+    display: block;
 }
 /* Stili per mostrare l'ordine di ordinamento concatenato */
 #risultati-tabella th[data-sort-order] {
-    position: relative; /* Assicurati che sia relative per posizionare il ::before */
+    position: relative; /* Assicurati che sia relative per posizionare il ::before */
 }
 
 #risultati-tabella th[data-sort-order]::before {
-    content: attr(data-sort-order);
-    position: absolute;
-    top: 0px; /* Posizione in alto a sinistra */
-    left: 5px;
-    font-size: 0.75em;
-    font-weight: bold;
-    background-color: #ffffff; /* Sfondo bianco per risaltare */
-    color: #004d99;
-    padding: 2px 5px;
-    border-radius: 4px;
-    line-height: 1;
-    z-index: 10;
-    border: 1px solid #004d99;
-}
-/* Stili per la nuova sezione Kamlet-Taft */
-#kamlet-taft-filters {
-    margin-top: 15px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
-    max-height: 500px; /* Altezza iniziale per la transizione */
-    opacity: 1;
-    overflow: hidden;
+    content: attr(data-sort-order);
+    position: absolute;
+    top: 0px; /* Posizione in alto a sinistra */
+    left: 5px;
+    font-size: 0.75em;
+    font-weight: bold;
+    background-color: #ffffff; /* Sfondo bianco per risaltare */
+    color: #004d99;
+    padding: 2px 5px;
+    border-radius: 4px;
+    line-height: 1;
+    z-index: 10;
+    border: 1px solid #004d99;
 }
 
-#kamlet-taft-filters.hidden-filters {
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    opacity: 0;
-    border: 0; /* Nasconde il bordo quando è nascosto */
+/* ---------------------------------------------------- */
+/* NUOVI STILI PER I FILTRI SLIDER KAMLET-TAFT (KT) */
+/* ---------------------------------------------------- */
+
+#kt-slider-filters {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #dee2e6; /* Bordo coerente */
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.kt-control-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+#kt-slider-filters h3 {
+    margin-top: 0;
+    color: #004d99;
+    font-weight: 500;
 }
 
-.kt-control-group label {
-    font-weight: bold;
-    min-width: 100px; 
+.kt-slider-group {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ced4da; /* Linea leggera per separazione */
 }
 
-.kt-select {
-    flex-grow: 1;
-    padding: 8px;
-    border-radius: 4px;
+.kt-slider-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
-#kamlet-taft-filters h3 {
-    margin-top: 0;
-    color: #004d99;
+.kt-slider-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #343a40;
 }
 
-#kamlet-taft-filters button {
-    margin-top: 10px;
-    margin-right: 10px;
+.range-display {
+    float: right;
+    font-weight: 400; /* Non troppo in grassetto */
+    color: #007bff;
+    font-size: 0.95em;
+}
+
+/* Stile per i doppi slider */
+.kt-min-slider, .kt-max-slider {
+    width: 100%;
+    margin-bottom: 5px;
+    -webkit-appearance: none;
+    height: 10px;
+    background: #e9ecef; /* Sfondo chiaro della traccia */
+    outline: none;
+    opacity: 1;
+    transition: opacity .2s;
+    border-radius: 5px;
+}
+
+/* Stile per il thumb (il "manico" dello slider) */
+.kt-min-slider::-webkit-slider-thumb, 
+.kt-max-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+}
+
+.kt-min-slider::-webkit-slider-thumb:hover, 
+.kt-max-slider::-webkit-slider-thumb:hover {
+    background: #0056b3;
+}
+
+
+.kt-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 5px;
 }
