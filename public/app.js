@@ -47,48 +47,40 @@ function multiSort(data) {
             const field = criterion.field;
             const dir = criterion.direction === 'asc' ? 1 : -1;
 
-            // 1. GESTIONE CAMPI NUMERICI (inclusi Kamlet-Taft)
+            // 1. GESTIONE CAMPI NUMERICI
             if (['boiling_point', 'density', 'dielectric_constant', 'alpha', 'beta', 'pistar'].includes(field)) {
                 
-                // Tratta valori nulli/vuoti/undefined come 0, poi esegui parseFloat
-                let valA = parseFloat(a[field] || 0); // Usa 0 come fallback temporaneo per coerenza nel parsing
-                let valB = parseFloat(b[field] || 0);
-                
-                // Rileva se il valore originale era non numerico (NaN, -, ecc.)
-                const aIsNaN = isNaN(valA);
-                const bIsNaN = isNaN(valB);
-                
-                // Controllo essenziale: Se i dati originali erano stringhe vuote/trattini, 
-                // dobbiamo gestirle per mandarle in fondo, indipendentemente dal parseFloat.
-                const aIsBlank = !a[field] || a[field] === '-';
-                const bIsBlank = !b[field] || b[field] === '-';
+                // Funzione helper per controllare se il valore è nullo/vuoto
+                const isBlank = (val) => val === null || val === undefined || val === '' || val === '-';
 
-                // Se entrambi i dati originali erano vuoti, passa al criterio successivo.
-                if (aIsBlank && bIsBlank) continue; 
-                
-                // Sposta sempre i valori vuoti/non validi originali in fondo
-                if (aIsBlank) return 1; 
-                if (bIsBlank) return -1;
-                
-                // Se sono validi (numeri)
-                // CONFRONTO NUMERICO ROBUSTO (SOTTRAZIONE)
-                const diff = valA - valB;
-                if (diff !== 0) return diff * dir;
-                
-            } else { // 2. GESTIONE CAMPI STRINGA
-                // Usa sempre i valori non modificati per i campi stringa
-                let valA = a[field];
-                let valB = b[field];
+                const aBlank = isBlank(a[field]);
+                const bBlank = isBlank(b[field]);
 
-                // Conversione a stringa e lower-case per confronto alfabetico
-                valA = String(valA || '').toLowerCase();
-                valB = String(valB || '').toLowerCase();
+                // Se entrambi sono vuoti, sono uguali per questo criterio
+                if (aBlank && bBlank) continue;
+                
+                // Manda sempre i valori vuoti in fondo (indipendentemente se asc o desc)
+                // Se vuoi che in 'desc' i vuoti stiano in alto, rimuovi il controllo fisso, 
+                // ma di standard i dati mancanti vanno in fondo.
+                if (aBlank) return 1; 
+                if (bBlank) return -1;
+                
+                // Conversione sicura a numero
+                let valA = parseFloat(a[field]);
+                let valB = parseFloat(b[field]);
+
+                // Confronto numerico
+                if (valA < valB) return -1 * dir;
+                if (valA > valB) return 1 * dir;
+
+            } else { 
+                // 2. GESTIONE CAMPI STRINGA
+                let valA = String(a[field] || '').toLowerCase();
+                let valB = String(b[field] || '').toLowerCase();
                 
                 if (valA < valB) return -1 * dir;
                 if (valA > valB) return 1 * dir;
             }
-
-            // Se sono uguali, passa al criterio successivo
         }
         return 0;
     });
