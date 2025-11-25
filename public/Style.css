@@ -1,274 +1,295 @@
-/* public/style.css - Versione Elegante & Formale */
+/* public/style.css - Versione Elegante & Formale (Ottimizzata) */
 
 /* ---------------------------------- */
-/* GLOBAL STYLES & TYPOGRAPHY */
+/* GLOBAL STYLES & TYPOGRAPHY 🌎 */
 /* ---------------------------------- */
 body {
-    /* Font più formale e leggibile */
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    /* Colore di sfondo neutro e leggero */
-    background-color: #f8f9fa;
-    padding: 30px;
-    color: #343a40; /* Testo scuro */
+    /* Font più formale e leggibile (Mantenuto) */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Colore di sfondo neutro e leggero (Mantenuto) */
+    background-color: #f8f9fa;
+    padding: 30px;
+    color: #343a40; /* Testo scuro (Mantenuto) */
+    /* Aggiunto: Migliora il rendering del testo */
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-    max-width: 1300px; /* Larghezza leggermente aumentata */
-    margin: auto;
-    background: white;
-    padding: 40px;
-    border-radius: 12px; /* Angoli più morbidi */
-    /* Ombra più profonda ma diffusa per un effetto "floating" */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); 
-    transition: box-shadow 0.3s ease;
+    max-width: 1300px; 
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px; 
+    /* Ombra raffinata: Mantenuta, ma leggermente più delicata e moderna */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05); 
+    transition: box-shadow 0.3s ease;
+}
+
+/* Hover per enfatizzare l'effetto "floating" */
+.container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); 
 }
 
 /* Stile per l'intestazione */
 h1 {
-    /* Blu istituzionale e profondo */
-    color: #004d99; 
-    text-align: center;
-    margin-bottom: 40px;
-    font-weight: 300; /* Leggermente più sottile per eleganza */
-    letter-spacing: 1px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 10px;
+    /* Blu istituzionale e profondo (Mantenuto) */
+    color: #004d99; 
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 300; 
+    letter-spacing: 1px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 15px; /* Aumentato il padding per maggiore respiro */
+    font-size: 2.5rem; /* Aggiunto: Dimensione esplicita per coerenza */
 }
 
 /* ---------------------------------- */
-/* FILTER SECTION (FILTRI) */
+/* FILTER SECTION (FILTRI) ⚙️ */
 /* ---------------------------------- */
 #filtri {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Spazio maggiore tra gli elementi */
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Effetto leggero incassato */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Aumentato lo spazio per maggiore separazione visiva */
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #ffffff; /* Passato a bianco per creare contrasto con il body */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); /* Ombra esterna leggera al posto dell'inset */
 }
 
 #filtri input, #filtri select {
-    padding: 10px 14px;
-    border-radius: 6px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.3s ease;
-    min-width: 120px; /* Larghezza minima per coerenza */
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Aggiunto box-shadow alla transizione */
+    min-width: 140px; /* Larghezza minima leggermente aumentata */
+    font-size: 1rem; /* Aggiunto: Dimensione font esplicita */
 }
 
 #filtri input:focus, #filtri select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    outline: none;
+    border-color: #004d99; /* Usa il blu principale (profondo) per il focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 77, 153, 0.25); /* Ombra focus coerente con il blu principale */
+    outline: none;
 }
 
 #filtri button {
-    padding: 10px 18px;
-    border-radius: 6px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    padding: 10px 20px; /* Leggermente più largo */
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    text-transform: uppercase; /* Aggiunto: Per dare enfasi alla call to action */
+    letter-spacing: 0.5px;
 }
 
 #filtri button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 #filtri button:active {
-    transform: translateY(1px);
+    transform: translateY(1px);
 }
 
 /* ---------------------------------- */
-/* TABLE STYLES (TABELLA) */
+/* TABLE STYLES (TABELLA) 📊 */
 /* ---------------------------------- */
 #risultati-tabella {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-    /* Angoli arrotondati solo sulla tabella esterna */
-    border-radius: 8px;
-    overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 #risultati-tabella th, #risultati-tabella td {
-    border: none; /* Rimuoviamo il bordo interno per un look più pulito */
-    padding: 14px 12px;
-    text-align: left;
-    /* Linea sottile tra le righe */
-    border-bottom: 1px solid #e9ecef; 
+    border: none; 
+    padding: 15px 15px; /* Aumentato leggermente il padding per ariosità */
+    text-align: left;
+    border-bottom: 1px solid #e9ecef; 
+    vertical-align: middle; /* Aggiunto: Allinea il contenuto al centro verticale */
 }
 
 /* Intestazioni - Scuro istituzionale */
 #risultati-tabella th {
-    background-color: #004d99; 
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9em;
-    letter-spacing: 0.5px;
+    background-color: #004d99; 
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em; /* Leggermente ridotto per contrastare con il padding */
+    letter-spacing: 1px; /* Aumentato per enfasi */
+    border-bottom: 2px solid #004080; /* Bordo più scuro in basso per separazione netta */
 }
 
 /* Stile per il corpo della tabella */
 #risultati-tabella tbody tr:hover {
-    background-color: #f0f8ff; /* Evidenziazione al passaggio del mouse */
+    background-color: #e6f3ff; /* Evidenziazione più luminosa e istituzionale */
+    cursor: default; /* Rimosso il cursore se non è cliccabile */
 }
 
 /* Colori alternati leggerissimi per leggibilità */
 #risultati-tabella tr:nth-child(even) {
-    background-color: #f7f9fb;
+    background-color: #f7f9fb;
 }
 
 #risultati-tabella tr:last-child td {
-    border-bottom: none;
+    border-bottom: none;
 }
 
 /* Stili per l'ordinamento */
 #risultati-tabella th.sortable {
-    cursor: pointer;
-    position: relative;
-    padding-right: 25px; 
-    transition: background-color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    padding-right: 30px; /* Aumentato lo spazio per l'icona e l'ordine */
+    transition: background-color 0.2s ease;
 }
 
 #risultati-tabella th.sortable:hover {
-    background-color: #0056b3; /* Leggera variazione al passaggio del mouse */
+    background-color: #0056b3; 
 }
 
-/* Icona per l'ordinamento crescente (ASC) */
-#risultati-tabella th.sorted-asc::after {
-    content: ' ▲'; 
-    position: absolute;
-    right: 8px;
-    font-size: 0.7em;
-    color: #ffffff; /* Bianco per contrasto */
-}
-
-/* Icona per l'ordinamento decrescente (DESC) */
+/* Icona per l'ordinamento (Unificato per ASC/DESC) */
+#risultati-tabella th.sorted-asc::after,
 #risultati-tabella th.sorted-desc::after {
-    content: ' ▼'; 
-    position: absolute;
-    right: 8px;
-    font-size: 0.7em;
-    color: #ffffff;
+    position: absolute;
+    right: 10px;
+    font-size: 0.7em;
+    color: #ffffff; 
+    transition: transform 0.2s ease; /* Aggiunta transizione per l'icona */
+}
+
+#risultati-tabella th.sorted-asc::after {
+    content: ' ▲'; 
+}
+
+#risultati-tabella th.sorted-desc::after {
+    content: ' ▼'; 
 }
 
 /* Contatore risultati */
 #risultati-count {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 10px;
-    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 15px; /* Aumentato il margine inferiore */
+    display: block;
+    font-size: 1.1em; /* Leggermente più grande */
 }
+
 /* Stili per mostrare l'ordine di ordinamento concatenato */
 #risultati-tabella th[data-sort-order] {
-    position: relative; /* Assicurati che sia relative per posizionare il ::before */
+    position: relative; 
 }
 
 #risultati-tabella th[data-sort-order]::before {
-    content: attr(data-sort-order);
-    position: absolute;
-    top: 0px; /* Posizione in alto a sinistra */
-    left: 5px;
-    font-size: 0.75em;
-    font-weight: bold;
-    background-color: #ffffff; /* Sfondo bianco per risaltare */
-    color: #004d99;
-    padding: 2px 5px;
-    border-radius: 4px;
-    line-height: 1;
-    z-index: 10;
-    border: 1px solid #004d99;
+    content: attr(data-sort-order);
+    position: absolute;
+    top: 0px; 
+    left: 5px;
+    font-size: 0.75em;
+    font-weight: bold;
+    background-color: #ffffff; 
+    color: #004d99;
+    padding: 2px 5px;
+    border-radius: 4px;
+    line-height: 1;
+    z-index: 10;
+    border: 1px solid #004d99;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Leggera ombra per separazione */
 }
 
 /* ---------------------------------------------------- */
-/* NUOVI STILI PER I FILTRI SLIDER KAMLET-TAFT (KT) */
+/* NUOVI STILI PER I FILTRI SLIDER KAMLET-TAFT (KT) 🔬 */
 /* ---------------------------------------------------- */
 
 #kt-slider-filters {
-    margin-top: 15px;
-    padding: 15px;
-    border: 1px solid #dee2e6; /* Bordo coerente */
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-top: 15px;
+    padding: 20px; /* Aumentato il padding interno */
+    border: 1px solid #dee2e6; 
+    border-radius: 8px;
+    background-color: #ffffff; /* Coerenza con il div #filtri */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 #kt-slider-filters h3 {
-    margin-top: 0;
-    color: #004d99;
-    font-weight: 500;
+    margin-top: 0;
+    color: #004d99;
+    font-weight: 500;
+    border-bottom: 1px solid #e9ecef; /* Aggiunto: Sottile separatore per l'intestazione */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .kt-slider-group {
-    margin-bottom: 20px;
-    padding: 10px 0;
-    border-bottom: 1px dashed #ced4da; /* Linea leggera per separazione */
+    margin-bottom: 25px; /* Aumentato il margine inferiore */
+    padding: 10px 0;
+    border-bottom: 1px dashed #ced4da; 
 }
 
 .kt-slider-group:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
 .kt-slider-group label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-    color: #343a40;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #343a40;
+    font-size: 1em;
 }
 
 .range-display {
-    float: right;
-    font-weight: 400; /* Non troppo in grassetto */
-    color: #007bff;
-    font-size: 0.95em;
+    float: right;
+    font-weight: 500; /* Aumentato leggermente il peso */
+    color: #004d99; /* Usa il blu principale per coerenza */
+    font-size: 1em; /* Leggermente aumentato */
 }
 
 /* Stile per i doppi slider */
 .kt-min-slider, .kt-max-slider {
-    width: 100%;
-    margin-bottom: 5px;
-    -webkit-appearance: none;
-    height: 10px;
-    background: #e9ecef; /* Sfondo chiaro della traccia */
-    outline: none;
-    opacity: 1;
-    transition: opacity .2s;
-    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    -webkit-appearance: none;
+    height: 8px; /* Leggermente più sottile per eleganza */
+    background: #e9ecef; 
+    outline: none;
+    opacity: 1;
+    transition: opacity .2s;
+    border-radius: 5px;
 }
 
 /* Stile per il thumb (il "manico" dello slider) */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #007bff;
-    cursor: pointer;
-    border: 3px solid #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px; /* Leggermente più grande per facilità d'uso */
+    height: 18px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: grab; /* Cursore per indicare trascinamento */
+    border: 4px solid #fff; /* Bordo più spesso per risaltare */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombra più definita */
+    transition: background-color 0.2s ease;
 }
 
 .kt-min-slider::-webkit-slider-thumb:hover, 
 .kt-max-slider::-webkit-slider-thumb:hover {
-    background: #0056b3;
+    background: #0056b3;
+    cursor: grabbing;
 }
 
 
 .kt-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85em;
-    color: #6c757d;
-    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 5px;
 }
