@@ -20,10 +20,13 @@ export default {
         // 2. Gestione richiesta GET /solvents
         if (url.pathname === '/solvents') {
             try {
-                // Inizializzazione della query e dei parametri
-                let sql = "SELECT * FROM solventi WHERE 1=1";
-                const params = [];
-                let paramIndex = 1; // Usato per le prepared statements se necessario, ma useremo .bind()
+        // --- INIZIALIZZAZIONE DELLA QUERY SQL CORRETTA ---
+        // Vengono elencate tutte le 14 colonne ESATTE come nel database D1
+        let sql = "SELECT cas, iupac_name, boiling_point, density, dielectric_constant, alpha, beta, pistar, water_miscibility, h_phrases, oxidation_resistance, reduction_resistance, acid_resistance, basic_resistance FROM solventi WHERE 1=1";
+        // --------------------------------------------------
+
+        const params = [];
+        let paramIndex = 1;
 
                 // --- LOGICA DI FILTRO DINAMICO ---
 

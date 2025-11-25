@@ -186,3 +186,51 @@ h1 {
     z-index: 10;
     border: 1px solid #004d99;
 }
+/* Stili per la nuova sezione Kamlet-Taft */
+#kamlet-taft-filters {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+    max-height: 500px; /* Altezza iniziale per la transizione */
+    opacity: 1;
+    overflow: hidden;
+}
+
+#kamlet-taft-filters.hidden-filters {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    border: 0; /* Nasconde il bordo quando è nascosto */
+}
+
+.kt-control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.kt-control-group label {
+    font-weight: bold;
+    min-width: 100px; 
+}
+
+.kt-select {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+#kamlet-taft-filters h3 {
+    margin-top: 0;
+    color: #004d99;
+}
+
+#kamlet-taft-filters button {
+    margin-top: 10px;
+    margin-right: 10px;
+}

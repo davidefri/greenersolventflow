@@ -31,6 +31,47 @@
             
             <button onclick="caricaSolventi()">Search</button>
             <button onclick="resetFiltri()">Reset</button>
+            <button onclick="caricaSolventi()">Search</button>
+<button onclick="resetFiltri()">Reset</button>
+
+<button onclick="toggleKamletTaftFilters()" id="kamlet-taft-toggle">
+    Kamlet-Taft Parameters
+</button>
+
+<div id="kamlet-taft-filters" class="hidden-filters">
+    <h3>Kamlet-Taft Sort (Multi-livello)</h3>
+    <p class="description">Imposta l'ordine di sort, poi clicca Apply.</p>
+    
+    <div class="kt-control-group">
+        <label for="kt_alpha_dir">Alpha ($\alpha$):</label>
+        <select id="kt_alpha_dir" class="kt-select">
+            <option value="">(Ignore)</option>
+            <option value="asc">Ascending (A-Z, 1-9)</option>
+            <option value="desc">Descending (Z-A, 9-1)</option>
+        </select>
+    </div>
+
+    <div class="kt-control-group">
+        <label for="kt_beta_dir">Beta ($\beta$):</label>
+        <select id="kt_beta_dir" class="kt-select">
+            <option value="">(Ignore)</option>
+            <option value="asc">Ascending (A-Z, 1-9)</option>
+            <option value="desc">Descending (Z-A, 9-1)</option>
+        </select>
+    </div>
+
+    <div class="kt-control-group">
+        <label for="kt_pistar_dir">Pi Star ($\pi^*$):</label>
+        <select id="kt_pistar_dir" class="kt-select">
+            <option value="">(Ignore)</option>
+            <option value="asc">Ascending (A-Z, 1-9)</option>
+            <option value="desc">Descending (Z-A, 9-1)</option>
+        </select>
+    </div>
+    
+    <button onclick="applyKamletTaftSort()" class="apply-button">Apply Kamlet-Taft Sort</button>
+    <button onclick="resetKamletTaftSort()" class="reset-button">Reset KT Sort</button>
+</div>
         </div>
 
         <p id="risultati-count"></p>
