@@ -37,49 +37,66 @@ function getQueryString() {
 }
 
 // Funzione di ordinamento multi-livello AGGIORNATA
+// Sostituisci interamente la tua funzione multiSort con questa versione
 function multiSort(data) {
     if (sortCriteria.length === 0) {
         return data;
     }
 
     return data.sort((a, b) => {
-        for (const criterion of sortCriteria) {
+        for (let i = 0; i < sortCriteria.length; i++) {
+            const criterion = sortCriteria[i];
             const field = criterion.field;
             const dir = criterion.direction === 'asc' ? 1 : -1;
+            
+            // È l'ultimo criterio della lista?
+            const isLastCriterion = (i === sortCriteria.length - 1);
 
             // 1. GESTIONE CAMPI NUMERICI
             if (['boiling_point', 'density', 'dielectric_constant', 'alpha', 'beta', 'pistar'].includes(field)) {
                 
-                // Funzione helper per controllare se il valore è nullo/vuoto
-                const isBlank = (val) => val === null || val === undefined || val === '' || val === '-';
-
-                const aBlank = isBlank(a[field]);
-                const bBlank = isBlank(b[field]);
-
-                // Se entrambi sono vuoti, sono uguali per questo criterio
-                if (aBlank && bBlank) continue;
+                // Gestione null/vuoti
+                const valA_raw = a[field];
+                const valB_raw = b[field];
                 
-                // Manda sempre i valori vuoti in fondo (indipendentemente se asc o desc)
-                // Se vuoi che in 'desc' i vuoti stiano in alto, rimuovi il controllo fisso, 
-                // ma di standard i dati mancanti vanno in fondo.
+                const isBlank = (val) => val === null || val === undefined || val === '' || val === '-';
+                const aBlank = isBlank(valA_raw);
+                const bBlank = isBlank(valB_raw);
+
+                if (aBlank && bBlank) continue; 
                 if (aBlank) return 1; 
                 if (bBlank) return -1;
                 
-                // Conversione sicura a numero
-                let valA = parseFloat(a[field]);
-                let valB = parseFloat(b[field]);
+                let valA = parseFloat(valA_raw);
+                let valB = parseFloat(valB_raw);
 
-                // Confronto numerico
-                if (valA < valB) return -1 * dir;
-                if (valA > valB) return 1 * dir;
+                // --- TRUCCO PER IL MULTI-LEVEL SORT ---
+                // Se NON è l'ultimo criterio di ordinamento (es. è Alpha o Beta in una catena di 3),
+                // arrotondiamo il numero per creare dei "pareggi" e permettere al criterio successivo (Pi Star) di attivarsi.
+                // Se invece è l'ultimo criterio, usiamo la precisione massima.
+                
+                if (!isLastCriterion && ['alpha', 'beta', 'pistar'].includes(field)) {
+                    // Arrotonda a 1 cifra decimale per il raggruppamento (es. 0.54 diventa 0.5)
+                    // Puoi cambiare (1) in (0) se vuoi raggruppamenti ancora più ampi
+                    const roundedA = Number(valA.toFixed(1)); 
+                    const roundedB = Number(valB.toFixed(1));
+                    
+                    if (roundedA < roundedB) return -1 * dir;
+                    if (roundedA > roundedB) return 1 * dir;
+                    // Se sono uguali (es. 0.51 e 0.54 arrotondati a 0.5), il ciclo continua al prossimo criterio!
+                } else {
+                    // Confronto preciso (usato per l'ultimo criterio o per filtri singoli)
+                    if (valA < valB) return -1 * dir;
+                    if (valA > valB) return 1 * dir;
+                }
 
             } else { 
-                // 2. GESTIONE CAMPI STRINGA
-                let valA = String(a[field] || '').toLowerCase();
-                let valB = String(b[field] || '').toLowerCase();
+                // 2. GESTIONE CAMPI STRINGA (uguale a prima)
+                let sA = String(a[field] || '').toLowerCase();
+                let sB = String(b[field] || '').toLowerCase();
                 
-                if (valA < valB) return -1 * dir;
-                if (valA > valB) return 1 * dir;
+                if (sA < sB) return -1 * dir;
+                if (sA > sB) return 1 * dir;
             }
         }
         return 0;
