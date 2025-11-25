@@ -1,8 +1,9 @@
-// public/app.js (o app_finale.js)
+// public/app.js (o app_finale.js) - Versione Ottimizzata
 
 // !!! IMPORTANTE: DEVI USARE IL TUO URL DI DEPLOY !!!
 const API_URL = 'https://api-worker.davide-frigatti.workers.dev/solvents'; 
 const TOTAL_COLUMNS = 14; 
+
 // Array per memorizzare i criteri di ordinamento
 let sortCriteria = []; 
 
@@ -11,60 +12,99 @@ const KT_SLIDER_PARAMS = ['alpha', 'beta', 'pistar'];
 
 document.addEventListener('DOMContentLoaded', () => {
     caricaSolventi();
-    // Aggiunge i listener per l'ordinamento
+    
+    // --- Listener per Eventi Globali ---
     document.getElementById('risultati-tabella').addEventListener('click', handleSort);
-    // Inizializza gli slider Kamlet-Taft
     setupKTSliders();
 
-    // Listener per i filtri standard non-slider per l'aggiornamento istantaneo
+    // Listener per i filtri standard non-slider (ricerca istantanea o on change)
     document.getElementById('search').addEventListener('input', caricaSolventi);
     document.getElementById('water_miscibility').addEventListener('change', caricaSolventi);
     document.getElementById('categoria').addEventListener('change', caricaSolventi);
-    document.getElementById('min_bp').addEventListener('input', caricaSolventi);
-    document.getElementById('max_bp').addEventListener('input', caricaSolventi);
     
+    // Listener on blur/change per i campi min/max BP
+    document.getElementById('min_bp').addEventListener('blur', caricaSolventi);
+    document.getElementById('max_bp').addEventListener('blur', caricaSolventi);
+    document.getElementById('min_bp').addEventListener('change', caricaSolventi);
+    document.getElementById('max_bp').addEventListener('change', caricaSolventi);
+
+    // Listener per il pulsante 'Mostra Filtri KT' (necessario l'ID nel tuo HTML)
+    const toggleButton = document.getElementById('toggle-kt-filters');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleKTSliders);
+    }
+    
+    // Listener per il pulsante 'Reset Filtri' (necessario l'ID nel tuo HTML)
+    const resetButton = document.getElementById('reset-filters');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetFiltri);
+    }
 });
 
-// --- NUOVE FUNZIONI PER I FILTRI SLIDER ---
+// -----------------------------------------------------------------
+// FUNZIONI PER I FILTRI SLIDER (KAMLET-TAFT) 🔬
+// -----------------------------------------------------------------
 
-// Funzione per mostrare/nascondere il blocco Kamlet-Taft
+/**
+ * Funzione per mostrare/nascondere il blocco Kamlet-Taft.
+ * Richiede un elemento con ID 'kt-slider-filters'.
+ */
 function toggleKTSliders() {
     const ktFiltersDiv = document.getElementById('kt-slider-filters');
-    ktFiltersDiv.classList.toggle('hidden');
+    if (ktFiltersDiv) {
+        ktFiltersDiv.classList.toggle('hidden');
+    }
 }
 
 
-// Funzione helper per mappare il valore dello slider (da int N a float)
+/**
+ * Funzione helper per mappare il valore intero dello slider a float (due decimali).
+ * @param {string | number} sliderValue - Valore dello slider (es. 120 per 1.20).
+ * @returns {string} Il valore float formattato a due decimali (es. "1.20").
+ */
 function mapSliderValue(sliderValue) {
     // La scala è stata impostata moltiplicando per 100 per gestire i decimali
     return (parseFloat(sliderValue) / 100).toFixed(2);
 }
 
-// Funzione AGGIORNATA per gestire il doppio manico e il riempimento
+/**
+ * Gestisce l'aggiornamento visivo (riempimento e display) per gli slider a doppio manico.
+ * Include la logica per impedire l'inversione di min e max.
+ * @param {string} param - Il nome del parametro KT ('alpha', 'beta', 'pistar').
+ */
 function updateSliderDisplayAndFilter(param) {
     const group = document.querySelector(`.kt-slider-group[data-param="${param}"]`);
     const minSlider = group.querySelector('.kt-min-slider');
     const maxSlider = group.querySelector('.kt-max-slider');
-    const fill = group.querySelector('.range-fill'); // Seleziona il nuovo elemento fill
+    const fill = group.querySelector('.range-fill');
     const display = document.getElementById(`${param}-range-display`);
     
     if (minSlider && maxSlider) {
-        // Logica per forzare min <= max (Simulazione slider a doppio manico)
         let minValue = parseInt(minSlider.value);
         let maxValue = parseInt(maxSlider.value);
-
+        
+        // --- LOGICA DI SICUREZZA ANTI-INVERSIONE (Migliorata) ---
         if (minValue > maxValue) {
-             const focusedSlider = document.activeElement;
-             if (focusedSlider === minSlider) {
-                 maxSlider.value = minValue;
-                 maxValue = minValue;
-             } else {
-                 minSlider.value = maxValue;
-                 minValue = maxValue;
-             }
+            // Determina quale slider è attualmente in focus (o è stato modificato per ultimo)
+            const focusedSlider = document.activeElement; 
+            
+            if (focusedSlider === minSlider) {
+                maxSlider.value = minValue;
+                maxValue = minValue;
+            } else if (focusedSlider === maxSlider) {
+                minSlider.value = maxValue;
+                minValue = maxValue;
+            } else {
+                 // Se non è in focus (es. caricamento iniziale o altro evento non di trascinamento), 
+                 // imposta semplicemente i valori per non incrociarsi
+                 if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
+                    minSlider.value = maxSlider.value;
+                    minValue = maxValue;
+                 }
+            }
         }
         
-        // --- LOGICA DI RIEMPIMENTO (Nuova) ---
+        // --- LOGICA DI RIEMPIMENTO ---
         const minAttr = parseInt(minSlider.getAttribute('min'));
         const maxAttr = parseInt(minSlider.getAttribute('max'));
         const range = maxAttr - minAttr;
@@ -87,19 +127,22 @@ function updateSliderDisplayAndFilter(param) {
     }
 }
 
-// Inizializzazione dei listener per gli slider
+/**
+ * Inizializza i listener per tutti gli slider Kamlet-Taft.
+ */
 function setupKTSliders() {
     KT_SLIDER_PARAMS.forEach(param => {
         const group = document.querySelector(`.kt-slider-group[data-param="${param}"]`);
         
         if (group) {
             group.querySelectorAll('input[type="range"]').forEach(slider => {
-                // 'input' per aggiornare il display in tempo reale (mentre si trascina) e il riempimento
+                // 'input' per aggiornare il display in tempo reale (mentre si trascina)
                 slider.addEventListener('input', () => {
                     updateSliderDisplayAndFilter(param);
                 });
                 
-                // 'mouseup' o 'touchend' per chiamare la ricerca quando l'utente finisce di trascinare
+                // 'mouseup' o 'touchend' per chiamare la ricerca solo quando l'utente finisce di trascinare
+                // Il 'change' è più universale ma meno preciso per i range
                 slider.addEventListener('mouseup', caricaSolventi);
                 slider.addEventListener('touchend', caricaSolventi);
             });
@@ -110,7 +153,14 @@ function setupKTSliders() {
     });
 }
 
+// -----------------------------------------------------------------
+// FUNZIONI DI FILTRAGGIO E API CALL 🌐
+// -----------------------------------------------------------------
 
+/**
+ * Raccoglie i valori di tutti i filtri (standard e Kamlet-Taft) e li converte in una stringa di query URL.
+ * @returns {string} La stringa di query URL (es. "search=acetone&min_alpha=0.20").
+ */
 function getQueryString() {
     // Raccoglie i valori dei filtri standard
     const search = document.getElementById('search').value;
@@ -131,25 +181,116 @@ function getQueryString() {
     if (max_bp) params.append('max_bp', max_bp);
 
     // --- FILTRI SLIDER KT ---
-    KT_SLIDER_PARAMS.forEach(param => {
-        const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
-        const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
+    const ktFiltersDiv = document.getElementById('kt-slider-filters');
+    // Filtra solo se il blocco KT è visibile (non hidden), ma per coerenza è meglio inviare sempre il range completo
+    // Se il filtro è visibile (non nascosto), raccogli i valori
+    if (ktFiltersDiv && !ktFiltersDiv.classList.contains('hidden')) { 
+        KT_SLIDER_PARAMS.forEach(param => {
+            const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
+            const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
 
-        if (minSlider && maxSlider) {
-            // mapSliderValue usa il valore corrente del DOM
-            const minVal = mapSliderValue(minSlider.value);
-            const maxVal = mapSliderValue(maxSlider.value);
-            
-            // Invia il range all'API
-            params.append(`min_${param}`, minVal);
-            params.append(`max_${param}`, maxVal);
-        }
-    });
+            if (minSlider && maxSlider) {
+                // mapSliderValue usa il valore corrente del DOM
+                const minVal = mapSliderValue(minSlider.value);
+                const maxVal = mapSliderValue(maxSlider.value);
+                
+                // Invia il range all'API
+                params.append(`min_${param}`, minVal);
+                params.append(`max_${param}`, maxVal);
+            }
+        });
+    }
+    // NOTA: Se il blocco è nascosto, i filtri KT non vengono inviati. 
+    // Assicurati che l'API abbia un comportamento di default in questo caso (range completo).
 
     return params.toString(); 
 }
 
-// Funzione di ordinamento multi-livello (MANTENUTA)
+/**
+ * Funzione principale per caricare e visualizzare i solventi.
+ */
+async function caricaSolventi() {
+    const query = getQueryString();
+    const endpoint = query ? `${API_URL}?${query}` : API_URL; 
+    
+    const tbody = document.getElementById('tabella-corpo');
+    const countElement = document.getElementById('risultati-count');
+    
+    // Stato di caricamento
+    tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="text-align: center;">Loading...</td></tr>`;
+    countElement.textContent = 'Searching...';
+
+    try {
+        const response = await fetch(endpoint);
+        
+        if (!response.ok) {
+            throw new Error(`API unreachable or HTTP error ${response.status}`);
+        }
+        
+        const data = await response.json(); 
+
+        tbody.innerHTML = '';
+        
+        if (data.error) {
+            tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: #FF6B6B;">API Error: ${data.details || data.error}</td></tr>`;
+            countElement.textContent = 'API Error';
+            return;
+        }
+        
+        // 2. Applicazione dell'ordinamento multi-livello
+        const sortedData = multiSort(data);
+
+        countElement.textContent = `Found ${sortedData.length} solvents.`;
+
+        // 3. Render della tabella
+        if (sortedData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="text-align: center;">No solvents found matching the selected filters.</td></tr>`;
+        } else {
+            const fragment = document.createDocumentFragment();
+            
+            sortedData.forEach(solvente => {
+                const row = document.createElement('tr');
+                
+                const formatNumber = (value, decimals) => {
+                    const num = parseFloat(value);
+                    return !isNaN(num) ? num.toFixed(decimals) : '-';
+                };
+
+                // Inserimento dei dati nelle 14 colonne (ottimizzato con un array per chiarezza)
+                const fields = [
+                    'iupac_name', 'cas', 'boiling_point', 'density', 'dielectric_constant', 
+                    'water_miscibility', 'alpha', 'beta', 'pistar', 'h_phrases', 
+                    'oxidation_resistance', 'reduction_resistance', 'acid_resistance', 'basic_resistance'
+                ];
+                
+                fields.forEach(field => {
+                    const cell = document.createElement('td');
+                    if (['boiling_point', 'dielectric_constant', 'density'].includes(field)) {
+                        cell.textContent = formatNumber(solvente[field], field === 'density' ? 3 : 1);
+                    } else if (['alpha', 'beta', 'pistar'].includes(field)) {
+                        cell.textContent = formatNumber(solvente[field], 2);
+                    } else {
+                        cell.textContent = solvente[field] || '-';
+                    }
+                    row.appendChild(cell);
+                });
+                
+                fragment.appendChild(row);
+            });
+            tbody.appendChild(fragment);
+        }
+    } catch (error) {
+        console.error('Error loading data from Worker:', error);
+        tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: #FF6B6B;">Error loading data: ${error.message || 'API unreachable.'}</td></tr>`;
+        countElement.textContent = 'Network Error';
+    }
+}
+
+// -----------------------------------------------------------------
+// FUNZIONI DI ORDINAMENTO (SORT) ⬇️⬆️
+// -----------------------------------------------------------------
+
+// Funzione di ordinamento multi-livello (MANTENUTA - CORRETTA)
 function multiSort(data) {
     if (sortCriteria.length === 0) {
         return data;
@@ -161,19 +302,18 @@ function multiSort(data) {
             const field = criterion.field;
             const dir = criterion.direction === 'asc' ? 1 : -1;
             
-            const isLastCriterion = (i === sortCriteria.length - 1);
-
+            // Definizioni per la gestione dei valori mancanti/nulli
+            const isBlank = (val) => val === null || val === undefined || val === '' || val === '-';
+            
             // 1. GESTIONE CAMPI NUMERICI
             if (['boiling_point', 'density', 'dielectric_constant', 'alpha', 'beta', 'pistar'].includes(field)) {
                 
-                // Gestione null/vuoti
                 const valA_raw = a[field];
                 const valB_raw = b[field];
-                
-                const isBlank = (val) => val === null || val === undefined || val === '' || val === '-';
                 const aBlank = isBlank(valA_raw);
                 const bBlank = isBlank(valB_raw);
 
+                // Regola: i valori mancanti vanno sempre in fondo
                 if (aBlank && bBlank) continue; 
                 if (aBlank) return 1; 
                 if (bBlank) return -1;
@@ -181,18 +321,9 @@ function multiSort(data) {
                 let valA = parseFloat(valA_raw);
                 let valB = parseFloat(valB_raw);
 
-                // Trucco per il multi-level sort (Arrotondamento a 0 cifre)
-                if (!isLastCriterion && ['alpha', 'beta', 'pistar'].includes(field)) {
-                    const roundedA = Number(valA.toFixed(0)); 
-                    const roundedB = Number(valB.toFixed(0));
-                    
-                    if (roundedA < roundedB) return -1 * dir;
-                    if (roundedA > roundedB) return 1 * dir;
-                } else {
-                    // Confronto preciso
-                    if (valA < valB) return -1 * dir;
-                    if (valA > valB) return 1 * dir;
-                }
+                // Confronto preciso
+                if (valA < valB) return -1 * dir;
+                if (valA > valB) return 1 * dir;
 
             } else { 
                 // 2. GESTIONE CAMPI STRINGA
@@ -203,10 +334,11 @@ function multiSort(data) {
                 if (sA > sB) return 1 * dir;
             }
         }
-        return 0;
+        return 0; // I valori sono uguali (o tutti i criteri sono stati esauriti)
     });
 }
 
+// Funzione per gestire il click sull'intestazione della tabella (Sort)
 function handleSort(event) {
     const target = event.target;
     if (target.tagName !== 'TH' || !target.hasAttribute('data-sort')) {
@@ -219,16 +351,20 @@ function handleSort(event) {
     // Logica di gestione del sort (Shift+Click per concatenare, Click singolo per resettare)
     if (index !== -1) {
         if (event.shiftKey) {
+            // Se già presente, cambia la direzione (ASC -> DESC o viceversa)
             sortCriteria[index].direction = sortCriteria[index].direction === 'asc' ? 'desc' : 'asc';
         } else {
+            // Click singolo: resetta e ordina solo per questo campo, mantenendo la direzione
             const newDirection = sortCriteria[index].direction === 'asc' ? 'desc' : 'asc';
             sortCriteria = [{field, direction: newDirection}];
         }
     } 
     else {
         if (!event.shiftKey) {
+            // Click singolo su un nuovo campo: resetta i precedenti
             sortCriteria = [];
         }
+        // Aggiunge il nuovo campo in direzione ASC
         sortCriteria.push({field, direction: 'asc'}); 
     }
 
@@ -236,89 +372,27 @@ function handleSort(event) {
     caricaSolventi();
 }
 
-async function caricaSolventi() {
-    const query = getQueryString();
-    const endpoint = query ? `${API_URL}?${query}` : API_URL; 
-    
-    const tbody = document.getElementById('tabella-corpo');
-    const countElement = document.getElementById('risultati-count');
-    
-    tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}">Loading...</td></tr>`;
-    countElement.textContent = 'Searching...';
-
-    try {
-        const response = await fetch(endpoint);
-        
-        if (!response.ok) {
-             throw new Error(`API unreachable or HTTP error ${response.status}`);
-        }
-        
-        const data = await response.json(); 
-
-        tbody.innerHTML = '';
-        
-        if (data.error) {
-             tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: red;">API Error: ${data.details || data.error}</td></tr>`;
-             countElement.textContent = 'API Error';
-             return;
-        }
-        
-        // 2. Applicazione dell'ordinamento multi-livello
-        const sortedData = multiSort(data);
-
-        countElement.textContent = `Found ${sortedData.length} solvents.`;
-
-        if (sortedData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}">No solvents found matching the selected filters.</td></tr>`;
-        } else {
-            sortedData.forEach(solvente => {
-                const row = tbody.insertRow();
-                
-                const formatNumber = (value, decimals) => {
-                    const num = parseFloat(value);
-                    return !isNaN(num) ? num.toFixed(decimals) : '-';
-                };
-
-                // Inserimento dei dati nelle 14 colonne
-                row.insertCell().textContent = solvente.iupac_name || '-';
-                row.insertCell().textContent = solvente.cas || '-';
-                row.insertCell().textContent = formatNumber(solvente.boiling_point, 1);
-                row.insertCell().textContent = formatNumber(solvente.density, 3);
-                row.insertCell().textContent = formatNumber(solvente.dielectric_constant, 1);
-                row.insertCell().textContent = solvente.water_miscibility || '-'; 
-                row.insertCell().textContent = formatNumber(solvente.alpha, 2); 
-                row.insertCell().textContent = formatNumber(solvente.beta, 2);
-                row.insertCell().textContent = formatNumber(solvente.pistar, 2);
-                row.insertCell().textContent = solvente.h_phrases || '-';
-                row.insertCell().textContent = solvente.oxidation_resistance || '-';
-                row.insertCell().textContent = solvente.reduction_resistance || '-';
-                row.insertCell().textContent = solvente.acid_resistance || '-';
-                row.insertCell().textContent = solvente.basic_resistance || '-';
-            });
-        }
-    } catch (error) {
-        console.error('Error loading data from Worker:', error);
-        tbody.innerHTML = `<tr><td colspan="${TOTAL_COLUMNS}" style="color: red;">Error loading data: ${error.message || 'API unreachable.'}</td></tr>`;
-        countElement.textContent = 'Network Error';
-    }
-}
-
 // Funzione helper per aggiornare gli indicatori visivi di ordinamento
 function updateSortVisuals() {
+    // Rimuove tutte le classi di ordinamento e i numeri
     document.querySelectorAll('#risultati-tabella th').forEach(th => {
         th.classList.remove('sorted-asc', 'sorted-desc');
         th.removeAttribute('data-sort-order'); 
     });
 
+    // Applica le classi per l'ordinamento multi-livello
     sortCriteria.forEach((c, i) => {
         const th = document.querySelector(`#risultati-tabella th[data-sort="${c.field}"]`);
         if (th) { 
             th.classList.add(`sorted-${c.direction}`);
-            th.setAttribute('data-sort-order', i + 1); 
+            th.setAttribute('data-sort-order', i + 1); // Indica l'ordine di priorità
         }
     });
 }
 
+/**
+ * Resetta tutti i filtri (standard, BP e KT slider) e ricarica i dati.
+ */
 function resetFiltri() {
     // Reset standard input fields
     document.getElementById('search').value = '';

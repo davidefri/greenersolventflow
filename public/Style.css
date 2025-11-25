@@ -1,4 +1,4 @@
-/* public/style.css - Versione Dark Mode, Glassmorphism & Elegante (Finale) */
+/* public/style.css - Versione Dark Mode, Glassmorphism & Elegante (Finale Ottimizzata) */
 
 /* ---------------------------------- */
 /* GLOBAL STYLES & TYPOGRAPHY 🌎 */
@@ -22,13 +22,14 @@ body {
     padding: 30px;
     color: var(--color-text-light);
     min-height: 100vh;
+    /* Miglioramento della leggibilità del testo */
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 1300px; 
-    margin: auto;
+    margin: 30px auto; /* Aggiunto margine superiore/inferiore per separare dallo sfondo */
     padding: 40px;
     border-radius: 18px;
     
@@ -80,7 +81,7 @@ h1 {
     font-weight: 400;
 }
 
-#filtri input, #filtri select {
+#filtri input:not([type="range"]), #filtri select { /* Escludo i range input per i filtri KT */
     padding: 10px 14px;
     border-radius: 6px;
     background-color: var(--color-mid-bg);
@@ -91,7 +92,7 @@ h1 {
     font-size: 1rem;
 }
 
-#filtri input:focus, #filtri select:focus {
+#filtri input:not([type="range"]):focus, #filtri select:focus {
     border-color: var(--color-neon-blue); 
     box-shadow: 0 0 5px var(--color-neon-blue);
     outline: none;
@@ -194,12 +195,15 @@ h1 {
 #kt-slider-filters h3 {
     color: var(--color-neon-blue);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    padding-bottom: 10px; /* Aggiunto un po' di spazio */
+    margin-bottom: 15px;
     text-shadow: 0 0 3px rgba(0, 174, 239, 0.3);
 }
 
 .range-display {
     color: var(--color-neon-blue); 
     text-shadow: 0 0 3px rgba(0, 174, 239, 0.3);
+    font-weight: 500; /* Reso più visibile */
 }
 
 .kt-slider-group {
@@ -249,7 +253,7 @@ h1 {
     position: absolute;
     top: 30px; 
     z-index: 3; 
-    pointer-events: none;
+    pointer-events: none; /* Fondamentale: permette di cliccare il track sottostante se il thumb è lontano */
 }
 
 /* Manici dello Slider (Thumb) - Webkit (Chrome, Safari) */
@@ -265,10 +269,9 @@ h1 {
     border: 3px solid var(--color-dark-bg); 
     box-shadow: var(--color-neon-shadow);
     transition: all 0.2s ease;
-    pointer-events: all; /* Important for clicking the overlay slider */
+    pointer-events: all; /* Importante per poter afferrare lo slider! */
     
-    z-index: 5; 
-    position: relative;
+    /* Regolazione per allineamento verticale sul track di 6px */
     margin-top: -5px; 
 }
 
@@ -283,10 +286,9 @@ h1 {
     border: 3px solid var(--color-dark-bg); 
     box-shadow: var(--color-neon-shadow);
     transition: all 0.2s ease;
-    /* Firefox does not support pointer-events on pseudo-elements, 
-       but typically handles stacking better, requiring less hackery. */
 }
 
+/* Hover effect sui manici */
 .kt-min-slider::-webkit-slider-thumb:hover, 
 .kt-max-slider::-webkit-slider-thumb:hover,
 .kt-min-slider::-moz-range-thumb:hover,

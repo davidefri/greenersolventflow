@@ -3,49 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greener Solvent Flow</title>
+    <title>Greener Solvent Flow 🧪</title>
     <link rel="stylesheet" href="style.css"> 
-    <style>
-        /* CSS essenziale per il funzionamento, ma dovrebbe essere in style.css per lo stile finale */
-        .hidden { display: none; }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>Greener Solvent Flow</h1>
         
         <div id="filtri">
-            <input type="text" id="search" placeholder="Search by Name or CAS..." oninput="caricaSolventi()">
             
-            <select id="water_miscibility" onchange="caricaSolventi()">
+            <input type="text" id="search" placeholder="Search by Name or CAS...">
+            
+            <select id="water_miscibility">
                 <option value="">-- Water Miscibility --</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
                 <option value="Slightly">Slightly</option>
             </select>
             
-            <select id="categoria" onchange="caricaSolventi()">
+            <select id="categoria">
                 <option value="">-- Polarity Class --</option>
                 <option value="Protic">Protic</option>
                 <option value="Aprotico">Aprotic</option>
             </select>
             
             <label>Boiling Point (°C):</label>
-            <input type="number" id="min_bp" placeholder="Min" oninput="caricaSolventi()">
-            <input type="number" id="max_bp" placeholder="Max" oninput="caricaSolventi()">
+            <input type="number" id="min_bp" placeholder="Min">
+            <input type="number" id="max_bp" placeholder="Max">
             
-            
-            <button onclick="toggleKTSliders()">Kamlet-Taft Parameter Selector</button>
-            <button onclick="resetFiltri()">Reset All Filters</button>
-            <button onclick="caricaSolventi()">Apply Filters</button>
+            <button id="toggle-kt-filters">Kamlet-Taft Parameter Selector</button>
+            <button id="reset-filters">Reset All Filters</button>
+            <button id="apply-filters" onclick="caricaSolventi()">Apply Filters</button>
 
 
             <div id="kt-slider-filters" class="hidden">
-                <h3>Kamlet-Taft Range Filter</h3>
-                <p class="description">Filter by solvent properties. Move the sliders to set the range.</p>
+                <h3>Kamlet-Taft Range Filter 🔬</h3>
+                <p class="description">Filter by solvent properties: Acidity ($\alpha$), Basicity ($\beta$), and Polarity ($\pi^*$).</p>
 
                 <div class="kt-slider-group" data-param="alpha">
-                    <label>Alpha (Acidity) <span class="range-display" id="alpha-range-display">0.00 - 1.20</span></label>
+                    <label>Alpha ($\alpha$) Acidity: <span class="range-display" id="alpha-range-display">0.00 - 1.20</span></label>
                     <div class="range-track"></div> 
                     <div class="range-fill"></div>
                     <input type="range" min="0" max="120" value="0" class="kt-min-slider">
@@ -54,7 +50,7 @@
                 </div>
 
                 <div class="kt-slider-group" data-param="beta">
-                    <label>Beta (Basicity) <span class="range-display" id="beta-range-display">0.00 - 1.00</span></label>
+                    <label>Beta ($\beta$) Basicity: <span class="range-display" id="beta-range-display">0.00 - 1.00</span></label>
                     <div class="range-track"></div>
                     <div class="range-fill"></div>
                     <input type="range" min="0" max="100" value="0" class="kt-min-slider">
@@ -63,7 +59,7 @@
                 </div>
 
                 <div class="kt-slider-group" data-param="pistar">
-                    <label>Pi Star (Polarity) <span class="range-display" id="pistar-range-display">-0.20 - 1.50</span></label>
+                    <label>Pi Star ($\pi^*$) Polarity: <span class="range-display" id="pistar-range-display">-0.20 - 1.50</span></label>
                     <div class="range-track"></div>
                     <div class="range-fill"></div>
                     <input type="range" min="-20" max="150" value="-20" class="kt-min-slider">
@@ -74,7 +70,7 @@
             </div>
         </div>
 
-        <p id="risultati-count"></p>
+        <p id="risultati-count">Loading...</p>
 
         <table id="risultati-tabella">
             <thead>
@@ -85,9 +81,9 @@
                     <th data-sort="density" class="sortable">Density (g/cm³)</th>
                     <th data-sort="dielectric_constant" class="sortable">Dielectric Constant</th>
                     <th data-sort="water_miscibility" class="sortable">Water Miscibility</th>
-                    <th data-sort="alpha" class="sortable">Alpha (α)</th>
-                    <th data-sort="beta" class="sortable">Beta (β)</th>
-                    <th data-sort="pistar" class="sortable">Pi Star (π*)</th>
+                    <th data-sort="alpha" class="sortable">Alpha ($\alpha$)</th>
+                    <th data-sort="beta" class="sortable">Beta ($\beta$)</th>
+                    <th data-sort="pistar" class="sortable">Pi Star ($\pi^*$)</th>
                     <th>H Phrases</th>
                     <th>Oxidation Resistant</th>
                     <th>Reduction Resistant</th>
@@ -96,7 +92,7 @@
                 </tr>
             </thead>
             <tbody id="tabella-corpo">
-            </tbody>
+                </tbody>
         </table>
     </div>
 
