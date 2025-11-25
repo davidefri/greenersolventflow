@@ -88,12 +88,12 @@ async function caricaSolventi() {
                 
                 // 7. Alpha (α)
                 const alpha = parseFloat(solvente.alpha);
-                row.insertCell().textContent = !isNaN(alpha) ? alpha.toFixed(2) : '-';
-                
+                row.insertCell().textContent = !isNaN(alpha) ? alpha.toFixed(2) : '-'; 
+
                 // 8. Beta (β)
                 const beta = parseFloat(solvente.beta);
                 row.insertCell().textContent = !isNaN(beta) ? beta.toFixed(2) : '-';
-                
+
                 // 9. Pi Star (π*)
                 const piStar = parseFloat(solvente.pistar);
                 row.insertCell().textContent = !isNaN(piStar) ? piStar.toFixed(2) : '-';
