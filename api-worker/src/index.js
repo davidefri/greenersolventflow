@@ -1,10 +1,9 @@
-// AGGIORNA api-worker/src/index.js in questo modo:
-
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
+        // *** CAMBIAMENTO CRITICO QUI: ORIGINE IMPOSTATA SU TUTTI (*) ***
         const corsHeaders = {
-            'Access-Control-Allow-Origin': 'https://greenersolventflow.pages.dev', // Più sicuro che usare '*'
+            'Access-Control-Allow-Origin': '*', // TUTTE LE ORIGINI CONSENTITE PER TEST
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
         };
@@ -20,11 +19,12 @@ export default {
         // 2. Gestione richiesta GET /solvents
         if (url.pathname === '/solvents') {
             try {
+                // Query SQL corretta (SELECT * FROM solventi)
                 const { results } = await env.DB.prepare('SELECT * FROM solventi').all();
 
                 return new Response(JSON.stringify(results), {
                     headers: {
-                        ...corsHeaders, // Includi gli stessi header CORS anche qui
+                        ...corsHeaders,
                         'Content-Type': 'application/json',
                     },
                 });
