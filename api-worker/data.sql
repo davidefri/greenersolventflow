@@ -1,3 +1,21 @@
+DROP TABLE IF EXISTS solventi;
+
+CREATE TABLE solventi (
+    cas TEXT PRIMARY KEY,
+    iupac_name TEXT,
+    boiling_point REAL,
+    density REAL,
+    dielectric_constant REAL,
+    alpha REAL,
+    beta REAL,
+    pistar REAL,
+    water_miscibility TEXT,
+    h_phrases TEXT,
+    oxidation_resistance TEXT,
+    reduction_resistance TEXT,
+    acid_resistance TEXT,
+    basic_resistance TEXT
+);
 INSERT INTO solventi (cas,iupac_name,boiling_point,density,dielectric_constant,alpha,beta,pistar,water_miscibility,h_phrases,oxidation_resistance,reduction_resistance,acid_resistance,basic_resistance) VALUES ('680-31-9','hexamethylphosphoramide (HMPA)',235,1.027,30,0,1.05,0.87,'total','H350 H360FD H302 H312 H332 H315 H319 H335','yes','yes','no','yes');
 INSERT INTO solventi (cas,iupac_name,boiling_point,density,dielectric_constant,alpha,beta,pistar,water_miscibility,h_phrases,oxidation_resistance,reduction_resistance,acid_resistance,basic_resistance) VALUES ('108-67-8','1,3,5-trimethylbenzene',164.7,0.864,2.28,0,0.13,0.41,'no','H226 H315 H319 H332 H335','no','yes','yes','yes');
 INSERT INTO solventi (cas,iupac_name,boiling_point,density,dielectric_constant,alpha,beta,pistar,water_miscibility,h_phrases,oxidation_resistance,reduction_resistance,acid_resistance,basic_resistance) VALUES ('106-42-3','1,4-dimethylbenzene',138.3,0.861,2.27,0,0.12,0.43,'no','H226 H304 H312 H332 H315 H319 H335','no','yes','yes','yes');
