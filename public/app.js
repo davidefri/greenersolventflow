@@ -159,6 +159,10 @@ async function fetchSolvents() {
 
         data.forEach(solvent => {
             const tr = document.createElement('tr');
+            
+            // Helper visuale
+            const show = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
+
             tr.innerHTML = `
                 <td><b>${solvent.iupac_name}</b></td>
                 <td>${solvent.cas}</td>
@@ -169,6 +173,12 @@ async function fetchSolvents() {
                 <td>${show(solvent.alpha)}</td>
                 <td>${show(solvent.beta)}</td>
                 <td>${show(solvent.pistar)}</td>
+                
+                <td style="font-size: 0.85em;">${show(solvent.h_phrases)}</td>
+                <td>${show(solvent.oxidation_resistance)}</td>
+                <td>${show(solvent.reduction_resistance)}</td>
+                <td>${show(solvent.acid_resistance)}</td>
+                <td>${show(solvent.basic_resistance)}</td>
             `;
             tbody.appendChild(tr);
         });
