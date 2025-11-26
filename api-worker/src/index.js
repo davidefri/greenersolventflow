@@ -9,66 +9,87 @@ export default {
             'Access-Control-Allow-Headers': 'Content-Type',
         };
 
-        // 1. Gestione richiesta OPTIONS (pre-flight)
         if (request.method === 'OPTIONS') {
-            return new Response(null, {
-                status: 204,
-                headers: corsHeaders
-            });
+            return new Response(null, { status: 204, headers: corsHeaders });
         }
 
-        // 2. Gestione richiesta GET /solvents
         if (url.pathname === '/solvents') {
             try {
-        // --- INIZIALIZZAZIONE DELLA QUERY SQL CORRETTA ---
-        // Vengono elencate tutte le 14 colonne ESATTE come nel database D1
-        let sql = "SELECT cas, iupac_name, boiling_point, density, dielectric_constant, alpha, beta, pistar, water_miscibility, h_phrases, oxidation_resistance, reduction_resistance, acid_resistance, basic_resistance FROM solventi WHERE 1=1";
-        // --------------------------------------------------
+                // Selezione colonne
+                let sql = "SELECT cas, iupac_name, boiling_point, density, dielectric_constant, alpha, beta, pistar, water_miscibility, h_phrases, oxidation_resistance, reduction_resistance, acid_resistance, basic_resistance FROM solventi WHERE 1=1";
+                
+                const params = [];
+                let paramIndex = 1;
 
-        const params = [];
-        let paramIndex = 1;
-
-                // --- LOGICA DI FILTRO DINAMICO ---
-
-                // Filtro 1: Search (Nome o CAS)
+                // --- FILTRI ESISTENTI ---
                 const search = url.searchParams.get('search');
                 if (search) {
-                    // Cerca il testo nel nome o nel CAS (case-insensitive)
                     sql += ` AND (iupac_name LIKE ?${paramIndex++} OR cas LIKE ?${paramIndex++})`;
-                    // Aggiungi % per la ricerca parziale (wildcard)
                     params.push(`%${search}%`, `%${search}%`); 
                 }
 
-                // Filtro 2: Water Miscibility (Correzione Case-Insensitive)
                 const waterMiscibility = url.searchParams.get('water_miscibility');
                 if (waterMiscibility) {
-                    // Conversione in minuscolo sia del database che del parametro
                     sql += ` AND LOWER(water_miscibility) = LOWER(?${paramIndex++})`;
                     params.push(waterMiscibility);
                 }
 
-                // Filtro 3: Categoria
                 const categoria = url.searchParams.get('categoria');
                 if (categoria) {
                     sql += ` AND categoria = ?${paramIndex++}`;
                     params.push(categoria);
                 }
 
-                // Filtro 4 & 5: Punto di Ebollizione (Range)
                 const minBp = url.searchParams.get('min_bp');
-                if (minBp && !isNaN(parseFloat(minBp))) {
+                if (minBp) {
                     sql += ` AND boiling_point >= ?${paramIndex++}`;
                     params.push(parseFloat(minBp));
                 }
                 const maxBp = url.searchParams.get('max_bp');
-                if (maxBp && !isNaN(parseFloat(maxBp))) {
+                if (maxBp) {
                     sql += ` AND boiling_point <= ?${paramIndex++}`;
                     params.push(parseFloat(maxBp));
                 }
 
-                // --- ESECUZIONE DELLA QUERY ---
+                // --- NUOVI FILTRI KAMLET-TAFT (AGGIUNTI) ---
                 
-                // Prepara lo statement e lega i parametri
+                // Alpha
+                const minAlpha = url.searchParams.get('min_alpha');
+                if (minAlpha) {
+                    sql += ` AND alpha >= ?${paramIndex++}`;
+                    params.push(parseFloat(minAlpha));
+                }
+                const maxAlpha = url.searchParams.get('max_alpha');
+                if (maxAlpha) {
+                    sql += ` AND alpha <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxAlpha));
+                }
+
+                // Beta
+                const minBeta = url.searchParams.get('min_beta');
+                if (minBeta) {
+                    sql += ` AND beta >= ?${paramIndex++}`;
+                    params.push(parseFloat(minBeta));
+                }
+                const maxBeta = url.searchParams.get('max_beta');
+                if (maxBeta) {
+                    sql += ` AND beta <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxBeta));
+                }
+
+                // Pi Star
+                const minPistar = url.searchParams.get('min_pistar');
+                if (minPistar) {
+                    sql += ` AND pistar >= ?${paramIndex++}`;
+                    params.push(parseFloat(minPistar));
+                }
+                const maxPistar = url.searchParams.get('max_pistar');
+                if (maxPistar) {
+                    sql += ` AND pistar <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxPistar));
+                }
+
+                // Esecuzione
                 let statement = env.DB.prepare(sql);
                 if (params.length > 0) {
                     statement = statement.bind(...params);
@@ -77,21 +98,13 @@ export default {
                 const { results } = await statement.all();
 
                 return new Response(JSON.stringify(results), {
-                    headers: {
-                        ...corsHeaders,
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 });
             } catch (e) {
-                // In caso di errore SQL o altro
-                return new Response(JSON.stringify({
-                    error: "Internal Server Error", 
-                    details: e.message || 'Error fetching solvents'
-                }), { status: 500, headers: corsHeaders });
+                return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: corsHeaders });
             }
         }
 
-        // 3. Fallback per altre rotte
-        return new Response('API Endpoint Not Found', { status: 404 });
+        return new Response('Not Found', { status: 404 });
     },
 };

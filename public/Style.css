@@ -1,68 +1,48 @@
-/* public/style.css - Versione Dark Mode, Glassmorphism & Elegante (Finale Ottimizzata) */
+/* public/style.css */
 
-/* ---------------------------------- */
-/* GLOBAL STYLES & TYPOGRAPHY 🌎 */
-/* ---------------------------------- */
 :root {
-    /* Definizioni dei colori */
-    --color-dark-bg: #1A202C; /* Sfondo scuro e profondo (Quasi nero) */
-    --color-mid-bg: #2D3748; /* Sfondo scuro per i blocchi */
-    --color-glass-primary: rgba(45, 55, 72, 0.6); /* Base Glassmorphism (Scura) */
-    --color-neon-blue: #00AEEF; /* Blu brillante per accenti (meno ciano) */
-    --color-neon-shadow: 0 0 8px rgba(0, 174, 239, 0.4); /* Ombra Neon soffusa */
-    --color-text-light: #E2E8F0; /* Testo Bianco/Grigio Chiaro */
-    --color-text-muted: #A0AEC0; /* Testo Secondario */
-    --color-primary-deep: #2563EB; /* Blu primario profondo */
+    --color-dark-bg: #1A202C;
+    --color-mid-bg: #2D3748;
+    --color-glass-primary: rgba(45, 55, 72, 0.6);
+    --color-neon-blue: #00AEEF;
+    --color-neon-shadow: 0 0 8px rgba(0, 174, 239, 0.4);
+    --color-text-light: #E2E8F0;
+    --color-text-muted: #A0AEC0;
+    --color-primary-deep: #2563EB;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    /* Sfondo scuro con gradiente sottile per profondità */
     background: linear-gradient(135deg, var(--color-dark-bg) 0%, #000000 100%);
     padding: 30px;
     color: var(--color-text-light);
     min-height: 100vh;
-    /* Miglioramento della leggibilità del testo */
-    -webkit-font-smoothing: antialiased; 
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 1300px; 
-    margin: 30px auto; /* Aggiunto margine superiore/inferiore per separare dallo sfondo */
+    margin: 30px auto; 
     padding: 40px;
     border-radius: 18px;
-    
-    /* GLASSMORPHISM - Più trasparente e definito */
     background: var(--color-glass-primary);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(15px); 
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1); 
-    
-    transition: all 0.5s ease;
 }
 
-.container:hover {
-    box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.6); 
-}
-
-/* Stile per l'intestazione */
 h1 {
     color: var(--color-neon-blue); 
     text-align: center;
     margin-bottom: 40px;
     font-weight: 200; 
-    letter-spacing: 3px;
-    padding-bottom: 15px; 
     font-size: 2.8rem;
     text-shadow: 0 0 8px rgba(0, 174, 239, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
 }
 
-/* ---------------------------------- */
-/* FILTER SECTION (FILTRI) ⚙️ */
-/* ---------------------------------- */
+/* FILTRI SECTION */
 #filtri {
     display: flex;
     flex-wrap: wrap;
@@ -71,34 +51,19 @@ h1 {
     margin-bottom: 30px;
     padding: 20px;
     border-radius: 12px;
-    
     background: var(--color-mid-bg); 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-#filtri label {
-    color: var(--color-text-light);
-    font-weight: 400;
-}
-
-#filtri input:not([type="range"]), #filtri select { /* Escludo i range input per i filtri KT */
+#filtri input:not([type="range"]), #filtri select {
     padding: 10px 14px;
     border-radius: 6px;
     background-color: var(--color-mid-bg);
     color: var(--color-text-light);
     border: 1px solid var(--color-text-muted);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     min-width: 150px; 
-    font-size: 1rem;
 }
 
-#filtri input:not([type="range"]):focus, #filtri select:focus {
-    border-color: var(--color-neon-blue); 
-    box-shadow: 0 0 5px var(--color-neon-blue);
-    outline: none;
-}
-
-/* Stile Pulsanti Elegante Neon */
 #filtri button {
     padding: 10px 20px; 
     border-radius: 8px; 
@@ -109,7 +74,6 @@ h1 {
     font-weight: 500;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
     box-shadow: var(--color-neon-shadow);
 }
 
@@ -117,196 +81,119 @@ h1 {
     background-color: var(--color-neon-blue);
     color: var(--color-dark-bg); 
     box-shadow: 0 0 15px var(--color-neon-blue); 
-    transform: translateY(-1px);
 }
 
-/* ---------------------------------- */
-/* TABLE STYLES (TABELLA) 📊 */
-/* ---------------------------------- */
-#risultati-tabella {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-    border-radius: 12px;
-    overflow: hidden; 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    background: var(--color-glass-primary);
-}
-
-#risultati-tabella th, #risultati-tabella td {
-    border: none; 
-    padding: 15px 15px; 
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-    color: var(--color-text-light);
-}
-
-#risultati-tabella th {
-    background-color: var(--color-mid-bg); 
-    color: var(--color-neon-blue);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.8em; 
-    letter-spacing: 1.5px; 
-    border-bottom: 2px solid var(--color-neon-blue); 
-}
-
-#risultati-tabella tbody tr:hover {
-    background-color: rgba(0, 174, 239, 0.1); 
-    cursor: default; 
-}
-
-#risultati-tabella tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.15); 
-}
-
-/* Icona e Contatore Neon (Mantenuti) */
-#risultati-tabella th.sorted-asc::after,
-#risultati-tabella th.sorted-desc::after {
-    color: var(--color-neon-blue); 
-    text-shadow: 0 0 5px var(--color-neon-blue); 
-}
-
-#risultati-count {
-    color: var(--color-neon-blue); 
-    text-shadow: 0 0 5px rgba(0, 174, 239, 0.5);
-}
-
-/* Ordine di ordinamento (Mantenuto) */
-#risultati-tabella th[data-sort-order]::before {
-    background-color: var(--color-neon-blue); 
-    color: var(--color-dark-bg);
-    box-shadow: 0 0 5px var(--color-neon-blue); 
-}
-
-/* ---------------------------------------------------- */
-/* NUOVI STILI PER I FILTRI SLIDER KAMLET-TAFT (KT) 🔬 */
-/* ---------------------------------------------------- */
-
+/* KAMLET-TAFT SLIDER STYLES (FIXED ALIGNMENT) */
 #kt-slider-filters {
     margin-top: 15px;
     padding: 20px; 
     border-radius: 12px;
     background: rgba(45, 55, 72, 0.4); 
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-#kt-slider-filters h3 {
-    color: var(--color-neon-blue);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-    padding-bottom: 10px; /* Aggiunto un po' di spazio */
-    margin-bottom: 15px;
-    text-shadow: 0 0 3px rgba(0, 174, 239, 0.3);
-}
-
-.range-display {
-    color: var(--color-neon-blue); 
-    text-shadow: 0 0 3px rgba(0, 174, 239, 0.3);
-    font-weight: 500; /* Reso più visibile */
+    width: 100%;
 }
 
 .kt-slider-group {
     position: relative; 
-    padding: 10px 0 35px 0; 
+    padding: 10px 0 40px 0; /* Aumentato padding bottom per le label */
     margin-bottom: 25px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.15); 
+    /* Il contenitore deve avere altezza per ospitare gli slider */
+    min-height: 60px;
 }
 
-/* ------------------------------------------------------------------- */
-/* FIX SLIDER: Pista, Riempimento e Manici (Cross-Browser) */
-/* ------------------------------------------------------------------- */
+.range-display {
+    color: var(--color-neon-blue); 
+    float: right;
+}
+
+/* FIX ALLINEAMENTO BARRE E SLIDER */
+.range-track, .range-fill, .kt-min-slider, .kt-max-slider {
+    position: absolute;
+    top: 50%; /* Centrati verticalmente nel container */
+    transform: translateY(-50%); /* Correzione esatta centro */
+}
 
 .range-track {
-    /* Traccia di base (fondo grigio/scuro) */
-    position: absolute;
     height: 6px; 
     background: var(--color-mid-bg); 
     width: 100%;
     border-radius: 3px;
-    top: 30px; 
     z-index: 1; 
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .range-fill {
-    /* Traccia riempita (blu neon) - Gestita via JS */
-    position: absolute;
     height: 6px; 
     background: var(--color-neon-blue);
     border-radius: 3px;
-    top: 30px;
     z-index: 2; 
-    transition: all 0.2s ease;
+    pointer-events: none;
 }
-
 
 .kt-min-slider, .kt-max-slider {
     width: 100%;
-    /* Reset default appearance */
     -webkit-appearance: none;
-    -moz-appearance: none; 
-    appearance: none; 
-    height: 6px; 
+    appearance: none;
     background: transparent;
     outline: none;
-    position: absolute;
-    top: 30px; 
     z-index: 3; 
-    pointer-events: none; /* Fondamentale: permette di cliccare il track sottostante se il thumb è lontano */
+    pointer-events: none; /* Permette click pass-through */
+    margin: 0; /* Rimuove margini default */
 }
 
-/* Manici dello Slider (Thumb) - Webkit (Chrome, Safari) */
+/* THUMB STYLES */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
-    width: 16px; 
-    height: 16px;
+    pointer-events: all; /* Riabilita il click sul pallino */
+    width: 18px; 
+    height: 18px;
     border-radius: 50%;
     background: var(--color-neon-blue);
     cursor: grab; 
     border: 3px solid var(--color-dark-bg); 
-    box-shadow: var(--color-neon-shadow);
-    transition: all 0.2s ease;
-    pointer-events: all; /* Importante per poter afferrare lo slider! */
-    
-    /* Regolazione per allineamento verticale sul track di 6px */
-    margin-top: -5px; 
+    box-shadow: 0 0 5px var(--color-neon-blue);
+    margin-top: 0; /* Non necessario con il fix transform */
+    position: relative;
+    z-index: 4;
 }
 
-/* Manici dello Slider (Thumb) - Firefox */
 .kt-min-slider::-moz-range-thumb,
 .kt-max-slider::-moz-range-thumb {
-    width: 16px; 
-    height: 16px;
+    pointer-events: all;
+    width: 18px; 
+    height: 18px;
     border-radius: 50%;
     background: var(--color-neon-blue);
     cursor: grab; 
     border: 3px solid var(--color-dark-bg); 
-    box-shadow: var(--color-neon-shadow);
-    transition: all 0.2s ease;
+    position: relative;
+    z-index: 4;
 }
-
-/* Hover effect sui manici */
-.kt-min-slider::-webkit-slider-thumb:hover, 
-.kt-max-slider::-webkit-slider-thumb:hover,
-.kt-min-slider::-moz-range-thumb:hover,
-.kt-max-slider::-moz-range-thumb:hover {
-    background: var(--color-primary-deep);
-    box-shadow: 0 0 15px var(--color-neon-blue);
-    cursor: grabbing;
-}
-
 
 .kt-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85em;
+    font-size: 0.8em;
     color: var(--color-text-muted);
-    margin-top: 25px; 
+    margin-top: 35px; /* Spostato sotto la barra */
 }
 
-.hidden {
-    display: none !important;
+.hidden { display: none !important; }
+
+/* TABELLA */
+#risultati-tabella {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    background: var(--color-glass-primary);
+}
+#risultati-tabella th, #risultati-tabella td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+}
+#risultati-tabella th {
+    color: var(--color-neon-blue);
+    text-align: left;
+    border-bottom: 2px solid var(--color-neon-blue);
 }
