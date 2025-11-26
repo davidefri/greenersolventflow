@@ -1,4 +1,4 @@
-// public/app.js (o app_finale.js) - Versione Ottimizzata
+// public/app.js (o app_finale.js) - Versione Ottimizzata e Corretta
 
 // !!! IMPORTANTE: DEVI USARE IL TUO URL DI DEPLOY !!!
 const API_URL = 'https://api-worker.davide-frigatti.workers.dev/solvents'; 
@@ -28,17 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('min_bp').addEventListener('change', caricaSolventi);
     document.getElementById('max_bp').addEventListener('change', caricaSolventi);
 
-    // Listener per il pulsante 'Mostra Filtri KT' (necessario l'ID nel tuo HTML)
+    // Listener per il pulsante 'Mostra Filtri KT' (toggle)
     const toggleButton = document.getElementById('toggle-kt-filters');
     if (toggleButton) {
-        toggleButton.addEventListener('click', toggleKTSliders);
+        // Quando il selettore viene nascosto, i suoi filtri NON vengono inviati all'API, 
+        // e la ricarica è gestita dal click che esegue il toggle.
+        toggleButton.addEventListener('click', () => {
+            toggleKTSliders();
+            caricaSolventi(); // Ricarica dopo il toggle
+        });
     }
     
-    // Listener per il pulsante 'Reset Filtri' (necessario l'ID nel tuo HTML)
+    // Listener per il pulsante 'Reset Filtri'
     const resetButton = document.getElementById('reset-filters');
     if (resetButton) {
         resetButton.addEventListener('click', resetFiltri);
     }
+
+    // Rimuovi l'handler obsoleto sul pulsante "Apply Filters" e usa gli handler specifici
+    // document.getElementById('apply-filters').addEventListener('click', caricaSolventi); 
+    // Manteniamo solo la ricarica implicita dai singoli filtri.
+
 });
 
 // -----------------------------------------------------------------
@@ -47,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Funzione per mostrare/nascondere il blocco Kamlet-Taft.
- * Richiede un elemento con ID 'kt-slider-filters'.
  */
 function toggleKTSliders() {
     const ktFiltersDiv = document.getElementById('kt-slider-filters');
@@ -83,9 +92,9 @@ function updateSliderDisplayAndFilter(param) {
         let minValue = parseInt(minSlider.value);
         let maxValue = parseInt(maxSlider.value);
         
-        // --- LOGICA DI SICUREZZA ANTI-INVERSIONE (Migliorata) ---
+        // --- LOGICA DI SICUREZZA ANTI-INVERSIONE (Corretta e pulita) ---
         if (minValue > maxValue) {
-            // Determina quale slider è attualmente in focus (o è stato modificato per ultimo)
+            // Se min ha superato max, forza il manico in movimento ad eguagliare l'altro
             const focusedSlider = document.activeElement; 
             
             if (focusedSlider === minSlider) {
@@ -94,17 +103,17 @@ function updateSliderDisplayAndFilter(param) {
             } else if (focusedSlider === maxSlider) {
                 minSlider.value = maxValue;
                 minValue = maxValue;
-            } else {
-                 // Se non è in focus (es. caricamento iniziale o altro evento non di trascinamento), 
-                 // imposta semplicemente i valori per non incrociarsi
-                 if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
-                    minSlider.value = maxSlider.value;
-                    minValue = maxValue;
-                 }
+            }
+            // Se nessun manico è attivo (raro), usiamo Math.min per evitare incroci
+            else {
+                 minSlider.value = Math.min(minValue, maxValue);
+                 maxSlider.value = Math.max(minValue, maxValue);
+                 minValue = parseInt(minSlider.value);
+                 maxValue = parseInt(maxSlider.value);
             }
         }
         
-        // --- LOGICA DI RIEMPIMENTO ---
+        // --- LOGICA DI RIEMPIMENTO (Corretta) ---
         const minAttr = parseInt(minSlider.getAttribute('min'));
         const maxAttr = parseInt(minSlider.getAttribute('max'));
         const range = maxAttr - minAttr;
@@ -142,7 +151,6 @@ function setupKTSliders() {
                 });
                 
                 // 'mouseup' o 'touchend' per chiamare la ricerca solo quando l'utente finisce di trascinare
-                // Il 'change' è più universale ma meno preciso per i range
                 slider.addEventListener('mouseup', caricaSolventi);
                 slider.addEventListener('touchend', caricaSolventi);
             });
@@ -172,6 +180,7 @@ function getQueryString() {
     const params = new URLSearchParams();
     if (search) params.append('search', search);
     
+    // Utilizza 'lower' per coerenza con la tua API (se non gestisce i CamelCase)
     if (waterMiscibility) {
         params.append('water_miscibility', waterMiscibility.toLowerCase()); 
     }
@@ -180,17 +189,15 @@ function getQueryString() {
     if (min_bp) params.append('min_bp', min_bp);
     if (max_bp) params.append('max_bp', max_bp);
 
-    // --- FILTRI SLIDER KT ---
+    // --- FILTRI SLIDER KT (Corretto: raccogli solo se il blocco è visibile) ---
     const ktFiltersDiv = document.getElementById('kt-slider-filters');
-    // Filtra solo se il blocco KT è visibile (non hidden), ma per coerenza è meglio inviare sempre il range completo
-    // Se il filtro è visibile (non nascosto), raccogli i valori
     if (ktFiltersDiv && !ktFiltersDiv.classList.contains('hidden')) { 
         KT_SLIDER_PARAMS.forEach(param => {
             const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
             const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
 
             if (minSlider && maxSlider) {
-                // mapSliderValue usa il valore corrente del DOM
+                // mapSliderValue usa il valore corrente del DOM e lo formatta
                 const minVal = mapSliderValue(minSlider.value);
                 const maxVal = mapSliderValue(maxSlider.value);
                 
@@ -200,8 +207,7 @@ function getQueryString() {
             }
         });
     }
-    // NOTA: Se il blocco è nascosto, i filtri KT non vengono inviati. 
-    // Assicurati che l'API abbia un comportamento di default in questo caso (range completo).
+    // NOTA: Se il blocco è nascosto, i filtri KT non vengono inviati, quindi l'API utilizza il range di default (completo).
 
     return params.toString(); 
 }
