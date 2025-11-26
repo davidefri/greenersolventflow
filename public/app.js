@@ -196,11 +196,11 @@ function resetFilters() {
     document.getElementById('min_bp').value = "";
     document.getElementById('max_bp').value = "";
     
-    resetSliderGroup('alpha-group', 0, 120);
-    resetSliderGroup('beta-group', 0, 100);
-    resetSliderGroup('pistar-group', -20, 150);
+    // AGGIORNATO: I minimi devono corrispondere all'HTML
+    resetSliderGroup('alpha-group', 0, 150);   // Alpha parte da 0
+    resetSliderGroup('beta-group', -20, 120);  // Beta parte da -0.20
+    resetSliderGroup('pistar-group', -50, 150); // PiStar parte da -0.50
     
-    // Cerca subito dopo il reset
     fetchSolvents();
 }
 
