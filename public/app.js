@@ -190,16 +190,15 @@ async function fetchSolvents() {
 }
 
 function resetFilters() {
-    document.getElementById('search').value = "";
-    document.getElementById('water_miscibility').value = "";
-    document.getElementById('categoria').value = "";
-    document.getElementById('min_bp').value = "";
-    document.getElementById('max_bp').value = "";
+    // ... (altri reset) ...
     
     // AGGIORNATO: I minimi devono corrispondere all'HTML
-    resetSliderGroup('alpha-group', 0, 150);   // Alpha parte da 0
-    resetSliderGroup('beta-group', -20, 120);  // Beta parte da -0.20
-    resetSliderGroup('pistar-group', -50, 150); // PiStar parte da -0.50
+    // Alpha: 0 a 120
+    resetSliderGroup('alpha-group', 0, 120); 
+    // Beta: -20 a 100
+    resetSliderGroup('beta-group', -20, 100); 
+    // PiStar: -50 a 150
+    resetSliderGroup('pistar-group', -50, 150); 
     
     fetchSolvents();
 }
