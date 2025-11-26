@@ -1,4 +1,4 @@
-// public/app.js (o app_finale.js) - Versione Ottimizzata e Corretta
+// public/app.js (o app_finale.js) - Versione Ottimizzata e Corretta (v3)
 
 // !!! IMPORTANTE: DEVI USARE IL TUO URL DI DEPLOY !!!
 const API_URL = 'https://api-worker.davide-frigatti.workers.dev/solvents'; 
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listener per il pulsante 'Mostra Filtri KT' (toggle)
     const toggleButton = document.getElementById('toggle-kt-filters');
     if (toggleButton) {
-        // Quando il selettore viene nascosto, i suoi filtri NON vengono inviati all'API, 
-        // e la ricarica è gestita dal click che esegue il toggle.
+        // La ricarica è ora gestita qui, se il filtro deve rimanere attivo anche se nascosto,
+        // la ricarica va fatta solo sul click del toggle per applicare/rimuovere i filtri se l'utente li ha modificati.
         toggleButton.addEventListener('click', () => {
             toggleKTSliders();
             caricaSolventi(); // Ricarica dopo il toggle
@@ -44,11 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetButton) {
         resetButton.addEventListener('click', resetFiltri);
     }
-
-    // Rimuovi l'handler obsoleto sul pulsante "Apply Filters" e usa gli handler specifici
-    // document.getElementById('apply-filters').addEventListener('click', caricaSolventi); 
-    // Manteniamo solo la ricarica implicita dai singoli filtri.
-
 });
 
 // -----------------------------------------------------------------
@@ -189,26 +184,24 @@ function getQueryString() {
     if (min_bp) params.append('min_bp', min_bp);
     if (max_bp) params.append('max_bp', max_bp);
 
-    // --- FILTRI SLIDER KT (Corretto: raccogli solo se il blocco è visibile) ---
-    const ktFiltersDiv = document.getElementById('kt-slider-filters');
-    if (ktFiltersDiv && !ktFiltersDiv.classList.contains('hidden')) { 
-        KT_SLIDER_PARAMS.forEach(param => {
-            const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
-            const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
+    // --- FILTRI SLIDER KT (Correzione: Rimuovi la condizione 'hidden' per forzare il filtraggio) ---
+    // Non è necessario controllare la visibilità, i valori attuali degli slider DEVONO essere usati per filtrare.
+    
+    KT_SLIDER_PARAMS.forEach(param => {
+        const minSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-min-slider`);
+        const maxSlider = document.querySelector(`.kt-slider-group[data-param="${param}"] .kt-max-slider`);
 
-            if (minSlider && maxSlider) {
-                // mapSliderValue usa il valore corrente del DOM e lo formatta
-                const minVal = mapSliderValue(minSlider.value);
-                const maxVal = mapSliderValue(maxSlider.value);
-                
-                // Invia il range all'API
-                params.append(`min_${param}`, minVal);
-                params.append(`max_${param}`, maxVal);
-            }
-        });
-    }
-    // NOTA: Se il blocco è nascosto, i filtri KT non vengono inviati, quindi l'API utilizza il range di default (completo).
-
+        if (minSlider && maxSlider) {
+            // mapSliderValue usa il valore corrente del DOM e lo formatta
+            const minVal = mapSliderValue(minSlider.value);
+            const maxVal = mapSliderValue(maxSlider.value);
+            
+            // Invia il range all'API
+            params.append(`min_${param}`, minVal);
+            params.append(`max_${param}`, maxVal);
+        }
+    });
+    
     return params.toString(); 
 }
 
