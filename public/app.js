@@ -1,9 +1,9 @@
-// URL del tuo Cloudflare Worker (SOSTITUISCI CON IL TUO URL REALE)
+// URL del tuo Cloudflare Worker
 const API_URL = "https://api-worker.davide-frigatti.workers.dev/solvents"; 
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Gestione Toggle Visualizzazione Filtri KT
+    // 1. Toggle Filtri KT
     const btnToggle = document.getElementById('toggle-kt-filters');
     const divKT = document.getElementById('kt-slider-filters');
     
@@ -11,20 +11,58 @@ document.addEventListener('DOMContentLoaded', () => {
         divKT.classList.toggle('hidden');
     });
 
-    // 2. Inizializzazione Sliders (Doppio Cursore)
-    setupSlider('alpha-group', 100);  // Divide per 100 (es. 120 -> 1.20)
-    setupSlider('beta-group', 100);   // Divide per 100
-    setupSlider('pistar-group', 100); // Divide per 100
+    // 2. Setup Sliders
+    setupSlider('alpha-group', 100); 
+    setupSlider('beta-group', 100); 
+    setupSlider('pistar-group', 100);
 
-    // 3. Caricamento Dati
-    document.getElementById('apply-filters').addEventListener('click', fetchSolvents);
+    // 3. LOGICA REAL-TIME (DEBOUNCE)
+    // Creiamo una versione "ritardata" della funzione di ricerca
+    // Aspetta 300ms dopo l'ultima azione prima di cercare
+    const searchRealTime = debounce(fetchSolvents, 400);
+
+    // 4. Collegamento Eventi a TUTTI gli input
+    
+    // Campi di testo e numeri (cerca mentre digiti)
+    const textInputs = document.querySelectorAll('#search, #min_bp, #max_bp');
+    textInputs.forEach(input => {
+        input.addEventListener('input', searchRealTime);
+    });
+
+    // Menu a tendina (cerca appena cambi opzione)
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        select.addEventListener('change', fetchSolvents); // Qui non serve debounce, è un click singolo
+    });
+
+    // Sliders (cerca mentre trascini, ma col ritardo debounce)
+    const sliders = document.querySelectorAll('.kt-min-slider, .kt-max-slider');
+    sliders.forEach(slider => {
+        slider.addEventListener('input', searchRealTime);
+    });
+
+    // Tasto Reset
     document.getElementById('reset-filters').addEventListener('click', resetFilters);
+    
+    // (Opzionale) Manteniamo il tasto Apply se uno vuole forzare, ma non è più strettamente necessario
+    const applyBtn = document.getElementById('apply-filters');
+    if(applyBtn) applyBtn.addEventListener('click', fetchSolvents);
 
     // Caricamento iniziale
     fetchSolvents();
 });
 
-// Funzione Logica Slider
+// --- FUNZIONE DEBOUNCE (Evita troppe richieste al server) ---
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
+// Funzione Logica Slider (Visuale)
 function setupSlider(groupId, scaleFactor) {
     const group = document.getElementById(groupId);
     const minSlider = group.querySelector('.kt-min-slider');
@@ -36,7 +74,6 @@ function setupSlider(groupId, scaleFactor) {
         let val1 = parseInt(minSlider.value);
         let val2 = parseInt(maxSlider.value);
 
-        // Impedisce ai cursori di incrociarsi
         if (val1 > val2) {
             let tmp = val1;
             minSlider.value = val2;
@@ -45,26 +82,22 @@ function setupSlider(groupId, scaleFactor) {
             val2 = tmp;
         }
 
-        // Calcola visuali
         const minAttr = parseInt(minSlider.min);
         const maxAttr = parseInt(minSlider.max);
         const range = maxAttr - minAttr;
 
-        // Calcolo percentuali per CSS left/width
         const leftPercent = ((val1 - minAttr) / range) * 100;
         const widthPercent = ((val2 - val1) / range) * 100;
 
         fill.style.left = leftPercent + "%";
         fill.style.width = widthPercent + "%";
 
-        // Aggiorna testo label (con conversione decimali)
         display.innerText = `${(val1 / scaleFactor).toFixed(2)} - ${(val2 / scaleFactor).toFixed(2)}`;
     }
 
     minSlider.addEventListener('input', update);
     maxSlider.addEventListener('input', update);
     
-    // Init
     update();
 }
 
@@ -73,13 +106,12 @@ async function fetchSolvents() {
     const countEl = document.getElementById('risultati-count');
     const tbody = document.getElementById('tabella-corpo');
     
-    countEl.innerText = "Searching...";
-    tbody.innerHTML = "";
+    // Mettiamo un'icona o testo di caricamento discreto per non disturbare la vista
+    countEl.style.opacity = "0.5"; 
 
-    // Costruzione URL parametri
     const params = new URLSearchParams();
 
-    // Filtri Standard
+    // Raccolta dati dai campi
     const search = document.getElementById('search').value;
     if(search) params.append('search', search);
 
@@ -95,22 +127,17 @@ async function fetchSolvents() {
     const maxBp = document.getElementById('max_bp').value;
     if(maxBp) params.append('max_bp', maxBp);
 
-    // Filtri Kamlet Taft (lettura dai range slider)
-    // Nota: Dividiamo per 100 perché gli slider usano interi (es. 120) ma il DB vuole float (1.20)
-    
-    // Alpha
+    // Dati Sliders
     const alphaMin = document.querySelector('#alpha-group .kt-min-slider').value;
     const alphaMax = document.querySelector('#alpha-group .kt-max-slider').value;
     params.append('min_alpha', (alphaMin / 100).toFixed(2));
     params.append('max_alpha', (alphaMax / 100).toFixed(2));
 
-    // Beta
     const betaMin = document.querySelector('#beta-group .kt-min-slider').value;
     const betaMax = document.querySelector('#beta-group .kt-max-slider').value;
     params.append('min_beta', (betaMin / 100).toFixed(2));
     params.append('max_beta', (betaMax / 100).toFixed(2));
 
-    // PiStar
     const piMin = document.querySelector('#pistar-group .kt-min-slider').value;
     const piMax = document.querySelector('#pistar-group .kt-max-slider').value;
     params.append('min_pistar', (piMin / 100).toFixed(2));
@@ -123,22 +150,26 @@ async function fetchSolvents() {
         const data = await response.json();
         
         countEl.innerText = `${data.length} solvents found.`;
+        countEl.style.opacity = "1"; // Ripristina opacità
+
+        tbody.innerHTML = "";
+        
+        // Helper per visualizzare 0 invece di -
+        const show = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
 
         data.forEach(solvent => {
-            // CODICE NUOVO (che mostra gli zeri)
-const tr = document.createElement('tr');
-// Funzione helper per mostrare 0 correttamente
-const formatVal = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
-
-tr.innerHTML = `
-    <td><b>${solvent.iupac_name}</b></td>
-    <td>${solvent.cas}</td>
-    <td>${formatVal(solvent.boiling_point)}</td>
-    <td>${formatVal(solvent.alpha)}</td>
-    <td>${formatVal(solvent.beta)}</td>
-    <td>${formatVal(solvent.pistar)}</td>
-    <td>${solvent.water_miscibility || '-'}</td>
-`;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${solvent.iupac_name}</b></td>
+                <td>${solvent.cas}</td>
+                <td>${show(solvent.boiling_point)}</td>
+                <td>${show(solvent.density)}</td>
+                <td>${solvent.dielectric_constant || '-'}</td>
+                <td>${solvent.water_miscibility || '-'}</td>
+                <td>${show(solvent.alpha)}</td>
+                <td>${show(solvent.beta)}</td>
+                <td>${show(solvent.pistar)}</td>
+            `;
             tbody.appendChild(tr);
         });
 
@@ -155,11 +186,11 @@ function resetFilters() {
     document.getElementById('min_bp').value = "";
     document.getElementById('max_bp').value = "";
     
-    // Reset Sliders (Logica manuale)
     resetSliderGroup('alpha-group', 0, 120);
     resetSliderGroup('beta-group', 0, 100);
     resetSliderGroup('pistar-group', -20, 150);
     
+    // Cerca subito dopo il reset
     fetchSolvents();
 }
 
@@ -169,6 +200,5 @@ function resetSliderGroup(id, min, max) {
     const maxS = group.querySelector('.kt-max-slider');
     minS.value = min;
     maxS.value = max;
-    // Trigger evento per aggiornare la barra visiva
     minS.dispatchEvent(new Event('input'));
 }
