@@ -1,5 +1,5 @@
 // URL del tuo Cloudflare Worker (SOSTITUISCI CON IL TUO URL REALE)
-const API_URL = "https://tuo-worker-url.workers.dev/solvents"; 
+const API_URL = "https://api-worker.davide-frigatti.workers.dev/solvents"; 
 
 document.addEventListener('DOMContentLoaded', () => {
     
