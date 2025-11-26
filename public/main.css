@@ -1,5 +1,8 @@
-/* public/style.css */
+/* public/main.css */
 
+/* ---------------------------------- */
+/* GLOBAL STYLES & TYPOGRAPHY 🌎 */
+/* ---------------------------------- */
 :root {
     --color-dark-bg: #1A202C;
     --color-mid-bg: #2D3748;
@@ -42,7 +45,9 @@ h1 {
     padding-bottom: 15px;
 }
 
-/* FILTRI SECTION */
+/* ---------------------------------- */
+/* FILTER SECTION (FILTRI) ⚙️ */
+/* ---------------------------------- */
 #filtri {
     display: flex;
     flex-wrap: wrap;
@@ -83,7 +88,9 @@ h1 {
     box-shadow: 0 0 15px var(--color-neon-blue); 
 }
 
-/* KAMLET-TAFT SLIDER STYLES (FIXED ALIGNMENT) */
+/* ---------------------------------- */
+/* KAMLET-TAFT SLIDER STYLES 🔬 */
+/* ---------------------------------- */
 #kt-slider-filters {
     margin-top: 15px;
     padding: 20px; 
@@ -95,23 +102,23 @@ h1 {
 
 .kt-slider-group {
     position: relative; 
-    padding: 10px 0 40px 0; /* Aumentato padding bottom per le label */
-    margin-bottom: 25px;
+    /* Altezza fissa per garantire il calcolo del centro verticale */
+    height: 70px; 
+    margin-bottom: 10px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.15); 
-    /* Il contenitore deve avere altezza per ospitare gli slider */
-    min-height: 60px;
 }
 
 .range-display {
     color: var(--color-neon-blue); 
     float: right;
+    font-weight: bold;
 }
 
-/* FIX ALLINEAMENTO BARRE E SLIDER */
+/* FIX ALLINEAMENTO: Centratura verticale assoluta per tutti gli elementi */
 .range-track, .range-fill, .kt-min-slider, .kt-max-slider {
     position: absolute;
-    top: 50%; /* Centrati verticalmente nel container */
-    transform: translateY(-50%); /* Correzione esatta centro */
+    top: 50%; 
+    transform: translateY(-50%);
 }
 
 .range-track {
@@ -120,6 +127,7 @@ h1 {
     width: 100%;
     border-radius: 3px;
     z-index: 1; 
+    left: 0;
 }
 
 .range-fill {
@@ -128,36 +136,48 @@ h1 {
     border-radius: 3px;
     z-index: 2; 
     pointer-events: none;
+    left: 0;
 }
 
+/* --- FIX ALLINEAMENTO ORIZZONTALE --- 
+   Allarghiamo l'area dello slider input della larghezza esatta del pallino (24px)
+   e lo spostiamo indietro della metà (-12px).
+   Così il centro del pallino coincide col bordo della barra.
+*/
 .kt-min-slider, .kt-max-slider {
-    width: 100%;
+    width: calc(100% + 24px); /* 100% + (width 18px + border 3px*2) */
+    margin-left: -12px;       /* Metà di 24px negativo */
+    left: 0;
+    
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
     outline: none;
     z-index: 3; 
-    pointer-events: none; /* Permette click pass-through */
-    margin: 0; /* Rimuove margini default */
+    pointer-events: none;
+    height: 0; /* Altezza zero per non interferire */
 }
 
-/* THUMB STYLES */
+/* THUMB STYLES - Webkit */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    pointer-events: all; /* Riabilita il click sul pallino */
+    pointer-events: all;
+    
     width: 18px; 
     height: 18px;
     border-radius: 50%;
     background: var(--color-neon-blue);
     cursor: grab; 
-    border: 3px solid var(--color-dark-bg); 
+    border: 3px solid var(--color-dark-bg); /* Totale larghezza visiva = 24px */
     box-shadow: 0 0 5px var(--color-neon-blue);
-    margin-top: 0; /* Non necessario con il fix transform */
+    
     position: relative;
     z-index: 4;
+    margin-top: 0;
 }
 
+/* THUMB STYLES - Firefox */
 .kt-min-slider::-moz-range-thumb,
 .kt-max-slider::-moz-range-thumb {
     pointer-events: all;
@@ -166,7 +186,8 @@ h1 {
     border-radius: 50%;
     background: var(--color-neon-blue);
     cursor: grab; 
-    border: 3px solid var(--color-dark-bg); 
+    border: 3px solid var(--color-dark-bg);
+    
     position: relative;
     z-index: 4;
 }
@@ -176,12 +197,18 @@ h1 {
     justify-content: space-between;
     font-size: 0.8em;
     color: var(--color-text-muted);
-    margin-top: 35px; /* Spostato sotto la barra */
+    /* Posizionamento assoluto in basso al container */
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    left: 0;
 }
 
 .hidden { display: none !important; }
 
-/* TABELLA */
+/* ---------------------------------- */
+/* TABLE STYLES (TABELLA) 📊 */
+/* ---------------------------------- */
 #risultati-tabella {
     width: 100%;
     border-collapse: collapse;

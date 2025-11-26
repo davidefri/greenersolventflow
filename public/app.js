@@ -125,16 +125,20 @@ async function fetchSolvents() {
         countEl.innerText = `${data.length} solvents found.`;
 
         data.forEach(solvent => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><b>${solvent.iupac_name}</b></td>
-                <td>${solvent.cas}</td>
-                <td>${solvent.boiling_point || '-'}</td>
-                <td>${solvent.alpha || '-'}</td>
-                <td>${solvent.beta || '-'}</td>
-                <td>${solvent.pistar || '-'}</td>
-                <td>${solvent.water_miscibility || '-'}</td>
-            `;
+            // CODICE NUOVO (che mostra gli zeri)
+const tr = document.createElement('tr');
+// Funzione helper per mostrare 0 correttamente
+const formatVal = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
+
+tr.innerHTML = `
+    <td><b>${solvent.iupac_name}</b></td>
+    <td>${solvent.cas}</td>
+    <td>${formatVal(solvent.boiling_point)}</td>
+    <td>${formatVal(solvent.alpha)}</td>
+    <td>${formatVal(solvent.beta)}</td>
+    <td>${formatVal(solvent.pistar)}</td>
+    <td>${solvent.water_miscibility || '-'}</td>
+`;
             tbody.appendChild(tr);
         });
 
