@@ -2,11 +2,13 @@ export default {
     async fetch(request, env) {
         const url = new URL(request.url);
         
-        // CORS Headers
+        // CORS Headers + CACHE CONTROL (La modifica è qui)
         const corsHeaders = {
             'Access-Control-Allow-Origin': '*', 
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
+            // Questa riga dice al browser: "NON salvare i dati, scaricali nuovi ogni volta"
+            'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0', 
         };
 
         if (request.method === 'OPTIONS') {
