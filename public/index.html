@@ -35,33 +35,34 @@
             
 
             <div id="kt-slider-filters" class="hidden">
-                <h3>Kamlet-Taft Range Filter 🔬</h3>
-                <p class="description">Filter by solvent properties: Acidity ($\alpha$), Basicity ($\beta$), and Polarity ($\pi^*$).</p>
+                <h3>Kamlet-Taft Range Filter</h3>
+                <p class="description">Filter by solvent properties:  α (hydrogen bond donor), β (hydrogen bond acceptor), and π* (polarizability).
+</p>
 
                 <div class="kt-slider-group" id="alpha-group">
-                    <label>Alpha ($\alpha$): <span class="range-display">0.00 - 1.20</span></label>
+                    <label>Hydrogen bond donor (α): <span class="range-display">-0.05 - 1.96</span></label>
                     <div class="range-track"></div> 
                     <div class="range-fill"></div>
-                    <input type="range" min="0" max="120" value="0" class="kt-min-slider">
-                    <input type="range" min="0" max="120" value="120" class="kt-max-slider">
+                    <input type="range" min="-5" max="196" value="-5" class="kt-min-slider">
+                    <input type="range" min="-5" max="196" value="196" class="kt-max-slider">
                     <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
                 </div>
 
                 <div class="kt-slider-group" id="beta-group">
-                    <label>Beta ($\beta$): <span class="range-display">-100 - 1.00</span></label>
+                    <label>Hydrogen bond acceptor (β): <span class="range-display">-0.08 - 1.43</span></label>
                     <div class="range-track"></div>
                     <div class="range-fill"></div>
-                    <input type="range" min="-100" max="100" value="0" class="kt-min-slider">
-                    <input type="range" min="-100" max="100" value="0" class="kt-max-slider">
+                    <input type="range" min="-8" max="143" value="-8" class="kt-min-slider">
+                    <input type="range" min="-8" max="143" value="143" class="kt-max-slider">
                     <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
                 </div>
 
                 <div class="kt-slider-group" id="pistar-group">
-                    <label>Pi Star ($\pi^*$): <span class="range-display">-100 - 1.50</span></label>
+                    <label>Polarizability (π*): <span class="range-display">-0.41 - 1.21</span></label>
                     <div class="range-track"></div>
                     <div class="range-fill"></div>
-                    <input type="range" min="-100" max="150" value="0" class="kt-min-slider">
-                    <input type="range" min="-100" max="150" value="0" class="kt-max-slider">
+                    <input type="range" min="-41" max="121" value="-41" class="kt-min-slider">
+                    <input type="range" min="-41" max="121" value="121" class="kt-max-slider">
                     <div class="kt-labels"><span>Low Pol.</span><span>High Pol.</span></div>
                 </div>
             </div>
