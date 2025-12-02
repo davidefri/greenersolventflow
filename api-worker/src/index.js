@@ -22,7 +22,7 @@ export default {
                 const params = [];
                 let paramIndex = 1;
 
-                // --- FILTRI ESISTENTI ---
+                // --- FILTRI GENERICI ---
                 const search = url.searchParams.get('search');
                 if (search) {
                     sql += ` AND (iupac_name LIKE ?${paramIndex++} OR cas LIKE ?${paramIndex++})`;
@@ -90,12 +90,16 @@ export default {
                     params.push(parseFloat(maxPistar));
                 }
 
-                // --- NUOVI FILTRI: Resistenza Chimica (Corretti per 'yes' case-sensitive) ---
-
+                // --- FILTRI: Resistenza Chimica (AGGIORNATO) ---
+                
                 const filterResistance = (paramName) => {
                     const value = url.searchParams.get(paramName);
-                    if (value === 'required') {
-                        // Filtra ESATTAMENTE per 'yes' (case-sensitive, come nel tuo esempio di INSERT)
+                    
+                    // Questa lista rende il filtro robusto: accetta 'required', 'yes', 'true', ecc.
+                    const validValues = ['required', 'yes', 'true', 'on', '1'];
+
+                    if (value && validValues.includes(value.toLowerCase())) {
+                        // Importante: Nel database cerchiamo rigorosamente 'yes'
                         sql += ` AND ${paramName} = ?${paramIndex++}`;
                         params.push('yes'); 
                     }
@@ -118,7 +122,6 @@ export default {
                     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 });
             } catch (e) {
-                // Logga l'errore per il debug del worker
                 console.error("Database Error:", e); 
                 return new Response(JSON.stringify({ error: e.message, sql }), { status: 500, headers: corsHeaders });
             }
