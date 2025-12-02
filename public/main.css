@@ -89,39 +89,55 @@ h1 {
 }
 
 /* ---------------------------------- */
-/* COLUMN MANAGEMENT (SHOW/HIDE) 👁️ */
-/* Nuova sezione aggiunta per gestire le colonne */
+/* FLOATING COLUMN SELECTOR (FLUTTUANTE) ⚙️ */
 /* ---------------------------------- */
 #column-selector {
-    background: rgba(45, 55, 72, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    color: var(--color-text-light);
+    position: fixed; /* Lo rende fluttuante */
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999; /* Sempre sopra tutto */
+    
+    background: var(--color-mid-bg);
+    border: 1px solid var(--color-neon-blue);
+    border-radius: 30px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+    width: max-content;
 }
 
 #column-selector summary {
+    padding: 12px 24px;
     color: var(--color-neon-blue);
-    font-weight: 600;
+    font-weight: bold;
     cursor: pointer;
     outline: none;
-    list-style: none; /* Nasconde il triangolino standard su alcuni browser */
+    list-style: none;
+    text-align: center;
+    white-space: nowrap;
 }
 
-/* Per ripristinare un'icona personalizzata se vuoi, altrimenti va bene standard */
 #column-selector summary::-webkit-details-marker {
-    color: var(--color-neon-blue);
+    display: none;
+}
+
+/* Quando il menu è aperto */
+#column-selector[open] {
+    border-radius: 12px;
+    padding: 15px;
+    bottom: 20px; 
+    right: 20px;
+    max-width: 300px;
+    max-height: 80vh; /* Limite altezza */
+    overflow-y: auto; /* Scroll se serve */
 }
 
 .col-toggles-grid {
     display: grid;
-    /* Grid responsiva: crea colonne larghe almeno 140px */
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
-    padding-top: 10px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
     border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px;
 }
 
 .col-toggles-grid label {
@@ -131,7 +147,6 @@ h1 {
     align-items: center;
     gap: 8px;
     color: var(--color-text-muted);
-    transition: color 0.2s;
 }
 
 .col-toggles-grid label:hover {
@@ -196,7 +211,6 @@ h1 {
     width: calc(100% + 24px); 
     margin-left: -12px;      
     left: 0;
-    
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
@@ -211,7 +225,6 @@ h1 {
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     pointer-events: all;
-    
     width: 18px; 
     height: 18px;
     border-radius: 50%;
@@ -219,7 +232,6 @@ h1 {
     cursor: grab; 
     border: 3px solid var(--color-dark-bg); 
     box-shadow: 0 0 5px var(--color-neon-blue);
-    
     position: relative;
     z-index: 4;
     margin-top: 0;
@@ -234,7 +246,6 @@ h1 {
     background: var(--color-neon-blue);
     cursor: grab; 
     border: 3px solid var(--color-dark-bg);
-    
     position: relative;
     z-index: 4;
 }
@@ -251,61 +262,128 @@ h1 {
 }
 
 /* ---------------------------------- */
-/* MODAL STYLES 🪟 */
+/* MODAL STYLES 🪟 (Compatibility) */
 /* ---------------------------------- */
-/* (Includo classi generiche per modal se servono per compatibility) */
-.hidden { display: none !important; }
-.visible { display: block !important; } /* Usato anche per le colonne tabella */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Sfondo scuro semitrasparente */
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal.hidden {
+    display: none !important;
+}
+
+.modal-content {
+    background: var(--color-mid-bg);
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid var(--color-neon-blue);
+    box-shadow: 0 0 20px rgba(0, 174, 239, 0.3);
+    color: var(--color-text-light);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: var(--color-neon-blue);
+}
+
+/* Stili per i Toggle switch del modal */
+.compatibility-filter-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Pulsanti Modal */
+.apply-button {
+    background: var(--color-neon-blue) !important;
+    color: var(--color-dark-bg) !important;
+    width: 100%;
+    margin-top: 10px;
+}
+.close-button {
+    background: transparent !important;
+    border: 1px solid #ff4444 !important;
+    color: #ff4444 !important;
+    width: 100%;
+    margin-top: 10px;
+}
 
 /* ---------------------------------- */
 /* TABLE STYLES (TABELLA) 📊 */
 /* ---------------------------------- */
-/* Contenitore per scroll orizzontale su mobile */
-.table-responsive {
-    overflow-x: auto;
+
+/* WRAPPER CENTRATO E SCROLLABILE */
+.table-wrapper {
     width: 100%;
+    overflow-x: auto; /* Scroll orizzontale */
     margin-top: 25px;
     border-radius: 8px;
+    
+    /* Centra la tabella visivamente se è piccola */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #risultati-tabella {
-    width: 100%;
+    min-width: 100%;
+    width: auto;
     border-collapse: collapse;
     background: var(--color-glass-primary);
-    min-width: 600px; /* Evita che si schiacci troppo su mobile */
 }
 
 #risultati-tabella th, #risultati-tabella td {
-    padding: 15px;
+    padding: 12px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-    text-align: left;
-    white-space: nowrap; /* Mantiene il testo su una riga per leggibilità */
+    
+    /* TESTO CENTRATO (Tua richiesta) */
+    text-align: center;
+    vertical-align: middle;
+    
+    /* EVITA TESTO A CAPO (Tua richiesta) */
+    white-space: nowrap; 
 }
 
 #risultati-tabella th {
     color: var(--color-neon-blue);
     border-bottom: 2px solid var(--color-neon-blue);
-    position: sticky; /* Intestazione fissa quando scrolli */
+    position: sticky; /* Intestazione fissa */
     top: 0;
-    background: var(--color-mid-bg); /* Sfondo solido per l'intestazione sticky */
+    background: var(--color-mid-bg); 
     z-index: 10;
+    font-weight: 600;
+}
+
+/* Hover sulle righe */
+#risultati-tabella tr:hover td {
+    background: rgba(0, 174, 239, 0.05);
 }
 
 /* --- LOGICA VISIBILITÀ COLONNE --- */
-/* Di base nascondiamo tutte le celle con classe .toggle-col */
 .toggle-col {
     display: none;
 }
 
-/* Le mostriamo SOLO se hanno anche la classe .visible (aggiunta via JS) */
-/* Nota: usiamo display: table-cell per non rompere la tabella */
 th.toggle-col.visible, 
 td.toggle-col.visible {
-    display: table-cell;
+    display: table-cell !important;
     animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }

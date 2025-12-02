@@ -30,31 +30,26 @@
             <input type="number" id="min_bp" placeholder="Min" style="width: 80px;">
             <input type="number" id="max_bp" placeholder="Max" style="width: 80px;">
             
-            <!-- NUOVO PULSANTE PER IL MODAL COMPATIBILITY -->
             <button id="toggle-compatibility">🔬 Compatibility Selector</button>
-            
             <button id="toggle-kt-filters">Kamlet-Taft Parameter Selector</button>
-            
             <button id="reset-filters">Reset All Filters</button>
             
 
-            <!-- MODAL DI COMPATIBILITÀ (NASCOSTO) -->
             <div id="compatibility-modal" class="modal hidden">
                 <div class="modal-content">
                     <h3>Solvent Stability Requirements</h3>
-                    <p class="description">Select YES if the solvent *must* resist the following environments. (Results will show High/Medium/Low resistance solvents).</p>
+                    <p class="description">Select YES if the solvent *must* resist the following environments.</p>
 
                     <div class="compatibility-filter-group">
-    <label for="compat-oxidation" style="cursor: pointer;">Strong Oxidizing Environment?</label>
-    <div class="toggle-switch">
-        <input type="checkbox" id="compat-oxidation" data-param="oxidation_resistance" class="compat-checkbox">
-        <label for="compat-oxidation" class="toggle-label"></label>
-    </div>
-</div>
+                        <label for="compat-oxidation" style="cursor: pointer;">Strong Oxidizing Environment?</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="compat-oxidation" data-param="oxidation_resistance" class="compat-checkbox">
+                            <label for="compat-oxidation" class="toggle-label"></label>
+                        </div>
                     </div>
 
                     <div class="compatibility-filter-group">
-                        <label>Strong Reducing Environment?</label>
+                        <label for="compat-reduction" style="cursor: pointer;">Strong Reducing Environment?</label>
                         <div class="toggle-switch">
                             <input type="checkbox" id="compat-reduction" data-param="reduction_resistance" class="compat-checkbox">
                             <label for="compat-reduction" class="toggle-label"></label>
@@ -62,7 +57,7 @@
                     </div>
                     
                     <div class="compatibility-filter-group">
-                        <label>Acidic Environment?</label>
+                        <label for="compat-acid" style="cursor: pointer;">Acidic Environment?</label>
                         <div class="toggle-switch">
                             <input type="checkbox" id="compat-acid" data-param="acid_resistance" class="compat-checkbox">
                             <label for="compat-acid" class="toggle-label"></label>
@@ -70,7 +65,7 @@
                     </div>
 
                     <div class="compatibility-filter-group">
-                        <label>Basic Environment?</label>
+                        <label for="compat-basic" style="cursor: pointer;">Basic Environment?</label>
                         <div class="toggle-switch">
                             <input type="checkbox" id="compat-basic" data-param="basic_resistance" class="compat-checkbox">
                             <label for="compat-basic" class="toggle-label"></label>
@@ -78,16 +73,13 @@
                     </div>
 
                     <button id="apply-compatibility" class="apply-button">Apply Filters</button>
-                    <!-- PULSANTE DI RESET RICHIESTO DALL'UTENTE -->
                     <button id="reset-compatibility" class="apply-button">Reset Compatibility</button>
                     <button id="close-compatibility" class="close-button">Close</button>
                 </div>
             </div>
-            <!-- FINE MODAL DI COMPATIBILITÀ -->
-
             <div id="kt-slider-filters" class="hidden">
                 <h3>Kamlet-Taft Range Filter</h3>
-                <p class="description">Filter by solvent properties:  α (hydrogen bond donor), β (hydrogen bond acceptor), and π* (polarizability).</p>
+                <p class="description">Filter by solvent properties:  α, β, and π*.</p>
 
                 <div class="kt-slider-group" id="alpha-group">
                     <label>Hydrogen bond donor (α): <span class="range-display">-0.05 - 1.96</span></label>
@@ -119,44 +111,49 @@
         </div>
 
         <p id="risultati-count">Ready to search.</p>
-<details id="column-selector">
-    <summary style="cursor: pointer; font-weight: bold; color: #2c3e50;">⚙️ Show/Hide Columns</summary>
-    <div class="col-toggles-grid" style="margin-top: 10px;">
-        <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-diel"> Dielectric Const.</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-misc"> Water Misc.</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-alpha"> Alpha</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-beta"> Beta</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-pi"> Pi Star</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-h"> H Phrases</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-ox"> Oxidation Res.</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-red"> Reduction Res.</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-acid"> Acid Res.</label>
-        <label><input type="checkbox" class="col-toggle" data-target="c-basic"> Basic Res.</label>
-    </div>
-</details>
-        <table id="risultati-tabella">
-            <thead>
-    <tr>
-        <th>Name</th> <th>CAS</th>  <th class="toggle-col c-bp">Boiling Point</th>
-        <th class="toggle-col c-dens">Density</th>
-        <th class="toggle-col c-diel">Diel. Const.</th>
-        <th class="toggle-col c-misc">Water Misc.</th>
-        <th class="toggle-col c-alpha">Alpha</th>
-        <th class="toggle-col c-beta">Beta</th>
-        <th class="toggle-col c-pi">Pi Star</th>
-        <th class="toggle-col c-h">H Phrases</th>
-        <th class="toggle-col c-ox">Oxidation</th>
-        <th class="toggle-col c-red">Reduction</th>
-        <th class="toggle-col c-acid">Acid Res.</th>
-        <th class="toggle-col c-basic">Basic Res.</th>
-    </tr>
-</thead>
-            <tbody id="tabella-corpo">
-                </tbody>
-        </table>
-    </div>
+
+        <div class="table-wrapper">
+            <table id="risultati-tabella">
+                <thead>
+                    <tr>
+                        <th>Name</th> 
+                        <th>CAS</th>  
+                        <th class="toggle-col c-bp">Boiling Point</th>
+                        <th class="toggle-col c-dens">Density</th>
+                        <th class="toggle-col c-diel">Diel. Const.</th>
+                        <th class="toggle-col c-misc">Water Misc.</th>
+                        <th class="toggle-col c-alpha">Alpha</th>
+                        <th class="toggle-col c-beta">Beta</th>
+                        <th class="toggle-col c-pi">Pi Star</th>
+                        <th class="toggle-col c-h">H Phrases</th>
+                        <th class="toggle-col c-ox">Oxidation</th>
+                        <th class="toggle-col c-red">Reduction</th>
+                        <th class="toggle-col c-acid">Acid Res.</th>
+                        <th class="toggle-col c-basic">Basic Res.</th>
+                    </tr>
+                </thead>
+                <tbody id="tabella-corpo">
+                    </tbody>
+            </table>
+        </div>
+
+    </div> <details id="column-selector">
+        <summary>⚙️ Columns</summary>
+        <div class="col-toggles-grid">
+            <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-diel"> Dielectric Const.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-misc"> Water Misc.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-alpha"> Alpha</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-beta"> Beta</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-pi"> Pi Star</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-h"> H Phrases</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-ox"> Oxidation Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-red"> Reduction Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-acid"> Acid Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-basic"> Basic Res.</label>
+        </div>
+    </details>
 
     <script src="app.js"></script> 
 </body>
