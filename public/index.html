@@ -30,14 +30,63 @@
             <input type="number" id="min_bp" placeholder="Min" style="width: 80px;">
             <input type="number" id="max_bp" placeholder="Max" style="width: 80px;">
             
+            <!-- NUOVO PULSANTE PER IL MODAL COMPATIBILITY -->
+            <button id="toggle-compatibility">🔬 Compatibility Selector</button>
+            
             <button id="toggle-kt-filters">Kamlet-Taft Parameter Selector</button>
+            
             <button id="reset-filters">Reset All Filters</button>
             
 
+            <!-- MODAL DI COMPATIBILITÀ (NASCOSTO) -->
+            <div id="compatibility-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>Solvent Stability Requirements</h3>
+                    <p class="description">Select YES if the solvent *must* resist the following environments. (Results will show High/Medium/Low resistance solvents).</p>
+
+                    <div class="compatibility-filter-group">
+                        <label>Strong Oxidizing Environment?</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="compat-oxidation" data-param="oxidation_resistance" class="compat-checkbox">
+                            <label for="compat-oxidation" class="toggle-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="compatibility-filter-group">
+                        <label>Strong Reducing Environment?</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="compat-reduction" data-param="reduction_resistance" class="compat-checkbox">
+                            <label for="compat-reduction" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="compatibility-filter-group">
+                        <label>Acidic Environment?</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="compat-acid" data-param="acid_resistance" class="compat-checkbox">
+                            <label for="compat-acid" class="toggle-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="compatibility-filter-group">
+                        <label>Basic Environment?</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="compat-basic" data-param="basic_resistance" class="compat-checkbox">
+                            <label for="compat-basic" class="toggle-label"></label>
+                        </div>
+                    </div>
+
+                    <button id="apply-compatibility" class="apply-button">Apply Filters</button>
+                    <!-- PULSANTE DI RESET RICHIESTO DALL'UTENTE -->
+                    <button id="reset-compatibility" class="apply-button">Reset Compatibility</button>
+                    <button id="close-compatibility" class="close-button">Close</button>
+                </div>
+            </div>
+            <!-- FINE MODAL DI COMPATIBILITÀ -->
+
             <div id="kt-slider-filters" class="hidden">
                 <h3>Kamlet-Taft Range Filter</h3>
-                <p class="description">Filter by solvent properties:  α (hydrogen bond donor), β (hydrogen bond acceptor), and π* (polarizability).
-</p>
+                <p class="description">Filter by solvent properties:  α (hydrogen bond donor), β (hydrogen bond acceptor), and π* (polarizability).</p>
 
                 <div class="kt-slider-group" id="alpha-group">
                     <label>Hydrogen bond donor (α): <span class="range-display">-0.05 - 1.96</span></label>
@@ -71,7 +120,7 @@
         <p id="risultati-count">Ready to search.</p>
 
         <table id="risultati-tabella">
-           <thead>
+            <thead>
                 <tr>
                     <th>Name</th>
                     <th>CAS</th>

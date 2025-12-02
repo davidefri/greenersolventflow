@@ -2,12 +2,11 @@ export default {
     async fetch(request, env) {
         const url = new URL(request.url);
         
-        // CORS Headers + CACHE CONTROL (La modifica è qui)
+        // CORS Headers + CACHE CONTROL
         const corsHeaders = {
             'Access-Control-Allow-Origin': '*', 
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
-            // Questa riga dice al browser: "NON salvare i dati, scaricali nuovi ogni volta"
             'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0', 
         };
 
@@ -53,7 +52,7 @@ export default {
                     params.push(parseFloat(maxBp));
                 }
 
-                // --- NUOVI FILTRI KAMLET-TAFT (AGGIUNTI) ---
+                // --- FILTRI KAMLET-TAFT ---
                 
                 // Alpha
                 const minAlpha = url.searchParams.get('min_alpha');
@@ -91,6 +90,23 @@ export default {
                     params.push(parseFloat(maxPistar));
                 }
 
+                // --- NUOVI FILTRI: Resistenza Chimica (Dal Modal Compatibility) ---
+
+                const filterResistance = (paramName) => {
+                    const value = url.searchParams.get(paramName);
+                    if (value === 'required') {
+                        // Se l'utente ha richiesto resistenza ('YES'), cerchiamo valori non nulli e non vuoti
+                        // (assumendo che High, Medium, Low siano classificati in queste colonne e che NULL/vuoto significhi non adatto o non classificato).
+                        sql += ` AND ${paramName} IS NOT NULL AND ${paramName} != ?${paramIndex++}`;
+                        params.push(""); 
+                    }
+                }
+
+                filterResistance('oxidation_resistance');
+                filterResistance('reduction_resistance');
+                filterResistance('acid_resistance');
+                filterResistance('basic_resistance');
+
                 // Esecuzione
                 let statement = env.DB.prepare(sql);
                 if (params.length > 0) {
@@ -103,7 +119,9 @@ export default {
                     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 });
             } catch (e) {
-                return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: corsHeaders });
+                // Logga l'errore per il debug del worker
+                console.error("Database Error:", e); 
+                return new Response(JSON.stringify({ error: e.message, sql }), { status: 500, headers: corsHeaders });
             }
         }
 

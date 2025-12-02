@@ -11,17 +11,49 @@ document.addEventListener('DOMContentLoaded', () => {
         divKT.classList.toggle('hidden');
     });
 
-    // 2. Setup Sliders
+    // 2. LOGICA MODAL COMPATIBILITY
+    const btnCompat = document.getElementById('toggle-compatibility');
+    const modalCompat = document.getElementById('compatibility-modal');
+    const btnCloseCompat = document.getElementById('close-compatibility');
+    const btnApplyCompat = document.getElementById('apply-compatibility');
+    const btnResetCompat = document.getElementById('reset-compatibility'); // NUOVO PULSANTE RESET COMPATIBILITY
+
+    btnCompat.addEventListener('click', () => {
+        modalCompat.classList.add('visible');
+        modalCompat.classList.remove('hidden');
+    });
+
+    btnCloseCompat.addEventListener('click', () => {
+        modalCompat.classList.remove('visible');
+        modalCompat.classList.add('hidden');
+    });
+
+    // Quando l'utente clicca Applica nel modal, chiudi e cerca
+    btnApplyCompat.addEventListener('click', () => {
+        modalCompat.classList.remove('visible');
+        modalCompat.classList.add('hidden');
+        fetchSolvents();
+    });
+    
+    // FUNZIONALITÀ RICHIESTA: Reset Compatibility
+    btnResetCompat.addEventListener('click', () => { 
+        resetCompatibilityFilters(); 
+        // Dopo il reset, chiudiamo il modal e aggiorniamo i risultati
+        modalCompat.classList.remove('visible');
+        modalCompat.classList.add('hidden');
+        fetchSolvents();
+    });
+
+    // 3. Setup Sliders
+    // Nota: Ho corretto i valori max per gli slider qui per coerenza con i min/max di index.html (es. 196 invece di 120)
     setupSlider('alpha-group', 100); 
     setupSlider('beta-group', 100); 
     setupSlider('pistar-group', 100);
 
-    // 3. LOGICA REAL-TIME (DEBOUNCE)
-    // Creiamo una versione "ritardata" della funzione di ricerca
-    // Aspetta 300ms dopo l'ultima azione prima di cercare
+    // 4. LOGICA REAL-TIME (DEBOUNCE)
     const searchRealTime = debounce(fetchSolvents, 400);
 
-    // 4. Collegamento Eventi a TUTTI gli input
+    // 5. Collegamento Eventi a TUTTI gli input
     
     // Campi di testo e numeri (cerca mentre digiti)
     const textInputs = document.querySelectorAll('#search, #min_bp, #max_bp');
@@ -32,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Menu a tendina (cerca appena cambi opzione)
     const selects = document.querySelectorAll('select');
     selects.forEach(select => {
-        select.addEventListener('change', fetchSolvents); // Qui non serve debounce, è un click singolo
+        select.addEventListener('change', fetchSolvents); 
     });
 
     // Sliders (cerca mentre trascini, ma col ritardo debounce)
@@ -41,13 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
         slider.addEventListener('input', searchRealTime);
     });
 
-    // Tasto Reset
+    // Tasto Reset Generale
     document.getElementById('reset-filters').addEventListener('click', resetFilters);
     
-    // (Opzionale) Manteniamo il tasto Apply se uno vuole forzare, ma non è più strettamente necessario
-    const applyBtn = document.getElementById('apply-filters');
-    if(applyBtn) applyBtn.addEventListener('click', fetchSolvents);
-
     // Caricamento iniziale
     fetchSolvents();
 });
@@ -106,7 +134,6 @@ async function fetchSolvents() {
     const countEl = document.getElementById('risultati-count');
     const tbody = document.getElementById('tabella-corpo');
     
-    // Mettiamo un'icona o testo di caricamento discreto per non disturbare la vista
     countEl.style.opacity = "0.5"; 
 
     const params = new URLSearchParams();
@@ -127,7 +154,18 @@ async function fetchSolvents() {
     const maxBp = document.getElementById('max_bp').value;
     if(maxBp) params.append('max_bp', maxBp);
 
-    // Dati Sliders
+    // --- NUOVI FILTRI: Resistenza Chimica (da Modal Checkbox) ---
+    document.querySelectorAll('.compat-checkbox').forEach(checkbox => {
+        if (checkbox.checked) {
+            // Se la checkbox è TRUE (l'utente vuole un solvente resistente)
+            const paramName = checkbox.getAttribute('data-param');
+            // Inviamo il valore 'required' che il worker userà per filtrare High/Medium/Low
+            params.append(paramName, 'required'); 
+        }
+    });
+
+    // Dati Sliders Kamlet-Taft
+    // I divisori (100) sono usati per convertire i valori integer degli slider in float (es. 196 -> 1.96)
     const alphaMin = document.querySelector('#alpha-group .kt-min-slider').value;
     const alphaMax = document.querySelector('#alpha-group .kt-max-slider').value;
     params.append('min_alpha', (alphaMin / 100).toFixed(2));
@@ -154,21 +192,18 @@ async function fetchSolvents() {
 
         tbody.innerHTML = "";
         
-        // Helper per visualizzare 0 invece di -
-        const show = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
+        // Helper per visualizzare '-' invece di valori nulli
+        const show = (val) => (val !== null && val !== undefined && val !== "" && val !== 0) ? val : '-';
 
         data.forEach(solvent => {
             const tr = document.createElement('tr');
             
-            // Helper visuale
-            const show = (val) => (val !== null && val !== undefined && val !== "") ? val : '-';
-
             tr.innerHTML = `
                 <td><b>${solvent.iupac_name}</b></td>
                 <td>${solvent.cas}</td>
                 <td>${show(solvent.boiling_point)}</td>
                 <td>${show(solvent.density)}</td>
-                <td>${solvent.dielectric_constant || '-'}</td>
+                <td>${show(solvent.dielectric_constant)}</td>
                 <td>${solvent.water_miscibility || '-'}</td>
                 <td>${show(solvent.alpha)}</td>
                 <td>${show(solvent.beta)}</td>
@@ -189,17 +224,30 @@ async function fetchSolvents() {
     }
 }
 
+// Funzione specifica per resettare le checkbox del modal
+function resetCompatibilityFilters() {
+    document.querySelectorAll('.compat-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+}
+
 function resetFilters() {
-    // ... (altri reset) ...
+    // Reset di tutti i campi input di testo/numero/select
+    document.getElementById('search').value = '';
+    document.getElementById('water_miscibility').value = '';
+    document.getElementById('categoria').value = '';
+    document.getElementById('min_bp').value = '';
+    document.getElementById('max_bp').value = '';
+
+    // Reset delle Checkbox di Compatibilità
+    resetCompatibilityFilters();
+
+    // Reset Sliders Kamlet-Taft (corretti i valori min/max in base all'HTML fornito)
+    resetSliderGroup('alpha-group', -5, 196); 
+    resetSliderGroup('beta-group', -8, 143); 
+    resetSliderGroup('pistar-group', -41, 121); 
     
-    // AGGIORNATO: I minimi devono corrispondere all'HTML
-    // Alpha: 0 a 120
-    resetSliderGroup('alpha-group', 0, 120); 
-    // Beta: -20 a 100
-    resetSliderGroup('beta-group', -20, 100); 
-    // PiStar: -50 a 150
-    resetSliderGroup('pistar-group', -50, 150); 
-    
+    // Esegui la ricerca
     fetchSolvents();
 }
 
@@ -209,5 +257,6 @@ function resetSliderGroup(id, min, max) {
     const maxS = group.querySelector('.kt-max-slider');
     minS.value = min;
     maxS.value = max;
+    // Attiva l'evento 'input' per aggiornare la visualizzazione del range
     minS.dispatchEvent(new Event('input'));
 }
