@@ -92,20 +92,24 @@ export default {
 
                 // --- NUOVI FILTRI: Resistenza Chimica (Dal Modal Compatibility) ---
 
-                const filterResistance = (paramName) => {
-                    const value = url.searchParams.get(paramName);
-                    if (value === 'required') {
-                        // Se l'utente ha richiesto resistenza ('YES'), cerchiamo valori non nulli e non vuoti
-                        // (assumendo che High, Medium, Low siano classificati in queste colonne e che NULL/vuoto significhi non adatto o non classificato).
-                        sql += ` AND ${paramName} IS NOT NULL AND ${paramName} != ?${paramIndex++}`;
-                        params.push(""); 
-                    }
-                }
+               
 
-                filterResistance('oxidation_resistance');
-                filterResistance('reduction_resistance');
-                filterResistance('acid_resistance');
-                filterResistance('basic_resistance');
+                const filterResistance = (paramName, expectedValue) => {
+                    const value = url.searchParams.get(paramName);
+                    if (value === 'required') {
+                        // MODIFICATO: Filtra ESATTAMENTE per il valore specificato (es. 'Yes' o 'High')
+                        sql += ` AND ${paramName} = ?${paramIndex++}`;
+                        params.push(expectedValue); 
+                    }
+                }
+
+                // Modifica le chiamate per specificare il valore atteso (es. 'High' o 'Yes')
+                // *** SOSTITUISCI 'High' CON IL VALORE ESATTO CHE VUOI FILTRARE (es. 'Yes') ***
+                
+                filterResistance('oxidation_resistance', 'yes'); // Assumendo che "Yes" sia la resistenza desiderata
+                filterResistance('reduction_resistance', 'yes');
+                filterResistance('acid_resistance', 'yes');
+                filterResistance('basic_resistance', 'yes');
 
                 // Esecuzione
                 let statement = env.DB.prepare(sql);
