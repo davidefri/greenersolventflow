@@ -89,6 +89,61 @@ h1 {
 }
 
 /* ---------------------------------- */
+/* COLUMN MANAGEMENT (SHOW/HIDE) 👁️ */
+/* Nuova sezione aggiunta per gestire le colonne */
+/* ---------------------------------- */
+#column-selector {
+    background: rgba(45, 55, 72, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    color: var(--color-text-light);
+}
+
+#column-selector summary {
+    color: var(--color-neon-blue);
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    list-style: none; /* Nasconde il triangolino standard su alcuni browser */
+}
+
+/* Per ripristinare un'icona personalizzata se vuoi, altrimenti va bene standard */
+#column-selector summary::-webkit-details-marker {
+    color: var(--color-neon-blue);
+}
+
+.col-toggles-grid {
+    display: grid;
+    /* Grid responsiva: crea colonne larghe almeno 140px */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.col-toggles-grid label {
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+}
+
+.col-toggles-grid label:hover {
+    color: var(--color-text-light);
+}
+
+.col-toggles-grid input[type="checkbox"] {
+    accent-color: var(--color-neon-blue);
+    cursor: pointer;
+}
+
+/* ---------------------------------- */
 /* KAMLET-TAFT SLIDER STYLES 🔬 */
 /* ---------------------------------- */
 #kt-slider-filters {
@@ -102,7 +157,6 @@ h1 {
 
 .kt-slider-group {
     position: relative; 
-    /* Altezza fissa per garantire il calcolo del centro verticale */
     height: 70px; 
     margin-bottom: 10px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.15); 
@@ -114,7 +168,6 @@ h1 {
     font-weight: bold;
 }
 
-/* FIX ALLINEAMENTO: Centratura verticale assoluta per tutti gli elementi */
 .range-track, .range-fill, .kt-min-slider, .kt-max-slider {
     position: absolute;
     top: 50%; 
@@ -139,14 +192,9 @@ h1 {
     left: 0;
 }
 
-/* --- FIX ALLINEAMENTO ORIZZONTALE --- 
-   Allarghiamo l'area dello slider input della larghezza esatta del pallino (24px)
-   e lo spostiamo indietro della metà (-12px).
-   Così il centro del pallino coincide col bordo della barra.
-*/
 .kt-min-slider, .kt-max-slider {
-    width: calc(100% + 24px); /* 100% + (width 18px + border 3px*2) */
-    margin-left: -12px;       /* Metà di 24px negativo */
+    width: calc(100% + 24px); 
+    margin-left: -12px;      
     left: 0;
     
     -webkit-appearance: none;
@@ -155,10 +203,10 @@ h1 {
     outline: none;
     z-index: 3; 
     pointer-events: none;
-    height: 0; /* Altezza zero per non interferire */
+    height: 0; 
 }
 
-/* THUMB STYLES - Webkit */
+/* THUMB STYLES */
 .kt-min-slider::-webkit-slider-thumb, 
 .kt-max-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -169,7 +217,7 @@ h1 {
     border-radius: 50%;
     background: var(--color-neon-blue);
     cursor: grab; 
-    border: 3px solid var(--color-dark-bg); /* Totale larghezza visiva = 24px */
+    border: 3px solid var(--color-dark-bg); 
     box-shadow: 0 0 5px var(--color-neon-blue);
     
     position: relative;
@@ -177,7 +225,6 @@ h1 {
     margin-top: 0;
 }
 
-/* THUMB STYLES - Firefox */
 .kt-min-slider::-moz-range-thumb,
 .kt-max-slider::-moz-range-thumb {
     pointer-events: all;
@@ -197,30 +244,68 @@ h1 {
     justify-content: space-between;
     font-size: 0.8em;
     color: var(--color-text-muted);
-    /* Posizionamento assoluto in basso al container */
     position: absolute;
     bottom: 10px;
     width: 100%;
     left: 0;
 }
 
+/* ---------------------------------- */
+/* MODAL STYLES 🪟 */
+/* ---------------------------------- */
+/* (Includo classi generiche per modal se servono per compatibility) */
 .hidden { display: none !important; }
+.visible { display: block !important; } /* Usato anche per le colonne tabella */
 
 /* ---------------------------------- */
 /* TABLE STYLES (TABELLA) 📊 */
 /* ---------------------------------- */
+/* Contenitore per scroll orizzontale su mobile */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 25px;
+    border-radius: 8px;
+}
+
 #risultati-tabella {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 25px;
     background: var(--color-glass-primary);
+    min-width: 600px; /* Evita che si schiacci troppo su mobile */
 }
+
 #risultati-tabella th, #risultati-tabella td {
     padding: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    text-align: left;
+    white-space: nowrap; /* Mantiene il testo su una riga per leggibilità */
 }
+
 #risultati-tabella th {
     color: var(--color-neon-blue);
-    text-align: left;
     border-bottom: 2px solid var(--color-neon-blue);
+    position: sticky; /* Intestazione fissa quando scrolli */
+    top: 0;
+    background: var(--color-mid-bg); /* Sfondo solido per l'intestazione sticky */
+    z-index: 10;
+}
+
+/* --- LOGICA VISIBILITÀ COLONNE --- */
+/* Di base nascondiamo tutte le celle con classe .toggle-col */
+.toggle-col {
+    display: none;
+}
+
+/* Le mostriamo SOLO se hanno anche la classe .visible (aggiunta via JS) */
+/* Nota: usiamo display: table-cell per non rompere la tabella */
+th.toggle-col.visible, 
+td.toggle-col.visible {
+    display: table-cell;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

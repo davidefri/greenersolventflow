@@ -198,25 +198,33 @@ async function fetchSolvents() {
         data.forEach(solvent => {
             const tr = document.createElement('tr');
             
+            // NOTA: Aggiungo le classi "toggle-col c-..." a tutte le celle opzionali
+            // Le celle Name e CAS non hanno classi perché sono sempre visibili
+            
             tr.innerHTML = `
                 <td><b>${solvent.iupac_name}</b></td>
                 <td>${solvent.cas}</td>
-                <td>${show(solvent.boiling_point)}</td>
-                <td>${show(solvent.density)}</td>
-                <td>${show(solvent.dielectric_constant)}</td>
-                <td>${solvent.water_miscibility || '-'}</td>
-                <td>${show(solvent.alpha)}</td>
-                <td>${show(solvent.beta)}</td>
-                <td>${show(solvent.pistar)}</td>
                 
-                <td style="font-size: 0.85em;">${show(solvent.h_phrases)}</td>
-                <td>${show(solvent.oxidation_resistance)}</td>
-                <td>${show(solvent.reduction_resistance)}</td>
-                <td>${show(solvent.acid_resistance)}</td>
-                <td>${show(solvent.basic_resistance)}</td>
+                <td class="toggle-col c-bp">${show(solvent.boiling_point)}</td>
+                <td class="toggle-col c-dens">${show(solvent.density)}</td>
+                <td class="toggle-col c-diel">${show(solvent.dielectric_constant)}</td>
+                <td class="toggle-col c-misc">${solvent.water_miscibility || '-'}</td>
+                <td class="toggle-col c-alpha">${show(solvent.alpha)}</td>
+                <td class="toggle-col c-beta">${show(solvent.beta)}</td>
+                <td class="toggle-col c-pi">${show(solvent.pistar)}</td>
+                
+                <td class="toggle-col c-h" style="font-size: 0.85em;">${show(solvent.h_phrases)}</td>
+                <td class="toggle-col c-ox" style="${solvent.oxidation_resistance === 'yes' ? 'background:#d4edda' : ''}">${show(solvent.oxidation_resistance)}</td>
+                <td class="toggle-col c-red">${show(solvent.reduction_resistance)}</td>
+                <td class="toggle-col c-acid">${show(solvent.acid_resistance)}</td>
+                <td class="toggle-col c-basic">${show(solvent.basic_resistance)}</td>
             `;
             tbody.appendChild(tr);
         });
+        
+        // IMPORTANTE: Dopo aver creato la tabella, dobbiamo ri-applicare la visibilità
+        // in base alle checkbox che l'utente ha già selezionato
+        applyColumnVisibility();
 
     } catch (error) {
         console.error(error);
@@ -259,4 +267,30 @@ function resetSliderGroup(id, min, max) {
     maxS.value = max;
     // Attiva l'evento 'input' per aggiornare la visualizzazione del range
     minS.dispatchEvent(new Event('input'));
+}
+// --- GESTIONE VISIBILITÀ COLONNE ---
+
+// 1. Ascolta i click sulle checkbox delle colonne
+document.querySelectorAll('.col-toggle').forEach(toggle => {
+    toggle.addEventListener('change', applyColumnVisibility);
+});
+
+// 2. Funzione che accende/spegne le colonne
+function applyColumnVisibility() {
+    // Per ogni checkbox nel menu colonne
+    document.querySelectorAll('.col-toggle').forEach(toggle => {
+        const targetClass = toggle.getAttribute('data-target'); // es. "c-bp"
+        const isVisible = toggle.checked;
+
+        // Seleziona TUTTI gli elementi (th e td) che hanno quella classe
+        const cells = document.querySelectorAll(`.${targetClass}`);
+
+        cells.forEach(cell => {
+            if (isVisible) {
+                cell.classList.add('visible');
+            } else {
+                cell.classList.remove('visible');
+            }
+        });
+    });
 }

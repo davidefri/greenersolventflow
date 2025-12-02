@@ -119,25 +119,40 @@
         </div>
 
         <p id="risultati-count">Ready to search.</p>
-
+<details id="column-selector">
+    <summary style="cursor: pointer; font-weight: bold; color: #2c3e50;">⚙️ Show/Hide Columns</summary>
+    <div class="col-toggles-grid" style="margin-top: 10px;">
+        <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-diel"> Dielectric Const.</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-misc"> Water Misc.</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-alpha"> Alpha</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-beta"> Beta</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-pi"> Pi Star</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-h"> H Phrases</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-ox"> Oxidation Res.</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-red"> Reduction Res.</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-acid"> Acid Res.</label>
+        <label><input type="checkbox" class="col-toggle" data-target="c-basic"> Basic Res.</label>
+    </div>
+</details>
         <table id="risultati-tabella">
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>CAS</th>
-                    <th>Boiling Point</th>
-                    <th>Density</th> <th>Diel. Const.</th>
-                    <th>Water Misc.</th>
-                    <th>Alpha</th>
-                    <th>Beta</th>
-                    <th>Pi Star</th>
-                    <th>H Phrases</th>
-                    <th>Oxidation</th>
-                    <th>Reduction</th>
-                    <th>Acid Res.</th>
-                    <th>Basic Res.</th>
-                </tr>
-            </thead>
+    <tr>
+        <th>Name</th> <th>CAS</th>  <th class="toggle-col c-bp">Boiling Point</th>
+        <th class="toggle-col c-dens">Density</th>
+        <th class="toggle-col c-diel">Diel. Const.</th>
+        <th class="toggle-col c-misc">Water Misc.</th>
+        <th class="toggle-col c-alpha">Alpha</th>
+        <th class="toggle-col c-beta">Beta</th>
+        <th class="toggle-col c-pi">Pi Star</th>
+        <th class="toggle-col c-h">H Phrases</th>
+        <th class="toggle-col c-ox">Oxidation</th>
+        <th class="toggle-col c-red">Reduction</th>
+        <th class="toggle-col c-acid">Acid Res.</th>
+        <th class="toggle-col c-basic">Basic Res.</th>
+    </tr>
+</thead>
             <tbody id="tabella-corpo">
                 </tbody>
         </table>
