@@ -90,26 +90,21 @@ export default {
                     params.push(parseFloat(maxPistar));
                 }
 
-                // --- NUOVI FILTRI: Resistenza Chimica (Dal Modal Compatibility) ---
+                // --- NUOVI FILTRI: Resistenza Chimica (Corretti per 'yes' case-sensitive) ---
 
-               
+                const filterResistance = (paramName) => {
+                    const value = url.searchParams.get(paramName);
+                    if (value === 'required') {
+                        // Filtra ESATTAMENTE per 'yes' (case-sensitive, come nel tuo esempio di INSERT)
+                        sql += ` AND ${paramName} = ?${paramIndex++}`;
+                        params.push('yes'); 
+                    }
+                }
 
-                const filterResistance = (paramName, expectedValue) => {
-                    const value = url.searchParams.get(paramName);
-                    if (value === 'required') {
-                        // MODIFICATO: Filtra ESATTAMENTE per il valore specificato (es. 'Yes' o 'High')
-                        sql += ` AND ${paramName} = ?${paramIndex++}`;
-                        params.push(expectedValue); 
-                    }
-                }
-
-                // Modifica le chiamate per specificare il valore atteso (es. 'High' o 'Yes')
-                // *** SOSTITUISCI 'High' CON IL VALORE ESATTO CHE VUOI FILTRARE (es. 'Yes') ***
-                
-                filterResistance('oxidation_resistance', 'yes'); // Assumendo che "Yes" sia la resistenza desiderata
-                filterResistance('reduction_resistance', 'yes');
-                filterResistance('acid_resistance', 'yes');
-                filterResistance('basic_resistance', 'yes');
+                filterResistance('oxidation_resistance');
+                filterResistance('reduction_resistance');
+                filterResistance('acid_resistance');
+                filterResistance('basic_resistance');
 
                 // Esecuzione
                 let statement = env.DB.prepare(sql);
