@@ -1,155 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greener Solvent Flow 🧪</title>
-    <link rel="stylesheet" href="main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greener Solvent Flow 🧪</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Greener Solvent Flow</h1>
-        
-        <div id="filtri">
-            <input type="text" id="search" placeholder="Search by Name or CAS...">
-            
-            <select id="water_miscibility">
-                <option value="">-- Water Miscibility --</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-                <option value="Slightly">Slightly</option>
-            </select>
-            
-                        
-            <label>Boiling Point (°C):</label>
-            <input type="number" id="min_bp" placeholder="Min" style="width: 80px;">
-            <input type="number" id="max_bp" placeholder="Max" style="width: 80px;">
-            
-            <button id="toggle-compatibility">🔬 Compatibility Selector</button>
-            <button id="toggle-kt-filters">Kamlet-Taft Parameter Selector</button>
-            <button id="reset-filters">Reset All Filters</button>
-            
 
-            <div id="compatibility-modal" class="modal hidden">
-                <div class="modal-content">
-                    <h3>Solvent Stability Requirements</h3>
-                    <p class="description">Select YES if the solvent *must* resist the following environments.</p>
+    <div class="container">
+        <h1>Greener Solvent Flow</h1>
+        
+        <div id="filtri">
+            
+            <input type="text" id="search" placeholder="Search by Name or CAS...">
+            
+            <select id="water_miscibility">
+                <option value="">-- Water Miscibility --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Slightly">Slightly</option>
+            </select>
+            
+            <div class="boiling-group">
+                <label>BP (°C):</label>
+                <input type="number" id="min_bp" placeholder="Min">
+                <span>-</span>
+                <input type="number" id="max_bp" placeholder="">
+            </div>
+            
+            <button id="toggle-compatibility">🔬 Compatibility</button>
+            <button id="toggle-kt-filters">Kamlet-Taft</button>
+            
+            <button id="reset-btn">Reset All</button>
+        </div>
 
-                    <div class="compatibility-filter-group">
-                        <label for="compat-oxidation" style="cursor: pointer;">Strong Oxidizing Environment?</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="compat-oxidation" data-param="oxidation_resistance" class="compat-checkbox">
-                            <label for="compat-oxidation" class="toggle-label"></label>
-                        </div>
-                    </div>
+        <p id="risultati-count">Ready to search.</p>
 
-                    <div class="compatibility-filter-group">
-                        <label for="compat-reduction" style="cursor: pointer;">Strong Reducing Environment?</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="compat-reduction" data-param="reduction_resistance" class="compat-checkbox">
-                            <label for="compat-reduction" class="toggle-label"></label>
-                        </div>
-                    </div>
-                    
-                    <div class="compatibility-filter-group">
-                        <label for="compat-acid" style="cursor: pointer;">Acidic Environment?</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="compat-acid" data-param="acid_resistance" class="compat-checkbox">
-                            <label for="compat-acid" class="toggle-label"></label>
-                        </div>
-                    </div>
+        <div class="table-wrapper">
+            <table id="risultati-tabella">
+                <thead>
+                    <tr>
+                        <th data-sort="iupac_name" class="sortable">Name </th> 
+                        <th data-sort="cas" class="sortable">CAS </th> 
+                        <th data-sort="boiling_point" class="toggle-col c-bp sortable">Boiling Point </th>
+                        <th data-sort="density" class="toggle-col c-dens sortable">Density </th>
+                        <th data-sort="dielectric_constant" class="toggle-col c-diel sortable">Diel. Const. </th>
+                        <th data-sort="water_miscibility" class="toggle-col c-misc sortable">Water Misc. </th>
+                        <th data-sort="alpha" class="toggle-col c-alpha sortable">Alpha </th>
+                        <th data-sort="beta" class="toggle-col c-beta sortable">Beta </th>
+                        <th data-sort="pistar" class="toggle-col c-pi sortable">Pi Star </th>
+                        <th data-sort="h_phrases" class="toggle-col c-h sortable">H Phrases </th>
+                        <th data-sort="oxidation_resistance" class="toggle-col c-ox sortable">Oxidation </th>
+                        <th data-sort="reduction_resistance" class="toggle-col c-red sortable">Reduction </th>
+                        <th data-sort="acid_resistance" class="toggle-col c-acid sortable">Acid Res. </th>
+                        <th data-sort="basic_resistance" class="toggle-col c-basic sortable">Basic Res. </th>
+                    </tr>
+                </thead>
+                <tbody id="tabella-corpo">
+                    </tbody>
+            </table>
+        </div>
+    </div> 
 
-                    <div class="compatibility-filter-group">
-                        <label for="compat-basic" style="cursor: pointer;">Basic Environment?</label>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="compat-basic" data-param="basic_resistance" class="compat-checkbox">
-                            <label for="compat-basic" class="toggle-label"></label>
-                        </div>
-                    </div>
+    <details id="column-selector">
+        <summary>⚙️ Columns</summary>
+        <div class="col-toggles-grid">
+            <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-diel"> Dielectric Const.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-misc"> Water Misc.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-alpha"> Alpha</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-beta"> Beta</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-pi"> Pi Star</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-h"> H Phrases</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-ox"> Oxidation Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-red"> Reduction Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-acid"> Acid Res.</label>
+            <label><input type="checkbox" class="col-toggle" data-target="c-basic"> Basic Res.</label>
+        </div>
+    </details>
 
-                    <button id="apply-compatibility" class="apply-button">Apply Filters</button>
-                    <button id="reset-compatibility" class="apply-button">Reset Compatibility</button>
-                    <button id="close-compatibility" class="close-button">Close</button>
-                </div>
-            </div>
-            <div id="kt-slider-filters" class="hidden">
-                <h3>Kamlet-Taft Range Filter</h3>
-                <p class="description">Filter by solvent properties:  α, β, and π*.</p>
+    <div id="compatibility-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Solvent Stability Requirements</h3>
+            <p class="description">Select if the solvent must resist the following environments.</p>
 
-                <div class="kt-slider-group" id="alpha-group">
-                    <label>Hydrogen bond donor (α): <span class="range-display">-0.05 - 1.96</span></label>
-                    <div class="range-track"></div> 
-                    <div class="range-fill"></div>
-                    <input type="range" min="-5" max="196" value="-5" class="kt-min-slider">
-                    <input type="range" min="-5" max="196" value="196" class="kt-max-slider">
-                    <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
-                </div>
+            <div class="compatibility-filter-group">
+                <label for="compat-oxidation" style="cursor: pointer;">Strong Oxidizing Environment</label>
+                <div class="switch">
+                    <input type="checkbox" id="compat-oxidation" data-param="oxidation_resistance" class="compat-checkbox">
+                    <span class="slider"></span>
+                </div>
+            </div>
 
-                <div class="kt-slider-group" id="beta-group">
-                    <label>Hydrogen bond acceptor (β): <span class="range-display">-0.08 - 1.43</span></label>
-                    <div class="range-track"></div>
-                    <div class="range-fill"></div>
-                    <input type="range" min="-8" max="143" value="-8" class="kt-min-slider">
-                    <input type="range" min="-8" max="143" value="143" class="kt-max-slider">
-                    <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
-                </div>
+            <div class="compatibility-filter-group">
+                <label for="compat-reduction" style="cursor: pointer;">Strong Reducing Environment</label>
+                <div class="switch">
+                    <input type="checkbox" id="compat-reduction" data-param="reduction_resistance" class="compat-checkbox">
+                    <span class="slider"></span>
+                </div>
+            </div>
+            
+            <div class="compatibility-filter-group">
+                <label for="compat-acid" style="cursor: pointer;">Acidic Environment</label>
+                <div class="switch">
+                    <input type="checkbox" id="compat-acid" data-param="acid_resistance" class="compat-checkbox">
+                    <span class="slider"></span>
+                </div>
+            </div>
 
-                <div class="kt-slider-group" id="pistar-group">
-                    <label>Polarizability (π*): <span class="range-display">-0.41 - 1.21</span></label>
-                    <div class="range-track"></div>
-                    <div class="range-fill"></div>
-                    <input type="range" min="-41" max="121" value="-41" class="kt-min-slider">
-                    <input type="range" min="-41" max="121" value="121" class="kt-max-slider">
-                    <div class="kt-labels"><span>Low Pol.</span><span>High Pol.</span></div>
-                </div>
-            </div>
-        </div>
+            <div class="compatibility-filter-group">
+                <label for="compat-basic" style="cursor: pointer;">Basic Environment</label>
+                <div class="switch">
+                    <input type="checkbox" id="compat-basic" data-param="basic_resistance" class="compat-checkbox">
+                    <span class="slider"></span>
+                </div>
+            </div>
 
-        <p id="risultati-count">Ready to search.</p>
+            <button id="apply-compatibility" class="apply-button">Apply Filters</button>
+            <button id="reset-compatibility" class="apply-button" style="background:transparent; border:1px solid #666;">Reset</button>
+            <button id="close-compatibility" class="close-button">Close</button>
+        </div>
+    </div>
+    
+    <div id="kt-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Kamlet-Taft Range Filter</h3>
+            <p class="description">Filter by solvent properties: &alpha;, &beta;, and &pi;*.</p>
 
-        <div class="table-wrapper">
-            <table id="risultati-tabella">
-                <thead>
-                    <tr>
-                        <th data-sort="iupac_name" class="sortable">Name </th> 
-                        <th data-sort="cas" class="sortable">CAS </th>  
-                        <th data-sort="boiling_point" class="toggle-col c-bp sortable">Boiling Point </th>
-                        <th data-sort="density" class="toggle-col c-dens sortable">Density </th>
-                        <th data-sort="dielectric_constant" class="toggle-col c-diel sortable">Diel. Const. </th>
-                        <th data-sort="water_miscibility" class="toggle-col c-misc sortable">Water Misc. </th>
-                        <th data-sort="alpha" class="toggle-col c-alpha sortable">Alpha </th>
-                        <th data-sort="beta" class="toggle-col c-beta sortable">Beta </th>
-                        <th data-sort="pistar" class="toggle-col c-pi sortable">Pi Star </th>
-                        <th data-sort="h_phrases" class="toggle-col c-h sortable">H Phrases </th>
-                        <th data-sort="oxidation_resistance" class="toggle-col c-ox sortable">Oxidation </th>
-                        <th data-sort="reduction_resistance" class="toggle-col c-red sortable">Reduction </th>
-                        <th data-sort="acid_resistance" class="toggle-col c-acid sortable">Acid Res. </th>
-                        <th data-sort="basic_resistance" class="toggle-col c-basic sortable">Basic Res. </th>
-                    </tr>
-                </thead>
-                <tbody id="tabella-corpo">
-                    </tbody>
-            </table>
-        </div>
+            <div id="kt-slider-filters">
+    <div class="kt-slider-group" id="alpha-group">
+        <div class="header-flex">
+            <label>H-bond donor (α):</label>
+            <span class="range-display">0.00 - 1.96</span>
+        </div>
+        
+        <div class="range-wrapper">
+            <div class="range-track"></div>
+            <div class="range-fill"></div>
+            <input type="range" min="-5" max="196" value="-5" class="kt-min-slider" step="1">
+            <input type="range" min="-5" max="196" value="196" class="kt-max-slider" step="1">
+        </div>
 
-    </div> <details id="column-selector">
-        <summary>⚙️ Columns</summary>
-        <div class="col-toggles-grid">
-            <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-diel"> Dielectric Const.</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-misc"> Water Misc.</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-alpha"> Alpha</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-beta"> Beta</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-pi"> Pi Star</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-h"> H Phrases</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-ox"> Oxidation Res.</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-red"> Reduction Res.</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-acid"> Acid Res.</label>
-            <label><input type="checkbox" class="col-toggle" data-target="c-basic"> Basic Res.</label>
-        </div>
-    </details>
+        <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
+    </div>
 
-    <script src="app.js"></script> 
+    <div class="kt-slider-group" id="beta-group">
+        <div class="header-flex">
+            <label>H-bond acceptor (β):</label>
+            <span class="range-display">0.00 - 1.43</span>
+        </div>
+
+        <div class="range-wrapper">
+            <div class="range-track"></div>
+            <div class="range-fill"></div>
+            <input type="range" min="-8" max="143" value="-8" class="kt-min-slider" step="1">
+            <input type="range" min="-8" max="143" value="143" class="kt-max-slider" step="1">
+        </div>
+
+        <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
+    </div>
+
+    <div class="kt-slider-group" id="pistar-group">
+        <div class="header-flex">
+            <label>Polarizability (π*):</label>
+            <span class="range-display">0.00 - 1.21</span>
+        </div>
+
+        <div class="range-wrapper">
+            <div class="range-track"></div>
+            <div class="range-fill"></div>
+            <input type="range" min="-41" max="121" value="-41" class="kt-min-slider" step="1">
+            <input type="range" min="-41" max="121" value="121" class="kt-max-slider" step="1">
+        </div>
+
+        <div class="kt-labels"><span>Low Pol.</span><span>High Pol.</span></div>
+    </div>
+</div>
+            
+            <button id="apply-kt" class="apply-button">Apply Filters</button>
+            <button id="reset-kt" class="apply-button" style="background:transparent; border:1px solid #666;">Reset</button>
+            <button id="close-kt" class="close-button">Close</button>
+        </div>
+    </div>
+
+    
+    <div id="welcome-modal" class="modal">
+        <div class="modal-content welcome-content">
+            <h3>🧪Welcome to Greener Solvent Flow🧪</h3>
+            <h3>⚠️Chemical Safety Disclaimer⚠️</h3>
+            <p>
+                The information presented on this website is provided for informational and educational purposes only and must not be construed as absolute or universally definitive. The author explicitly disclaim all liability for any damage, injury, loss, or negative consequences resulting from the improper or unsafe use of chemical solvents or procedures mentioned herein, particularly when conducted without adequate safety measures or professional supervision.
+            </p>
+            <p>
+                The handling of hazardous chemicals requires expertise and strict adherence to all relevant safety regulations and Safety Data Sheets (SDS). It remains the sole responsibility of the user to ensure safe handling, appropriate protective equipment, and compliance with all established safety protocols. Always verify solvent properties and compatibility for your specific application before use.
+            </p>
+
+            <button id="close-welcome" class="apply-button">OK, UNDERSTOOD</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script> 
 </body>
 </html>
