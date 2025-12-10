@@ -131,8 +131,8 @@ h1 {
 #filtri button,
 .boiling-group {
     height: 42px !important;
-    font-size: 0.9rem;
-    box-sizing: border-box;
+    font-size: 0.7rem;
+    box-sizing:content-box;
     border-radius: 6px;
     vertical-align: middle;
 }
@@ -177,7 +177,7 @@ h1 {
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid #5c4033;
     padding: 0 10px;
-    gap: 8px;
+    gap: 0px;
     width: auto;
     transition: border-color 0.3s;
 }
@@ -197,10 +197,9 @@ h1 {
 
 /* --- MODIFICA INPUT MIN/MAX (Rimozione quadrati bianchi) --- */
 .boiling-group input {
-    width: 60px !important;
+    width: 38px !important;
     height: 32px !important;
     text-align: center;
-    
     /* Rimozione totale sfondo e bordi */
     background: transparent !important; 
     border: none !important;
