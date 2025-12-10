@@ -380,7 +380,6 @@ h1 {
 
 /* Icona ingranaggio (opzionale se vuoi aggiungerla via CSS after) */
 #column-selector summary::after {
-    content;
     margin-left: 8px;
     font-size: 1.1em;
 }
@@ -581,40 +580,41 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 @media (max-width: 768px) {
     
     body {
-        /* Impedisce lo scroll orizzontale indesiderato su tutto il sito */
-        overflow-x: hidden; 
-        padding: 10px;
+        overflow-x: hidden; /* Evita scroll orizzontale della pagina intera */
+        padding: 5px; /* Meno padding esterno */
     }
 
     .container {
-        /* RESET DELLE DIMENSIONI PER MOBILE */
-        width: auto !important;      /* Occupa lo spazio disponibile */
-        max-width: 100% !important;  /* Non uscire mai dallo schermo */
-        min-width: 0 !important;     /* Rimuovi limiti minimi */
-        margin: 20px auto !important; 
-        
-        /* Riduciamo il padding per guadagnare spazio */
-        padding: 20px 15px !important; 
-        
-        /* Assicura che il contenitore non esca dallo schermo */
-        box-sizing: border-box; 
+        width: 100vw !important; /* Occupa tutta la larghezza viewport */
+        max-width: 100vw !important;
+        margin: 0 !important; /* Niente margini esterni */
+        border-radius: 0 !important; /* Squadrato su mobile per guadagnare spazio */
+        border-left: none;
+        border-right: none;
+        padding: 20px 5px !important; /* Padding laterale minimo */
+        box-sizing: border-box;
     }
 
     h1 {
-        font-size: 1.8rem; /* Titolo più piccolo */
+        font-size: 1.4rem; 
         margin-bottom: 20px;
-        word-wrap: break-word; /* A capo se troppo lungo */
+        word-wrap: break-word;
+        padding: 0 10px;
     }
 
-    /* FILTRI IMPILATI */
+    /* FILTRI COMPATTI */
     #filtri {
-        flex-direction: column; /* Impila gli elementi verticalmente */
-        align-items: stretch;   /* Allarga gli elementi a tutto schermo */
+        flex-direction: column; 
+        align-items: stretch;
         padding: 15px;
         gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
     }
 
-    /* Input e bottoni a larghezza piena su mobile per facilitare il tocco */
     #search, 
     #filtri select, 
     #filtri button, 
@@ -624,34 +624,101 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
         flex-basis: auto !important;
     }
 
-    /* Fix specifico per il gruppo Boiling Point */
     .boiling-group {
-        justify-content: center; /* Centra i numeri */
+        justify-content: center;
     }
 
-    /* TABELLA SCROLLABILE */
+    /* --- TABELLA SCROLLABILE (LA FIX VERA) --- */
     .table-wrapper {
-        /* Forza il wrapper a stare dentro lo schermo */
+        /* Il wrapper definisce la finestra di scorrimento */
         width: 100% !important; 
-        display: block;
-        overflow-x: auto; /* Abilita lo scroll orizzontale SOLO per la tabella */
-        box-shadow: none; /* Alleggerisce la grafica su mobile */
-        border: 1px solid rgba(197, 160, 89, 0.3);
+        max-width: 100vw !important;
+        display: block; /* Fondamentale */
+        
+        overflow-x: auto; /* Scroll orizzontale attivo */
+        -webkit-overflow-scrolling: touch; /* Scroll fluido su iOS */
+        
+        margin-top: 20px;
+        border: none;
+        background: transparent;
+        box-shadow: none;
     }
 
     #risultati-tabella {
-        /* La tabella mantiene la sua larghezza necessaria, attivando lo scroll */
-        width: max-content; 
+        /* La tabella DEVE essere libera di espandersi */
+        width: auto !important; 
+        min-width: 100%;
+        table-layout: auto; /* Lascia che le celle prendano spazio */
+        border-collapse: separate; /* Necessario per lo sticky */
+        border-spacing: 0;
+    }
+    
+    /* --- FORZATURA LARGHEZZA MINIMA CELLE --- */
+    /* Questo è il segreto: ogni colonna deve essere larga almeno tot pixel */
+    #risultati-tabella th,
+    #risultati-tabella td {
+        padding: 12px 10px; 
+        font-size: 0.85rem; 
+        white-space: nowrap; /* Vietato andare a capo */
+        min-width: 110px; /* <--- ECCO LA FIX: Impedisce alle colonne di sparire */
+        box-sizing: border-box;
     }
 
-    /* Fix per la colonna sticky che su mobile a volte dà problemi */
+    /* --- GESTIONE COLONNA "NOME" FISSA --- */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
         left: 0;
         z-index: 20;
-        /* Assicura che lo sfondo copra bene il testo che scorre sotto */
-        background: #1e1510; 
-        border-right: 1px solid rgba(197, 160, 89, 0.2);
+        
+        background: #1a120b; /* Colore di sfondo scuro coprente */
+        
+        /* Larghezza fissa per la prima colonna */
+        min-width: 140px !important;
+        max-width: 140px !important;
+        width: 140px !important;
+        
+        /* Taglia il testo col puntino se troppo lungo */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        /* Bordo e Ombra per stacco netto */
+        border-right: 1px solid rgba(197, 160, 89, 0.5);
+        box-shadow: 4px 0 10px -2px rgba(0,0,0,0.8); 
+    }
+    
+    #risultati-tabella th:first-child {
+        background: #2b1d14; /* Header background */
+        z-index: 30;
+    }
+
+    /* FAB (Floating Action Button) REVISIONE MOBILE */
+    #column-selector {
+        bottom: 20px;
+        right: 20px;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column-reverse; 
+        align-items: flex-end; 
+        gap: 15px; 
+    }
+
+    #column-selector summary {
+        width: auto;
+        white-space: nowrap;
+        text-align: center;
+        z-index: 2;
+        padding: 14px 20px;
+    }
+
+    #column-selector[open] .col-toggles-grid {
+        background: rgba(30, 20, 15, 0.98);
+        border: 1px solid var(--color-brass);
+        border-radius: 12px;
+        padding: 15px;
+        width: 200px; 
+        max-height: 50vh; 
+        backdrop-filter: blur(15px);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.9);
     }
 }
