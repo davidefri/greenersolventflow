@@ -583,10 +583,7 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
 
 @media (max-width: 768px) {
     
-    /* REGOLA D'ORO: Include bordi e padding nel calcolo della larghezza */
-    * {
-        box-sizing: border-box !important;
-    }
+    * { box-sizing: border-box !important; }
 
     body {
         overflow-x: hidden;
@@ -594,16 +591,12 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     }
 
     .container {
-        /* Il contenitore occupa quasi tutto lo schermo ma lascia un respiro */
         width: 96% !important; 
         max-width: 100% !important;
-        margin: 10px auto !important; /* Centrato */
-        
-        /* Padding interno ridotto per dare spazio ai filtri */
+        margin: 10px auto !important;
         padding: 20px 10px !important; 
-        
         border-radius: 12px !important;
-        overflow: hidden; /* Taglia via tutto ciò che sborda per sicurezza */
+        overflow: hidden;
     }
 
     h1 {
@@ -618,37 +611,34 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     #filtri {
         display: flex;
         flex-direction: column; 
-        align-items: stretch; /* Forza i figli a riempire la larghezza */
-        padding: 15px 5px !important; /* Padding laterale minimo nel box filtri */
+        align-items: stretch; 
+        padding: 15px 5px !important;
         gap: 12px;
         width: 100% !important;
-        background: rgba(20, 12, 8, 0.4); /* Leggermente più trasparente su mobile */
+        background: rgba(20, 12, 8, 0.4);
     }
 
-    /* FORZATURA LARGHEZZA INPUT E BOTTONI */
     #search, 
     #filtri select, 
     #filtri button {
-        width: 100% !important;       /* Occupa tutto lo spazio disponibile */
-        max-width: 100% !important;   /* Non uscire MAI */
-        margin: 0 !important;         /* Niente margini laterali che spingono fuori */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
     }
 
-    /* --- FIX BOILING GROUP (Il colpevole principale) --- */
     .boiling-group {
         width: 100% !important;
         max-width: 100% !important;
         display: flex !important;
-        justify-content: space-between !important; /* Distribuisce lo spazio */
+        justify-content: space-between !important;
         align-items: center !important;
         padding: 0 5px !important;
         gap: 5px !important;
     }
 
-    /* Riduciamo un po' gli input numerici per farli stare comodi */
     .boiling-group input {
         width: 45px !important; 
-        min-width: 0 !important; /* Permette di rimpicciolirsi se serve */
+        min-width: 0 !important; 
         font-size: 0.9rem !important;
     }
     
@@ -657,7 +647,6 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
         font-size: 0.8rem;
     }
 
-    /* --- FIX BOTTONE OK (Leggibilità) --- */
     .modal-content .apply-button {
         background: linear-gradient(180deg, #ebd785 0%, #d4af37 50%, #b8860b 100%) !important;
         color: #1a0f0a !important;
@@ -684,19 +673,19 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     
     #risultati-tabella th,
     #risultati-tabella td {
-        padding: 12px 8px; /* Padding celle ridotto */
+        padding: 12px 8px; 
         font-size: 0.8rem; 
         white-space: nowrap; 
     }
 
-    /* Colonna Nome Fissa */
+    /* --- COLONNA NOME (1°) FISSA --- */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
         left: 0;
         z-index: 20;
         background: #1a120b; 
-        min-width: 120px !important; /* Leggermente più stretto */
+        min-width: 120px !important; 
         max-width: 120px !important;
         width: 120px !important;
         border-right: 1px solid rgba(197, 160, 89, 0.4);
@@ -717,6 +706,16 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
         background: #2b1d14; 
         z-index: 30;
         overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* --- COLONNA CAS (2°) ULTRA-COMPATTA --- */
+    #risultati-tabella td:nth-child(2),
+    #risultati-tabella th:nth-child(2) {
+        width: 1% !important; /* Trucco per stringerla al contenuto minimo */
+        white-space: nowrap;
+        padding-left: 2px !important;  /* Ridotto al minimo */
+        padding-right: 4px !important; /* Ridotto al minimo */
+        text-align: center; /* I numeri CAS stanno meglio centrati */
     }
 
     /* FAB */
