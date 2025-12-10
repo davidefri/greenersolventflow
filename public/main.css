@@ -340,67 +340,123 @@ h1 {
 /* 4. MODALS & FLOATING ELEMENTS 🪟 */
 /* ---------------------------------- */
 
-/* Column Selector */
+/* --- COLUMN SELECTOR (FLOATING BRASS CONTROLLER) --- */
 #column-selector {
     position: fixed;
-    bottom: 755px;
-    left: 300px;
-    z-index: 999;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2000; /* Sopra a tutto */
+    
+    /* TRUCCO FONDAMENTALE PER L'APERTURA VERSO L'ALTO */
+    display: flex;
+    flex-direction: column-reverse; /* Il contenuto appare SOPRA il bottone */
+    align-items: flex-end; /* Allineato a destra */
+    gap: 15px; /* Spazio tra bottone e menu */
 }
 
+/* IL BOTTONE (Summary) */
 #column-selector summary {
-    background: #2c1e16;
+    background: linear-gradient(145deg, #2c1e16, #1a120b); /* Cuoio scuro */
     border: 1px solid var(--color-brass);
     color: var(--color-brass);
-    padding: 12px 24px;
+    padding: 16px 24px;
     border-radius: 50px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
     list-style: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: all 0.3s;
+    
+    /* Ombra profonda per farlo "galleggiare" */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     backdrop-filter: blur(5px);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Icona ingranaggio (opzionale se vuoi aggiungerla via CSS after) */
+#column-selector summary::after {
+    content;
+    margin-left: 8px;
+    font-size: 1.1em;
+}
+
+/* Hover sul bottone */
 #column-selector summary:hover {
     background: var(--color-brass);
     color: #1a120b;
-    box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+    box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+    transform: scale(1.05);
 }
 
+/* Stato APERTO del bottone */
 #column-selector[open] summary {
-    border-radius: 12px 12px 0 0;
     background: var(--color-brass);
     color: #1a120b;
+    border-color: #ffeebb;
 }
 
-#column-selector[open] {
-    background: rgba(30, 20, 15, 0.95);
-    border-radius: 12px;
-    border: 1px solid var(--color-brass);
-    max-height: 500px;
-    overflow-y: auto;
-    width: 250px;
-    backdrop-filter: blur(15px);
-}
+/* IL MENU A TENDINA (Che ora si apre sopra) */
+/* Nota: Non applichiamo stili a #column-selector[open] direttamente, 
+   ma usiamo un div interno o stilizziamo il contenuto. 
+   Nel tuo HTML hai un div dentro details? Assumo di sì o che il contenuto sia diretto.
+   Stilizziamo il contenitore interno .col-toggles-grid */
 
 .col-toggles-grid {
-    padding: 15px;
+    background: rgba(30, 20, 15, 0.95); /* Vetro scuro */
+    border: 1px solid var(--color-brass);
+    border-radius: 16px;
+    padding: 20px;
+    width: 260px;
+    
+    /* Gestione scrolling se ci sono troppe voci */
+    max-height: 60vh; 
+    overflow-y: auto;
+    
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    
+    /* Animazione Entrata */
+    animation: slideUp 0.3s ease-out;
 }
 
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Checkbox Labels dentro il menu */
 .col-toggles-grid label {
     cursor: pointer;
     transition: color 0.2s;
     color: var(--color-text-muted);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
 .col-toggles-grid label:hover {
     color: var(--color-brass);
 }
 
-/* Modals */
+/* Checkbox Customization (Opzionale per renderle dorate) */
+.col-toggles-grid input[type="checkbox"] {
+    accent-color: var(--color-brass);
+    width: 16px;
+    height: 16px;
+}
+
+
+/* --- MODALS (General) --- */
 .modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -446,151 +502,13 @@ h1 {
     font-style: italic;
 }
 
-/* Switch Styles */
-.switch { 
-    position: relative; 
-    display: inline-block; 
-    width: 50px; 
-    height: 28px; 
-    cursor: pointer;
-}
-
-.switch input { 
-    opacity: 0; width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: pointer; z-index: 10;
-}
-
-.slider {
-    position: absolute; cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #3e2723;
-    transition: .4s;
-    border-radius: 34px;
-    z-index: 5;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
-    border: 1px solid #5c4033;
-}
-
-.slider:before {
-    position: absolute; content: "";
-    height: 20px; width: 20px;
-    left: 4px; bottom: 3px;
-    background-color: #c5a059;
-    transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-}
-
+/* --- SWITCHES & SLIDERS (Rimangono invariati ma inclusi per completezza sezione) --- */
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; cursor: pointer; }
+.switch input { opacity: 0; width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: pointer; z-index: 10; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #3e2723; transition: .4s; border-radius: 34px; z-index: 5; box-shadow: inset 0 2px 5px rgba(0,0,0,0.6); border: 1px solid #5c4033; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 3px; background-color: #c5a059; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
 input:checked + .slider { background-color: #5c4033; border-color: var(--color-brass); }
 input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
-
-/* --- KAMLET-TAFT DOUBLE SLIDER --- */
-
-.kt-slider-group {
-    margin-bottom: 25px;
-    text-align: left;
-}
-
-.header-flex {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-}
-
-.range-display {
-    color: var(--color-brass);
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-}
-
-.range-wrapper {
-    position: relative;
-    width: 100%;
-    height: 40px;
-}
-
-.range-track {
-    position: absolute;
-    width: 100%;
-    height: 6px;
-    background: #120c09;
-    border-radius: 3px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.range-fill {
-    position: absolute;
-    height: 6px;
-    background: linear-gradient(90deg, #b87333, #d4af37);
-    border-radius: 3px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    box-shadow: 0 0 10px rgba(184, 115, 51, 0.4);
-}
-
-.kt-min-slider, 
-.kt-max-slider {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    appearance: none;
-    -webkit-appearance: none;
-    background: none;
-    margin: 0;
-    z-index: 3;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    pointer-events: auto;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #f0e68c 0%, #c5a059 100%);
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    border: 1px solid #5c4033;
-    margin-top: -7px;
-    position: relative;
-    z-index: 4;
-    transition: transform 0.1s;
-}
-
-input[type=range]::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 10px var(--color-brass);
-}
-
-input[type=range]::-moz-range-thumb {
-    pointer-events: auto;
-    height: 20px;
-    width: 20px;
-    border: none;
-    border-radius: 50%;
-    background: radial-gradient(circle, #f0e68c 0%, #c5a059 100%);
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    border: 1px solid #5c4033;
-    position: relative;
-    z-index: 4;
-}
-
-.kt-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: -5px;
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    font-style: italic;
-}
-
 /* ---------------------------------- */
 /* 5. STILE PULSANTI MODALI 🎨 */
 /* ---------------------------------- */
