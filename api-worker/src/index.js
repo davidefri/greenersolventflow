@@ -1,132 +1,145 @@
 export default {
-    async fetch(request, env) {
-        const url = new URL(request.url);
-        
-        // CORS Headers + CACHE CONTROL
-        const corsHeaders = {
-            'Access-Control-Allow-Origin': '*', 
-            'Access-Control-Allow-Methods': 'GET, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0', 
-        };
+    async fetch(request, env) {
+        const url = new URL(request.url);
+        
+        // CORS Headers + CACHE CONTROL
+        const corsHeaders = {
+            'Access-Control-Allow-Origin': '*', 
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0', 
+        };
 
-        if (request.method === 'OPTIONS') {
-            return new Response(null, { status: 204, headers: corsHeaders });
-        }
+        if (request.method === 'OPTIONS') {
+            return new Response(null, { status: 204, headers: corsHeaders });
+        }
 
-        if (url.pathname === '/solvents') {
-            try {
-                // Selezione colonne
-                let sql = "SELECT cas, iupac_name, boiling_point, density, dielectric_constant, alpha, beta, pistar, water_miscibility, h_phrases, oxidation_resistance, reduction_resistance, acid_resistance, basic_resistance FROM solventi WHERE 1=1";
+        if (url.pathname === '/solvents') {
+            try {
+                // Selezione colonne
+                let sql = "SELECT cas, iupac_name, boiling_point, density, dielectric_constant, alpha, beta, pistar, water_miscibility, h_phrases, oxidation_resistance, reduction_resistance, acid_resistance, basic_resistance FROM solventi WHERE 1=1";
+                
+                const params = [];
+                let paramIndex = 1;
+
+                // --- FILTRI GENERICI ---
+                const search = url.searchParams.get('search');
+                if (search) {
+                    sql += ` AND (iupac_name LIKE ?${paramIndex++} OR cas LIKE ?${paramIndex++})`;
+                    params.push(`%${search}%`, `%${search}%`); 
+                }
+
+                const waterMiscibility = url.searchParams.get('water_miscibility');
+                if (waterMiscibility) {
+                    sql += ` AND LOWER(water_miscibility) = LOWER(?${paramIndex++})`;
+                    params.push(waterMiscibility);
+                }
+
+                // RIMOZIONE LOGICA CATEGORIA (Polarity Class)
+                
+                const minBp = url.searchParams.get('min_bp');
+                if (minBp) {
+                    sql += ` AND boiling_point >= ?${paramIndex++}`;
+                    params.push(parseFloat(minBp));
+                }
+                const maxBp = url.searchParams.get('max_bp');
+                if (maxBp) {
+                    sql += ` AND boiling_point <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxBp));
+                }
+
+                // --- FILTRI KAMLET-TAFT ---
+                
+                // Alpha
+                const minAlpha = url.searchParams.get('min_alpha');
+                if (minAlpha) {
+                    sql += ` AND alpha >= ?${paramIndex++}`;
+                    params.push(parseFloat(minAlpha));
+                }
+                const maxAlpha = url.searchParams.get('max_alpha');
+                if (maxAlpha) {
+                    sql += ` AND alpha <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxAlpha));
+                }
+
+                // Beta
+                const minBeta = url.searchParams.get('min_beta');
+                if (minBeta) {
+                    sql += ` AND beta >= ?${paramIndex++}`;
+                    params.push(parseFloat(minBeta));
+                }
+                const maxBeta = url.searchParams.get('max_beta');
+                if (maxBeta) {
+                    sql += ` AND beta <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxBeta));
+                }
+
+                // Pi Star
+                const minPistar = url.searchParams.get('min_pistar');
+                if (minPistar) {
+                    sql += ` AND pistar >= ?${paramIndex++}`;
+                    params.push(parseFloat(minPistar));
+                }
+                const maxPistar = url.searchParams.get('max_pistar');
+                if (maxPistar) {
+                    sql += ` AND pistar <= ?${paramIndex++}`;
+                    params.push(parseFloat(maxPistar));
+                }
+
+                // --- FILTRI: Resistenza Chimica ---
+                
+                const filterResistance = (paramName) => {
+                    const value = url.searchParams.get(paramName);
+                    
+                    const validValues = ['required', 'yes', 'true', 'on', '1'];
+
+                    if (value && validValues.includes(value.toLowerCase())) {
+                        // Importante: Nel database cerchiamo rigorosamente 'yes'
+                        sql += ` AND ${paramName} = ?${paramIndex++}`;
+                        params.push('yes'); 
+                    }
+                }
+
+                filterResistance('oxidation_resistance');
+                filterResistance('reduction_resistance');
+                filterResistance('acid_resistance');
+                filterResistance('basic_resistance');
                 
-                const params = [];
-                let paramIndex = 1;
+                // --- NUOVA LOGICA: ORDINAMENTO ---
+                const sortBy = url.searchParams.get('sort_by');
+                const sortDir = url.searchParams.get('sort_dir');
 
-                // --- FILTRI GENERICI ---
-                const search = url.searchParams.get('search');
-                if (search) {
-                    sql += ` AND (iupac_name LIKE ?${paramIndex++} OR cas LIKE ?${paramIndex++})`;
-                    params.push(`%${search}%`, `%${search}%`); 
+                // Lista bianca delle colonne ordinabili per sicurezza
+                const allowedColumns = [
+                    'iupac_name', 'cas', 'boiling_point', 'density', 'dielectric_constant', 
+                    'alpha', 'beta', 'pistar', 'water_miscibility', 'h_phrases', 
+                    'oxidation_resistance', 'reduction_resistance', 'acid_resistance', 'basic_resistance'
+                ];
+
+                if (sortBy && allowedColumns.includes(sortBy)) {
+                    const direction = (sortDir && sortDir.toUpperCase() === 'DESC') ? 'DESC' : 'ASC';
+                    // Aggiungi la clausola ORDER BY. Per le colonne numeriche, NULL viene ordinato come valore.
+                    sql += ` ORDER BY ${sortBy} ${direction}`;
                 }
 
-                const waterMiscibility = url.searchParams.get('water_miscibility');
-                if (waterMiscibility) {
-                    sql += ` AND LOWER(water_miscibility) = LOWER(?${paramIndex++})`;
-                    params.push(waterMiscibility);
-                }
 
-                const categoria = url.searchParams.get('categoria');
-                if (categoria) {
-                    sql += ` AND categoria = ?${paramIndex++}`;
-                    params.push(categoria);
-                }
+                // Esecuzione
+                let statement = env.DB.prepare(sql);
+                if (params.length > 0) {
+                    statement = statement.bind(...params);
+                }
 
-                const minBp = url.searchParams.get('min_bp');
-                if (minBp) {
-                    sql += ` AND boiling_point >= ?${paramIndex++}`;
-                    params.push(parseFloat(minBp));
-                }
-                const maxBp = url.searchParams.get('max_bp');
-                if (maxBp) {
-                    sql += ` AND boiling_point <= ?${paramIndex++}`;
-                    params.push(parseFloat(maxBp));
-                }
+                const { results } = await statement.all();
 
-                // --- FILTRI KAMLET-TAFT ---
-                
-                // Alpha
-                const minAlpha = url.searchParams.get('min_alpha');
-                if (minAlpha) {
-                    sql += ` AND alpha >= ?${paramIndex++}`;
-                    params.push(parseFloat(minAlpha));
-                }
-                const maxAlpha = url.searchParams.get('max_alpha');
-                if (maxAlpha) {
-                    sql += ` AND alpha <= ?${paramIndex++}`;
-                    params.push(parseFloat(maxAlpha));
-                }
+                return new Response(JSON.stringify(results), {
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                });
+            } catch (e) {
+                console.error("Database Error:", e); 
+                return new Response(JSON.stringify({ error: e.message, sql }), { status: 500, headers: corsHeaders });
+            }
+        }
 
-                // Beta
-                const minBeta = url.searchParams.get('min_beta');
-                if (minBeta) {
-                    sql += ` AND beta >= ?${paramIndex++}`;
-                    params.push(parseFloat(minBeta));
-                }
-                const maxBeta = url.searchParams.get('max_beta');
-                if (maxBeta) {
-                    sql += ` AND beta <= ?${paramIndex++}`;
-                    params.push(parseFloat(maxBeta));
-                }
-
-                // Pi Star
-                const minPistar = url.searchParams.get('min_pistar');
-                if (minPistar) {
-                    sql += ` AND pistar >= ?${paramIndex++}`;
-                    params.push(parseFloat(minPistar));
-                }
-                const maxPistar = url.searchParams.get('max_pistar');
-                if (maxPistar) {
-                    sql += ` AND pistar <= ?${paramIndex++}`;
-                    params.push(parseFloat(maxPistar));
-                }
-
-                // --- FILTRI: Resistenza Chimica (AGGIORNATO) ---
-                
-                const filterResistance = (paramName) => {
-                    const value = url.searchParams.get(paramName);
-                    
-                    // Questa lista rende il filtro robusto: accetta 'required', 'yes', 'true', ecc.
-                    const validValues = ['required', 'yes', 'true', 'on', '1'];
-
-                    if (value && validValues.includes(value.toLowerCase())) {
-                        // Importante: Nel database cerchiamo rigorosamente 'yes'
-                        sql += ` AND ${paramName} = ?${paramIndex++}`;
-                        params.push('yes'); 
-                    }
-                }
-
-                filterResistance('oxidation_resistance');
-                filterResistance('reduction_resistance');
-                filterResistance('acid_resistance');
-                filterResistance('basic_resistance');
-
-                // Esecuzione
-                let statement = env.DB.prepare(sql);
-                if (params.length > 0) {
-                    statement = statement.bind(...params);
-                }
-
-                const { results } = await statement.all();
-
-                return new Response(JSON.stringify(results), {
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-                });
-            } catch (e) {
-                console.error("Database Error:", e); 
-                return new Response(JSON.stringify({ error: e.message, sql }), { status: 500, headers: corsHeaders });
-            }
-        }
-
-        return new Response('Not Found', { status: 404 });
-    },
+        return new Response('Not Found', { status: 404 });
+    },
 };
