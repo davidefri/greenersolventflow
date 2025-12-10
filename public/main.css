@@ -1,4 +1,4 @@
-/* public/main.css - THEME: "VINTAGE LABORATORY & BRASS" (Final Polish) 🕰️📜✨ */
+/* public/main.css - THEME: "VINTAGE LABORATORY & BRASS" (Final Master) 🕰️📜✨ */
 
 /* ---------------------------------- */
 /* 1. GLOBAL STYLES & TYPOGRAPHY 🌎 */
@@ -46,7 +46,7 @@ body {
     margin: 0;
 }
 
-/* Scrollbar */
+/* Scrollbar Personalizzata */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
 ::-webkit-scrollbar-thumb { background: #5c4033; border: 1px solid var(--color-brass); border-radius: 4px; }
@@ -91,7 +91,7 @@ h1 {
 }
 
 /* ---------------------------------- */
-/* 2. FILTER SECTION (COMPACT DASHBOARD) ⚙️ */
+/* 2. FILTER SECTION (DASHBOARD) ⚙️ */
 /* ---------------------------------- */
 #filtri {
     background: rgba(20, 12, 8, 0.6);
@@ -131,8 +131,8 @@ h1 {
 #filtri button,
 .boiling-group {
     height: 42px !important;
-    font-size: 0.7rem;
-    box-sizing:content-box;
+    font-size: 0.9rem;
+    box-sizing: content-box; /* Adatta meglio bordi e padding */
     border-radius: 6px;
     vertical-align: middle;
 }
@@ -147,9 +147,8 @@ h1 {
     transition: all 0.3s ease;
 }
 
-/* --- MODIFICA COLORE TESTO SELECT (Non più bianco) --- */
 #filtri select {
-    color: var(--color-brass); /* Oro/Ottone per il testo della dropdown */
+    color: var(--color-brass); /* Oro/Ottone per il testo dropdown */
     font-weight: 600;
     cursor: pointer;
 }
@@ -193,31 +192,28 @@ h1 {
     white-space: nowrap;
     margin: 0;
     font-weight: 600;
+    padding-right: 8px;
 }
 
-/* --- MODIFICA INPUT MIN/MAX (Rimozione quadrati bianchi) --- */
 .boiling-group input {
-    width: 38px !important;
+    width: 40px !important;
     height: 32px !important;
     text-align: center;
-    /* Rimozione totale sfondo e bordi */
     background: transparent !important; 
     border: none !important;
     box-shadow: none !important;
-    
     color: var(--color-cashmere) !important;
     font-weight: bold;
 }
 
-/* Rimuoviamo il focus background bianco/trasparente per evitare il quadrato al click */
 .boiling-group input:focus {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    color: var(--color-gold) !important; /* Diventa oro quando scrivi */
+    color: var(--color-gold) !important;
 }
 
-/* E. BOTTONI */
+/* E. BOTTONI FILTRI */
 #filtri button {
     padding: 0 24px;
     background: transparent;
@@ -231,7 +227,6 @@ h1 {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 0 0 var(--color-brass);
 }
 
 #filtri button:hover {
@@ -241,7 +236,7 @@ h1 {
     transform: translateY(-1px);
 }
 
-/* Bottone Reset */
+/* Bottone Reset Generale */
 #reset-btn {
     border-color: var(--color-danger) !important;
     color: var(--color-danger) !important;
@@ -264,7 +259,6 @@ h1 {
     margin: 30px auto;
     border-radius: 12px;
     border: 1px solid rgba(197, 160, 89, 0.15);
-    
     box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
     background: rgba(10, 5, 2, 0.3);
 }
@@ -308,7 +302,7 @@ h1 {
     color: white;
 }
 
-/* Sticky Column */
+/* Sticky Column Name Styling (Desktop) */
 #risultati-tabella td:first-child,
 #risultati-tabella th:first-child {
     text-align: left;
@@ -331,7 +325,7 @@ h1 {
 .sortable.sorted-asc::after { content: " ▲"; color: var(--color-copper); }
 .sortable.sorted-desc::after { content: " ▼"; color: var(--color-copper); }
 
-/* Column Visibility */
+/* Column Visibility Classes */
 .toggle-col { display: none; }
 .toggle-col.visible { display: table-cell; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -340,23 +334,22 @@ h1 {
 /* 4. MODALS & FLOATING ELEMENTS 🪟 */
 /* ---------------------------------- */
 
-/* --- COLUMN SELECTOR (FLOATING BRASS CONTROLLER) --- */
+/* Column Selector (FAB) - Desktop Logic */
 #column-selector {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 2000; /* Sopra a tutto */
+    z-index: 2000;
     
-    /* TRUCCO FONDAMENTALE PER L'APERTURA VERSO L'ALTO */
+    /* Drop-up logic */
     display: flex;
-    flex-direction: column-reverse; /* Il contenuto appare SOPRA il bottone */
-    align-items: flex-end; /* Allineato a destra */
-    gap: 15px; /* Spazio tra bottone e menu */
+    flex-direction: column-reverse; 
+    align-items: flex-end; 
+    gap: 15px; 
 }
 
-/* IL BOTTONE (Summary) */
 #column-selector summary {
-    background: linear-gradient(145deg, #2c1e16, #1a120b); /* Cuoio scuro */
+    background: linear-gradient(145deg, #2c1e16, #1a120b);
     border: 1px solid var(--color-brass);
     color: var(--color-brass);
     padding: 16px 24px;
@@ -367,24 +360,14 @@ h1 {
     font-size: 0.85rem;
     letter-spacing: 1px;
     list-style: none;
-    
-    /* Ombra profonda per farlo "galleggiare" */
     box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s;
     backdrop-filter: blur(5px);
-    
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Icona ingranaggio (opzionale se vuoi aggiungerla via CSS after) */
-#column-selector summary::after {
-    margin-left: 8px;
-    font-size: 1.1em;
-}
-
-/* Hover sul bottone */
 #column-selector summary:hover {
     background: var(--color-brass);
     color: #1a120b;
@@ -392,38 +375,25 @@ h1 {
     transform: scale(1.05);
 }
 
-/* Stato APERTO del bottone */
 #column-selector[open] summary {
     background: var(--color-brass);
     color: #1a120b;
     border-color: #ffeebb;
 }
 
-/* IL MENU A TENDINA (Che ora si apre sopra) */
-/* Nota: Non applichiamo stili a #column-selector[open] direttamente, 
-   ma usiamo un div interno o stilizziamo il contenuto. 
-   Nel tuo HTML hai un div dentro details? Assumo di sì o che il contenuto sia diretto.
-   Stilizziamo il contenitore interno .col-toggles-grid */
-
 .col-toggles-grid {
-    background: rgba(30, 20, 15, 0.95); /* Vetro scuro */
+    background: rgba(30, 20, 15, 0.95);
     border: 1px solid var(--color-brass);
     border-radius: 16px;
     padding: 20px;
     width: 260px;
-    
-    /* Gestione scrolling se ci sono troppe voci */
     max-height: 60vh; 
     overflow-y: auto;
-    
     backdrop-filter: blur(15px);
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    
     display: flex;
     flex-direction: column;
     gap: 12px;
-    
-    /* Animazione Entrata */
     animation: slideUp 0.3s ease-out;
 }
 
@@ -432,7 +402,6 @@ h1 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Checkbox Labels dentro il menu */
 .col-toggles-grid label {
     cursor: pointer;
     transition: color 0.2s;
@@ -447,15 +416,7 @@ h1 {
     color: var(--color-brass);
 }
 
-/* Checkbox Customization (Opzionale per renderle dorate) */
-.col-toggles-grid input[type="checkbox"] {
-    accent-color: var(--color-brass);
-    width: 16px;
-    height: 16px;
-}
-
-
-/* --- MODALS (General) --- */
+/* Modals (General) */
 .modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -501,13 +462,27 @@ h1 {
     font-style: italic;
 }
 
-/* --- SWITCHES & SLIDERS (Rimangono invariati ma inclusi per completezza sezione) --- */
+/* Switch Styles */
 .switch { position: relative; display: inline-block; width: 50px; height: 28px; cursor: pointer; }
 .switch input { opacity: 0; width: 100%; height: 100%; position: absolute; top: 0; left: 0; cursor: pointer; z-index: 10; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #3e2723; transition: .4s; border-radius: 34px; z-index: 5; box-shadow: inset 0 2px 5px rgba(0,0,0,0.6); border: 1px solid #5c4033; }
 .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 3px; background-color: #c5a059; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
 input:checked + .slider { background-color: #5c4033; border-color: var(--color-brass); }
 input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
+
+/* --- KAMLET-TAFT DOUBLE SLIDER --- */
+.kt-slider-group { margin-bottom: 25px; text-align: left; }
+.header-flex { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--color-text-light); }
+.range-display { color: var(--color-brass); font-weight: bold; font-family: 'Courier New', monospace; }
+.range-wrapper { position: relative; width: 100%; height: 40px; }
+.range-track { position: absolute; width: 100%; height: 6px; background: #120c09; border-radius: 3px; top: 50%; transform: translateY(-50%); z-index: 1; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.05); }
+.range-fill { position: absolute; height: 6px; background: linear-gradient(90deg, #b87333, #d4af37); border-radius: 3px; top: 50%; transform: translateY(-50%); z-index: 2; box-shadow: 0 0 10px rgba(184, 115, 51, 0.4); }
+.kt-min-slider, .kt-max-slider { position: absolute; width: 100%; top: 50%; transform: translateY(-50%); pointer-events: none; appearance: none; -webkit-appearance: none; background: none; margin: 0; z-index: 3; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; height: 20px; width: 20px; border-radius: 50%; background: radial-gradient(circle, #f0e68c 0%, #c5a059 100%); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); border: 1px solid #5c4033; margin-top: -7px; position: relative; z-index: 4; transition: transform 0.1s; }
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 10px var(--color-brass); }
+input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width: 20px; border: none; border-radius: 50%; background: radial-gradient(circle, #f0e68c 0%, #c5a059 100%); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); border: 1px solid #5c4033; position: relative; z-index: 4; }
+.kt-labels { display: flex; justify-content: space-between; margin-top: -5px; font-size: 0.75rem; color: var(--color-text-muted); font-style: italic; }
+
 /* ---------------------------------- */
 /* 5. STILE PULSANTI MODALI 🎨 */
 /* ---------------------------------- */
@@ -526,9 +501,9 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     background: transparent;
 }
 
-/* 1. APPLY (Inversione Elegante) */
+/* 1. APPLY (Inversione Elegante: Outline -> Solid) */
 .modal-content .apply-button {
-    /* STATO A RIPOSO: Scritta Gialla/Oro, Sfondo Trasparente */
+    /* RIPOSO: Bordo Oro, Sfondo Trasparente, Testo Oro */
     border: 1px solid var(--color-brass);
     background: transparent;
     color: var(--color-brass); 
@@ -536,11 +511,11 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 .modal-content .apply-button:hover {
-    /* STATO HOVER: Sfondo Oro pieno, Scritta Marrone Scuro */
+    /* HOVER: Sfondo Oro pieno, Testo Scuro per contrasto */
     background: linear-gradient(180deg, #ebd785 0%, #d4af37 50%, #b8860b 100%);
     color: #1a0f0a; /* Marrone scurissimo */
     border-color: #d4af37;
-    box-shadow: 0 0 20px rgba(197, 160, 89, 0.6); /* Glow dorato intenso */
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.6);
     transform: translateY(-2px);
 }
 
@@ -573,6 +548,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     color: var(--color-cashmere);
     background: rgba(255, 255, 255, 0.05);
 }
+
 /* ---------------------------------- */
 /* 6. MOBILE RESPONSIVENESS 📱 */
 /* ---------------------------------- */
@@ -580,18 +556,18 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 @media (max-width: 768px) {
     
     body {
-        overflow-x: hidden; /* Evita scroll orizzontale della pagina intera */
-        padding: 5px; /* Meno padding esterno */
+        overflow-x: hidden;
+        padding: 5px;
     }
 
     .container {
-        width: 100vw !important; /* Occupa tutta la larghezza viewport */
+        width: 100vw !important;
         max-width: 100vw !important;
-        margin: 0 !important; /* Niente margini esterni */
-        border-radius: 0 !important; /* Squadrato su mobile per guadagnare spazio */
+        margin: 0 !important;
+        border-radius: 0 !important;
         border-left: none;
         border-right: none;
-        padding: 20px 5px !important; /* Padding laterale minimo */
+        padding: 20px 0 !important; /* Zero padding laterale per max spazio */
         box-sizing: border-box;
     }
 
@@ -602,7 +578,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
         padding: 0 10px;
     }
 
-    /* FILTRI COMPATTI */
+    /* FILTRI */
     #filtri {
         flex-direction: column; 
         align-items: stretch;
@@ -615,29 +591,21 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
         border-radius: 0;
     }
 
-    #search, 
-    #filtri select, 
-    #filtri button, 
-    .boiling-group {
+    #search, #filtri select, #filtri button, .boiling-group {
         width: 100% !important;
         max-width: none !important;
         flex-basis: auto !important;
     }
 
-    .boiling-group {
-        justify-content: center;
-    }
+    .boiling-group { justify-content: center; }
 
-    /* --- TABELLA SCROLLABILE (LA FIX VERA) --- */
+    /* --- TABELLA COMPATTA --- */
     .table-wrapper {
-        /* Il wrapper definisce la finestra di scorrimento */
         width: 100% !important; 
         max-width: 100vw !important;
-        display: block; /* Fondamentale */
-        
-        overflow-x: auto; /* Scroll orizzontale attivo */
-        -webkit-overflow-scrolling: touch; /* Scroll fluido su iOS */
-        
+        display: block;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; 
         margin-top: 20px;
         border: none;
         background: transparent;
@@ -645,73 +613,69 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     }
 
     #risultati-tabella {
-        /* La tabella DEVE essere libera di espandersi */
-        width: auto !important; 
+        width: auto !important; /* Si adatta al contenuto esatto */
         min-width: 100%;
-        table-layout: auto; /* Lascia che le celle prendano spazio */
-        border-collapse: separate; /* Necessario per lo sticky */
+        table-layout: auto; 
+        border-collapse: separate; 
         border-spacing: 0;
     }
     
-    /* --- FORZATURA LARGHEZZA MINIMA CELLE --- */
-    /* Questo è il segreto: ogni colonna deve essere larga almeno tot pixel */
+    /* CELLE PIÙ STRETTE */
     #risultati-tabella th,
     #risultati-tabella td {
-        padding: 12px 10px; 
-        font-size: 0.85rem; 
-        white-space: nowrap; /* Vietato andare a capo */
-        min-width: 110px; /* <--- ECCO LA FIX: Impedisce alle colonne di sparire */
+        /* Padding ridotto: 10px sopra/sotto, 6px ai lati */
+        padding: 10px 6px; 
+        font-size: 0.8rem; /* Font leggermente più piccolo per far stare più roba */
+        white-space: nowrap; /* Obbliga a stare su una riga */
+        
+        /* Rimuoviamo min-width fisso! */
+        width: 1%; /* Trucco CSS: forza la colonna a stringersi al minimo possibile */
+        white-space: nowrap; /* ...ma non andare a capo, quindi si allarga il giusto */
+        
         box-sizing: border-box;
     }
 
-   /* --- GESTIONE COLONNA "NOME" FISSA (Mobile) --- */
+    /* --- COLONNA "NOME" FISSA --- */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
         left: 0;
         z-index: 20;
-        
         background: #1a120b; 
         
-        /* Larghezza fissa */
-        min-width: 140px !important;
-        max-width: 140px !important;
-        width: 140px !important;
+        /* Larghezza fissa ridotta leggermente */
+        min-width: 130px !important;
+        max-width: 130px !important;
+        width: 130px !important;
         
-        /* Bordo e Ombra */
         border-right: 1px solid rgba(197, 160, 89, 0.5);
         box-shadow: 4px 0 10px -2px rgba(0,0,0,0.8); 
     }
 
-    /* SPECIFICO PER LE CELLE DEL NOME (TD) */
+    /* Scroll interno nome */
     #risultati-tabella td:first-child {
-        /* ABILITIAMO LO SCROLL INTERNO */
-        overflow-x: auto;      /* Permette di scorrere il testo se troppo lungo */
+        overflow-x: auto;      
         overflow-y: hidden;
-        white-space: nowrap;   /* Testo su una riga */
-        text-overflow: clip;   /* Rimuove i "..." così vedi che il testo continua */
-        
-        /* Nascondiamo la scrollbar della cella (estetica pulita) */
-        scrollbar-width: none;  /* Firefox */
-        -ms-overflow-style: none;  /* IE/Edge */
+        white-space: nowrap;   
+        text-overflow: clip;   
+        scrollbar-width: none; 
+        -ms-overflow-style: none;
     }
     
-    /* Nascondi scrollbar cella per Chrome/Safari */
-    #risultati-tabella td:first-child::-webkit-scrollbar {
-        display: none;
-    }
+    #risultati-tabella td:first-child::-webkit-scrollbar { display: none; }
     
-    /* L'header (TH) invece non deve scorrere, deve stare fermo */
     #risultati-tabella th:first-child {
         background: #2b1d14; 
         z-index: 30;
-        overflow: hidden; /* L'intestazione "NAME" non serve scrollarla */
+        overflow: hidden; 
         text-overflow: ellipsis;
     }
-    /* FAB (Floating Action Button) REVISIONE MOBILE */
+
+    /* FAB MOBILE POSITION */
     #column-selector {
         bottom: 20px;
         right: 20px;
+        left: auto;
         z-index: 2000;
         display: flex;
         flex-direction: column-reverse; 

@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greener Solvent Flow 🧪</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Greener Solvent Flow 🧪</title>
     <link rel="stylesheet" href="main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -57,7 +56,7 @@
                         <th data-sort="acid_resistance" class="toggle-col c-acid sortable">Acid Res. </th>
                         <th data-sort="basic_resistance" class="toggle-col c-basic sortable">Basic Res. </th>
                     </tr>
-                </thead>
+                                </thead>
                 <tbody id="tabella-corpo">
                     </tbody>
             </table>
@@ -65,7 +64,7 @@
     </div> 
 
     <details id="column-selector">
-        <summary>⚙️ Columns⚙️</summary>
+        <summary>⚙️ Columns</summary>
         <div class="col-toggles-grid">
             <label><input type="checkbox" class="col-toggle" data-target="c-bp"> Boiling Point</label>
             <label><input type="checkbox" class="col-toggle" data-target="c-dens"> Density</label>
@@ -120,8 +119,7 @@
             </div>
 
             <button id="apply-compatibility" class="apply-button">Apply Filters</button>
-            <button id="reset-compatibility" class="apply-button" style="background:transparent; border:1px solid #666;">Reset</button>
-            <button id="close-compatibility" class="close-button">Close</button>
+            <button id="reset-compatibility" class="apply-button">Reset</button> <button id="close-compatibility" class="close-button">Close</button>
         </div>
     </div>
     
@@ -131,62 +129,60 @@
             <p class="description">Filter by solvent properties: &alpha;, &beta;, and &pi;*.</p>
 
             <div id="kt-slider-filters">
-    <div class="kt-slider-group" id="alpha-group">
-        <div class="header-flex">
-            <label>H-bond donor (α):</label>
-            <span class="range-display">0.00 - 1.96</span>
-        </div>
-        
-        <div class="range-wrapper">
-            <div class="range-track"></div>
-            <div class="range-fill"></div>
-            <input type="range" min="-5" max="196" value="-5" class="kt-min-slider" step="1">
-            <input type="range" min="-5" max="196" value="196" class="kt-max-slider" step="1">
-        </div>
+                <div class="kt-slider-group" id="alpha-group">
+                    <div class="header-flex">
+                        <label>H-bond donor (α):</label>
+                        <span class="range-display">0.00 - 1.96</span>
+                    </div>
+                    
+                    <div class="range-wrapper">
+                        <div class="range-track"></div>
+                        <div class="range-fill"></div>
+                        <input type="range" min="-5" max="196" value="-5" class="kt-min-slider" step="1">
+                        <input type="range" min="-5" max="196" value="196" class="kt-max-slider" step="1">
+                    </div>
 
-        <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
-    </div>
+                    <div class="kt-labels"><span>Non-Acid</span><span>Acid</span></div>
+                </div>
 
-    <div class="kt-slider-group" id="beta-group">
-        <div class="header-flex">
-            <label>H-bond acceptor (β):</label>
-            <span class="range-display">0.00 - 1.43</span>
-        </div>
+                <div class="kt-slider-group" id="beta-group">
+                    <div class="header-flex">
+                        <label>H-bond acceptor (β):</label>
+                        <span class="range-display">0.00 - 1.43</span>
+                    </div>
 
-        <div class="range-wrapper">
-            <div class="range-track"></div>
-            <div class="range-fill"></div>
-            <input type="range" min="-8" max="143" value="-8" class="kt-min-slider" step="1">
-            <input type="range" min="-8" max="143" value="143" class="kt-max-slider" step="1">
-        </div>
+                    <div class="range-wrapper">
+                        <div class="range-track"></div>
+                        <div class="range-fill"></div>
+                        <input type="range" min="-8" max="143" value="-8" class="kt-min-slider" step="1">
+                        <input type="range" min="-8" max="143" value="143" class="kt-max-slider" step="1">
+                    </div>
 
-        <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
-    </div>
+                    <div class="kt-labels"><span>Non-Basic</span><span>Basic</span></div>
+                </div>
 
-    <div class="kt-slider-group" id="pistar-group">
-        <div class="header-flex">
-            <label>Polarizability (π*):</label>
-            <span class="range-display">0.00 - 1.21</span>
-        </div>
+                <div class="kt-slider-group" id="pistar-group">
+                    <div class="header-flex">
+                        <label>Polarizability (π*):</label>
+                        <span class="range-display">0.00 - 1.21</span>
+                    </div>
 
-        <div class="range-wrapper">
-            <div class="range-track"></div>
-            <div class="range-fill"></div>
-            <input type="range" min="-41" max="121" value="-41" class="kt-min-slider" step="1">
-            <input type="range" min="-41" max="121" value="121" class="kt-max-slider" step="1">
-        </div>
+                    <div class="range-wrapper">
+                        <div class="range-track"></div>
+                        <div class="range-fill"></div>
+                        <input type="range" min="-41" max="121" value="-41" class="kt-min-slider" step="1">
+                        <input type="range" min="-41" max="121" value="121" class="kt-max-slider" step="1">
+                    </div>
 
-        <div class="kt-labels"><span>Low Pol.</span><span>High Pol.</span></div>
-    </div>
-</div>
+                    <div class="kt-labels"><span>Low Pol.</span><span>High Pol.</span></div>
+                </div>
+            </div>
             
             <button id="apply-kt" class="apply-button">Apply Filters</button>
-            <button id="reset-kt" class="apply-button" style="background:transparent; border:1px solid #666;">Reset</button>
-            <button id="close-kt" class="close-button">Close</button>
+            <button id="reset-kt" class="apply-button">Reset</button> <button id="close-kt" class="close-button">Close</button>
         </div>
     </div>
 
-    
     <div id="welcome-modal" class="modal">
         <div class="modal-content welcome-content">
             <h3>🧪Welcome to Greener Solvent Flow🧪</h3>
