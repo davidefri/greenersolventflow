@@ -585,85 +585,97 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     
     body {
         overflow-x: hidden;
-        padding: 5px;
+        padding: 10px; /* Un po' più di margine ai lati */
     }
 
     .container {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        border-left: none;
-        border-right: none;
-        padding: 20px 0 !important; /* Zero padding laterale per max spazio */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        border-radius: 12px !important; /* Torniamo a un leggero bordo arrotondato */
+        padding: 20px 15px !important; /* Padding bilanciato */
         box-sizing: border-box;
     }
 
     h1 {
-        font-size: 1.4rem; 
-        margin-bottom: 20px;
-        word-wrap: break-word;
-        padding: 0 10px;
+        font-size: 1.6rem; 
+        margin-bottom: 25px;
+        line-height: 1.2;
     }
 
     /* FILTRI */
     #filtri {
+        display: flex;
         flex-direction: column; 
-        align-items: stretch;
-        padding: 15px;
-        gap: 12px;
+        align-items: center; /* Centra tutto orizzontalmente */
+        padding: 20px 15px;
+        gap: 15px;
         width: 100%;
         box-sizing: border-box;
-        border-left: none;
-        border-right: none;
-        border-radius: 0;
     }
 
-    #search, #filtri select, #filtri button, .boiling-group {
+    /* Input e Select a larghezza piena */
+    #search, 
+    #filtri select, 
+    #filtri button {
         width: 100% !important;
         max-width: none !important;
-        flex-basis: auto !important;
     }
 
-    .boiling-group { justify-content: center; }
+    /* --- FIX CENTRATURA BOILING GROUP --- */
+    .boiling-group {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important; /* Centra gli elementi nel mezzo */
+        align-items: center !important;
+        gap: 10px !important; /* Spazio tra Label, Input e Trattino */
+        padding: 0 10px !important;
+    }
 
-    /* --- TABELLA COMPATTA --- */
+    /* Input numerici leggermente più larghi per il dito */
+    .boiling-group input {
+        width: 50px !important; 
+        text-align: center;
+        background: transparent !important;
+        color: var(--color-cashmere) !important;
+        font-size: 1rem !important; /* Numeri più leggibili */
+    }
+
+    /* --- FIX BOTTONI MODALI (Leggibilità) --- */
+    /* Su mobile forziamo il bottone PIENO (Solid Gold) perché non c'è hover */
+    .modal-content .apply-button {
+        background: linear-gradient(180deg, #ebd785 0%, #d4af37 50%, #b8860b 100%) !important;
+        color: #1a0f0a !important; /* Testo scuro su oro */
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+        opacity: 1 !important;
+    }
+
+    /* --- TABELLA SCROLLABILE --- */
     .table-wrapper {
         width: 100% !important; 
-        max-width: 100vw !important;
         display: block;
         overflow-x: auto; 
         -webkit-overflow-scrolling: touch; 
-        margin-top: 20px;
-        border: none;
-        background: transparent;
-        box-shadow: none;
+        margin-top: 25px;
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        border-radius: 8px;
     }
 
     #risultati-tabella {
-        width: auto !important; /* Si adatta al contenuto esatto */
+        width: auto !important; 
         min-width: 100%;
-        table-layout: auto; 
-        border-collapse: separate; 
-        border-spacing: 0;
     }
     
-    /* CELLE PIÙ STRETTE */
     #risultati-tabella th,
     #risultati-tabella td {
-        /* Padding ridotto: 10px sopra/sotto, 6px ai lati */
-        padding: 10px 6px; 
-        font-size: 0.8rem; /* Font leggermente più piccolo per far stare più roba */
-        white-space: nowrap; /* Obbliga a stare su una riga */
-        
-        /* Rimuoviamo min-width fisso! */
-        width: 1%; /* Trucco CSS: forza la colonna a stringersi al minimo possibile */
-        white-space: nowrap; /* ...ma non andare a capo, quindi si allarga il giusto */
-        
-        box-sizing: border-box;
+        padding: 14px 10px; 
+        font-size: 0.85rem; 
+        white-space: nowrap; 
+        /* Rimosso min-width forzato, usiamo il padding */
     }
 
-    /* --- COLONNA "NOME" FISSA --- */
+    /* COLONNA NOME FISSA */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
@@ -671,40 +683,36 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
         z-index: 20;
         background: #1a120b; 
         
-        /* Larghezza fissa ridotta leggermente */
-        min-width: 130px !important;
-        max-width: 130px !important;
-        width: 130px !important;
+        /* Larghezza fissa perfetta per mobile */
+        min-width: 135px !important;
+        max-width: 135px !important;
+        width: 135px !important;
         
-        border-right: 1px solid rgba(197, 160, 89, 0.5);
-        box-shadow: 4px 0 10px -2px rgba(0,0,0,0.8); 
+        border-right: 1px solid rgba(197, 160, 89, 0.4);
+        box-shadow: 4px 0 15px -5px rgba(0,0,0,0.9); 
     }
 
-    /* Scroll interno nome */
+    /* Scroll interno al nome */
     #risultati-tabella td:first-child {
         overflow-x: auto;      
         overflow-y: hidden;
         white-space: nowrap;   
         text-overflow: clip;   
         scrollbar-width: none; 
-        -ms-overflow-style: none;
     }
-    
     #risultati-tabella td:first-child::-webkit-scrollbar { display: none; }
     
     #risultati-tabella th:first-child {
         background: #2b1d14; 
         z-index: 30;
-        overflow: hidden; 
-        text-overflow: ellipsis;
+        overflow: hidden; text-overflow: ellipsis;
     }
 
     /* FAB MOBILE POSITION */
     #column-selector {
-        bottom: 20px;
+        bottom: 25px;
         right: 20px;
         left: auto;
-        z-index: 2000;
         display: flex;
         flex-direction: column-reverse; 
         align-items: flex-end; 
@@ -712,21 +720,14 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     }
 
     #column-selector summary {
-        width: auto;
-        white-space: nowrap;
-        text-align: center;
-        z-index: 2;
-        padding: 14px 20px;
+        padding: 14px 22px;
+        font-size: 0.8rem;
     }
 
     #column-selector[open] .col-toggles-grid {
         background: rgba(30, 20, 15, 0.98);
         border: 1px solid var(--color-brass);
-        border-radius: 12px;
-        padding: 15px;
-        width: 200px; 
+        width: 220px; 
         max-height: 50vh; 
-        backdrop-filter: blur(15px);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.9);
     }
 }
