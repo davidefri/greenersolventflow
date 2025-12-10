@@ -327,50 +327,51 @@ h1 {
 
 /* WRAPPER CENTRATO E SCROLLABILE */
 .table-wrapper {
-    width: 100%;
-    overflow-x: auto; /* Scroll orizzontale se la tabella è troppo larga */
-    margin-top: 25px;
-    border-radius: 8px;
-    
-    /* Centra la tabella se è piccola, la lascia a sinistra se è grande */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    width: 100%;
+    overflow-x: auto; /* Scroll orizzontale se la tabella è troppo larga */
+    margin-top: 25px;
+    border-radius: 8px;
+    
+    /* Centra la tabella orizzontalmente */
+    display: flex;
+    justify-content: center;
+    /* align-items: flex-start; Rimosso/Commentato per evitare effetti indesiderati sulla vertical-align */
 }
 
 #risultati-tabella {
-    /* MODIFICA CHIAVE: */
-    width: max-content; /* La tabella sarà larga ESATTAMENTE quanto il contenuto */
-    min-width: 0;       /* Rimuove l'obbligo di essere larga quanto lo schermo */
-    
-    border-collapse: collapse;
-    background: var(--color-glass-primary);
+    /* MODIFICA CHIAVE: */
+    width: max-content; /* La tabella sarà larga ESATTAMENTE quanto il contenuto */
+    min-width: 0;       /* Rimuove l'obbligo di essere larga quanto lo schermo */
+    
+    border-collapse: collapse;
+    background: var(--color-glass-primary);
 }
 
 #risultati-tabella th, #risultati-tabella td {
-    /* Riduco il padding per rendere le colonne più "strette" e compatte */
-    padding: 10px 12px; 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-    
-    text-align: center;
-    vertical-align: middle;
-    
-    white-space: nowrap; 
+    /* Riduco il padding per rendere le colonne più "strette" e compatte */
+    padding: 10px 12px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    
+    text-align: center;
+    /* vertical-align: middle; Rimosso per non forzare l'altezza delle celle */
+    
+    white-space: nowrap; 
+    height: auto; /* Aggiunto per essere espliciti (anche se di default) */
 }
 
 #risultati-tabella th {
-    color: var(--color-neon-blue);
-    border-bottom: 2px solid var(--color-neon-blue);
-    position: sticky; 
-    top: 0;
-    background: var(--color-mid-bg); 
-    z-index: 10;
-    font-weight: 600;
+    color: var(--color-neon-blue);
+    border-bottom: 2px solid var(--color-neon-blue);
+    position: sticky; 
+    top: 0;
+    background: var(--color-mid-bg); 
+    z-index: 10;
+    font-weight: 600;
 }
 
 /* Hover sulle righe */
 #risultati-tabella tr:hover td {
-    background: rgba(17, 137, 180, 0.61);
+    background: rgba(17, 137, 180, 0.61);
 }
 /* --- LOGICA ORDINAMENTO (SORTING) --- */
 
