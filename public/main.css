@@ -342,14 +342,16 @@ h1 {
 
 /* Column Selector */
 #column-selector {
-    position: fixed;
+    position:sticky ;
     bottom: 30px;
-    right: 30px;
+    left: 80px;
     z-index: 999;
 }
 
 #column-selector summary {
     background: #2c1e16;
+	width: 10%;
+	text-align: center;
     border: 1px solid var(--color-brass);
     color: var(--color-brass);
     padding: 12px 24px;
