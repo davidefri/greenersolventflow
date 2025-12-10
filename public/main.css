@@ -342,16 +342,14 @@ h1 {
 
 /* Column Selector */
 #column-selector {
-    position:sticky ;
-    bottom: 30px;
-    left: 80px;
+    position: fixed;
+    bottom: 755px;
+    left: 300px;
     z-index: 999;
 }
 
 #column-selector summary {
     background: #2c1e16;
-	width: 10%;
-	text-align: center;
     border: 1px solid var(--color-brass);
     color: var(--color-brass);
     padding: 12px 24px;
@@ -657,4 +655,85 @@ input[type=range]::-moz-range-thumb {
     border-color: var(--color-cashmere);
     color: var(--color-cashmere);
     background: rgba(255, 255, 255, 0.05);
+}
+/* ---------------------------------- */
+/* 6. MOBILE RESPONSIVENESS 📱 */
+/* ---------------------------------- */
+
+@media (max-width: 768px) {
+    
+    body {
+        /* Impedisce lo scroll orizzontale indesiderato su tutto il sito */
+        overflow-x: hidden; 
+        padding: 10px;
+    }
+
+    .container {
+        /* RESET DELLE DIMENSIONI PER MOBILE */
+        width: auto !important;      /* Occupa lo spazio disponibile */
+        max-width: 100% !important;  /* Non uscire mai dallo schermo */
+        min-width: 0 !important;     /* Rimuovi limiti minimi */
+        margin: 20px auto !important; 
+        
+        /* Riduciamo il padding per guadagnare spazio */
+        padding: 20px 15px !important; 
+        
+        /* Assicura che il contenitore non esca dallo schermo */
+        box-sizing: border-box; 
+    }
+
+    h1 {
+        font-size: 1.8rem; /* Titolo più piccolo */
+        margin-bottom: 20px;
+        word-wrap: break-word; /* A capo se troppo lungo */
+    }
+
+    /* FILTRI IMPILATI */
+    #filtri {
+        flex-direction: column; /* Impila gli elementi verticalmente */
+        align-items: stretch;   /* Allarga gli elementi a tutto schermo */
+        padding: 15px;
+        gap: 12px;
+    }
+
+    /* Input e bottoni a larghezza piena su mobile per facilitare il tocco */
+    #search, 
+    #filtri select, 
+    #filtri button, 
+    .boiling-group {
+        width: 100% !important;
+        max-width: none !important;
+        flex-basis: auto !important;
+    }
+
+    /* Fix specifico per il gruppo Boiling Point */
+    .boiling-group {
+        justify-content: center; /* Centra i numeri */
+    }
+
+    /* TABELLA SCROLLABILE */
+    .table-wrapper {
+        /* Forza il wrapper a stare dentro lo schermo */
+        width: 100% !important; 
+        display: block;
+        overflow-x: auto; /* Abilita lo scroll orizzontale SOLO per la tabella */
+        box-shadow: none; /* Alleggerisce la grafica su mobile */
+        border: 1px solid rgba(197, 160, 89, 0.3);
+    }
+
+    #risultati-tabella {
+        /* La tabella mantiene la sua larghezza necessaria, attivando lo scroll */
+        width: max-content; 
+    }
+
+    /* Fix per la colonna sticky che su mobile a volte dà problemi */
+    #risultati-tabella td:first-child,
+    #risultati-tabella th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 20;
+        /* Assicura che lo sfondo copra bene il testo che scorre sotto */
+        background: #1e1510; 
+        border-right: 1px solid rgba(197, 160, 89, 0.2);
+    }
 }
