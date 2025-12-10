@@ -583,82 +583,97 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
 
 @media (max-width: 768px) {
     
+    /* REGOLA D'ORO: Include bordi e padding nel calcolo della larghezza */
+    * {
+        box-sizing: border-box !important;
+    }
+
     body {
         overflow-x: hidden;
-        padding: 10px; /* Un po' più di margine ai lati */
+        padding: 5px;
     }
 
     .container {
-        width: 100% !important;
+        /* Il contenitore occupa quasi tutto lo schermo ma lascia un respiro */
+        width: 96% !important; 
         max-width: 100% !important;
-        margin: 0 auto !important;
-        border-radius: 12px !important; /* Torniamo a un leggero bordo arrotondato */
-        padding: 20px 15px !important; /* Padding bilanciato */
-        box-sizing: border-box;
+        margin: 10px auto !important; /* Centrato */
+        
+        /* Padding interno ridotto per dare spazio ai filtri */
+        padding: 20px 10px !important; 
+        
+        border-radius: 12px !important;
+        overflow: hidden; /* Taglia via tutto ciò che sborda per sicurezza */
     }
 
     h1 {
-        font-size: 1.6rem; 
-        margin-bottom: 25px;
+        font-size: 1.5rem; 
+        margin-bottom: 20px;
         line-height: 1.2;
+        padding: 0 5px;
+        word-wrap: break-word;
     }
 
     /* FILTRI */
     #filtri {
         display: flex;
         flex-direction: column; 
-        align-items: center; /* Centra tutto orizzontalmente */
-        padding: 20px 15px;
-        gap: 15px;
-        width: 100%;
-        box-sizing: border-box;
+        align-items: stretch; /* Forza i figli a riempire la larghezza */
+        padding: 15px 5px !important; /* Padding laterale minimo nel box filtri */
+        gap: 12px;
+        width: 100% !important;
+        background: rgba(20, 12, 8, 0.4); /* Leggermente più trasparente su mobile */
     }
 
-    /* Input e Select a larghezza piena */
+    /* FORZATURA LARGHEZZA INPUT E BOTTONI */
     #search, 
     #filtri select, 
     #filtri button {
-        width: 100% !important;
-        max-width: none !important;
+        width: 100% !important;       /* Occupa tutto lo spazio disponibile */
+        max-width: 100% !important;   /* Non uscire MAI */
+        margin: 0 !important;         /* Niente margini laterali che spingono fuori */
     }
 
-    /* --- FIX CENTRATURA BOILING GROUP --- */
+    /* --- FIX BOILING GROUP (Il colpevole principale) --- */
     .boiling-group {
         width: 100% !important;
+        max-width: 100% !important;
         display: flex !important;
-        justify-content: center !important; /* Centra gli elementi nel mezzo */
+        justify-content: space-between !important; /* Distribuisce lo spazio */
         align-items: center !important;
-        gap: 10px !important; /* Spazio tra Label, Input e Trattino */
-        padding: 0 10px !important;
+        padding: 0 5px !important;
+        gap: 5px !important;
     }
 
-    /* Input numerici leggermente più larghi per il dito */
+    /* Riduciamo un po' gli input numerici per farli stare comodi */
     .boiling-group input {
-        width: 50px !important; 
-        text-align: center;
-        background: transparent !important;
-        color: var(--color-cashmere) !important;
-        font-size: 1rem !important; /* Numeri più leggibili */
+        width: 45px !important; 
+        min-width: 0 !important; /* Permette di rimpicciolirsi se serve */
+        font-size: 0.9rem !important;
+    }
+    
+    .boiling-group label {
+        white-space: nowrap;
+        font-size: 0.8rem;
     }
 
-    /* --- FIX BOTTONI MODALI (Leggibilità) --- */
-    /* Su mobile forziamo il bottone PIENO (Solid Gold) perché non c'è hover */
+    /* --- FIX BOTTONE OK (Leggibilità) --- */
     .modal-content .apply-button {
         background: linear-gradient(180deg, #ebd785 0%, #d4af37 50%, #b8860b 100%) !important;
-        color: #1a0f0a !important; /* Testo scuro su oro */
+        color: #1a0f0a !important;
         border: none !important;
         box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
         opacity: 1 !important;
     }
 
-    /* --- TABELLA SCROLLABILE --- */
+    /* --- TABELLA --- */
     .table-wrapper {
         width: 100% !important; 
         display: block;
         overflow-x: auto; 
         -webkit-overflow-scrolling: touch; 
-        margin-top: 25px;
-        border: 1px solid rgba(197, 160, 89, 0.2);
+        margin-top: 20px;
+        border: 1px solid rgba(197, 160, 89, 0.3);
         border-radius: 8px;
     }
 
@@ -669,30 +684,26 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     
     #risultati-tabella th,
     #risultati-tabella td {
-        padding: 14px 10px; 
-        font-size: 0.85rem; 
+        padding: 12px 8px; /* Padding celle ridotto */
+        font-size: 0.8rem; 
         white-space: nowrap; 
-        /* Rimosso min-width forzato, usiamo il padding */
     }
 
-    /* COLONNA NOME FISSA */
+    /* Colonna Nome Fissa */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
         left: 0;
         z-index: 20;
         background: #1a120b; 
-        
-        /* Larghezza fissa perfetta per mobile */
-        min-width: 135px !important;
-        max-width: 135px !important;
-        width: 135px !important;
-        
+        min-width: 120px !important; /* Leggermente più stretto */
+        max-width: 120px !important;
+        width: 120px !important;
         border-right: 1px solid rgba(197, 160, 89, 0.4);
-        box-shadow: 4px 0 15px -5px rgba(0,0,0,0.9); 
+        box-shadow: 4px 0 10px -5px rgba(0,0,0,0.9); 
     }
 
-    /* Scroll interno al nome */
+    /* Scroll interno nome */
     #risultati-tabella td:first-child {
         overflow-x: auto;      
         overflow-y: hidden;
@@ -708,9 +719,9 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
         overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* FAB MOBILE POSITION */
+    /* FAB */
     #column-selector {
-        bottom: 25px;
+        bottom: 20px;
         right: 20px;
         left: auto;
         display: flex;
@@ -720,7 +731,7 @@ input[type=range]::-moz-range-thumb { pointer-events: auto; height: 20px; width:
     }
 
     #column-selector summary {
-        padding: 14px 22px;
+        padding: 14px 20px;
         font-size: 0.8rem;
     }
 
