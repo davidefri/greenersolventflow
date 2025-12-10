@@ -664,34 +664,50 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
         box-sizing: border-box;
     }
 
-    /* --- GESTIONE COLONNA "NOME" FISSA --- */
+   /* --- GESTIONE COLONNA "NOME" FISSA (Mobile) --- */
     #risultati-tabella td:first-child,
     #risultati-tabella th:first-child {
         position: sticky;
         left: 0;
         z-index: 20;
         
-        background: #1a120b; /* Colore di sfondo scuro coprente */
+        background: #1a120b; 
         
-        /* Larghezza fissa per la prima colonna */
+        /* Larghezza fissa */
         min-width: 140px !important;
         max-width: 140px !important;
         width: 140px !important;
         
-        /* Taglia il testo col puntino se troppo lungo */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        
-        /* Bordo e Ombra per stacco netto */
+        /* Bordo e Ombra */
         border-right: 1px solid rgba(197, 160, 89, 0.5);
         box-shadow: 4px 0 10px -2px rgba(0,0,0,0.8); 
     }
-    
-    #risultati-tabella th:first-child {
-        background: #2b1d14; /* Header background */
-        z-index: 30;
-    }
 
+    /* SPECIFICO PER LE CELLE DEL NOME (TD) */
+    #risultati-tabella td:first-child {
+        /* ABILITIAMO LO SCROLL INTERNO */
+        overflow-x: auto;      /* Permette di scorrere il testo se troppo lungo */
+        overflow-y: hidden;
+        white-space: nowrap;   /* Testo su una riga */
+        text-overflow: clip;   /* Rimuove i "..." così vedi che il testo continua */
+        
+        /* Nascondiamo la scrollbar della cella (estetica pulita) */
+        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  /* IE/Edge */
+    }
+    
+    /* Nascondi scrollbar cella per Chrome/Safari */
+    #risultati-tabella td:first-child::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* L'header (TH) invece non deve scorrere, deve stare fermo */
+    #risultati-tabella th:first-child {
+        background: #2b1d14; 
+        z-index: 30;
+        overflow: hidden; /* L'intestazione "NAME" non serve scrollarla */
+        text-overflow: ellipsis;
+    }
     /* FAB (Floating Action Button) REVISIONE MOBILE */
     #column-selector {
         bottom: 20px;
