@@ -4,321 +4,334 @@
 /* GLOBAL STYLES & TYPOGRAPHY 🌎 */
 /* ---------------------------------- */
 :root {
-    --color-dark-bg: #1A202C;
-    --color-mid-bg: #2D3748;
-    --color-glass-primary: rgba(45, 55, 72, 0.6);
-    --color-neon-blue: #00a6e2;
-    --color-neon-shadow: 0 0 8px rgba(0, 174, 239, 0.4);
-    --color-text-light: #E2E8F0;
-    --color-text-muted: #A0AEC0;
-    --color-primary-deep: #2563EB;
+	--color-dark-bg: #1A202C;
+	--color-mid-bg: #2D3748;
+	--color-glass-primary: rgba(45, 55, 72, 0.6);
+	--color-neon-blue: #00a6e2;
+	--color-neon-shadow: 0 0 8px rgba(0, 174, 239, 0.4);
+	--color-text-light: #E2E8F0;
+	--color-text-muted: #A0AEC0;
+	--color-primary-deep: #2563EB;
 }
 
 body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, var(--color-dark-bg) 0%, #000000 100%);
-    padding: 30px;
-    color: var(--color-text-light);
-    min-height: 100vh;
+	font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	background: linear-gradient(135deg, var(--color-dark-bg) 0%, #000000 100%);
+	padding: 30px;
+	color: var(--color-text-light);
+	min-height: 100vh;
 }
 
 .container {
-    max-width: 1300px; 
-    margin: 30px auto; 
-    padding: 40px;
-    border-radius: 18px;
-    background: var(--color-glass-primary);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(15px); 
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1); 
+	max-width: 1300px;
+	margin: 30px auto;
+	padding: 40px;
+	border-radius: 18px;
+	background: var(--color-glass-primary);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    color: var(--color-neon-blue); 
-    text-align: center;
-    margin-bottom: 40px;
-    font-weight: 200; 
-    font-size: 2.8rem;
-    text-shadow: 0 0 8px rgba(0, 174, 239, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
+	color: var(--color-neon-blue);
+	text-align: center;
+	margin-bottom: 40px;
+	font-weight: 200;
+	font-size: 2.8rem;
+	text-shadow: 0 0 8px rgba(0, 174, 239, 0.6);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	padding-bottom: 15px;
 }
 
 /* ---------------------------------- */
 /* FILTER SECTION (FILTRI) ⚙️ */
 /* ---------------------------------- */
 #filtri {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; 
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 12px;
-    background: var(--color-mid-bg); 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: center;
+	margin-bottom: 30px;
+	padding: 20px;
+	border-radius: 12px;
+	background: var(--color-mid-bg);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-#filtri input:not([type="range"]), #filtri select {
-    padding: 10px 14px;
-    border-radius: 6px;
-    background-color: var(--color-mid-bg);
-    color: var(--color-text-light);
-    border: 1px solid var(--color-text-muted);
-    min-width: 150px; 
+#filtri input:not([type="range"]),
+#filtri select {
+	padding: 10px 14px;
+	border-radius: 6px;
+	background-color: var(--color-mid-bg);
+	color: var(--color-text-light);
+	border: 1px solid var(--color-text-muted);
+	min-width: 150px;
 }
 
 #filtri button {
-    padding: 10px 20px; 
-    border-radius: 8px; 
-    background-color: transparent; 
-    color: var(--color-neon-blue); 
-    cursor: pointer;
-    border: 1px solid var(--color-neon-blue); 
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    box-shadow: var(--color-neon-shadow);
+	padding: 10px 20px;
+	border-radius: 8px;
+	background-color: transparent;
+	color: var(--color-neon-blue);
+	cursor: pointer;
+	border: 1px solid var(--color-neon-blue);
+	font-weight: 500;
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	box-shadow: var(--color-neon-shadow);
 }
 
 #filtri button:hover {
-    background-color: var(--color-neon-blue);
-    color: var(--color-dark-bg); 
-    box-shadow: 0 0 15px var(--color-neon-blue); 
+	background-color: var(--color-neon-blue);
+	color: var(--color-dark-bg);
+	box-shadow: 0 0 15px var(--color-neon-blue);
 }
 
 /* ---------------------------------- */
 /* FLOATING COLUMN SELECTOR (FLUTTUANTE) ⚙️ */
 /* ---------------------------------- */
 #column-selector {
-    position: fixed; /* Lo rende fluttuante */
-    bottom: 200px;
-    right: 20px;
-    z-index: 9999; /* Sempre sopra tutto */
-    
-    background: var(--color-mid-bg);
-    border: 1px solid var(--color-neon-blue);
-    border-radius: 30px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    transition: all 0.3s ease;
-    width: max-content;
+	position: fixed;
+	/* Lo rende fluttuante */
+	bottom: 200px;
+	right: 20px;
+	z-index: 9999;
+	/* Sempre sopra tutto */
+
+	background: var(--color-mid-bg);
+	border: 1px solid var(--color-neon-blue);
+	border-radius: 30px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+	transition: all 0.3s ease;
+	width: max-content;
 }
 
 #column-selector summary {
-    padding: 12px 24px;
-    color: var(--color-neon-blue);
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    list-style: none;
-    text-align: center;
-    white-space: nowrap;
+	padding: 12px 24px;
+	color: var(--color-neon-blue);
+	font-weight: bold;
+	cursor: pointer;
+	outline: none;
+	list-style: none;
+	text-align: center;
+	white-space: nowrap;
 }
 
 #column-selector summary::-webkit-details-marker {
-    display: none;
+	display: none;
 }
 
 /* Quando il menu è aperto */
 #column-selector[open] {
-    border-radius: 12px;
-    padding: 15px;
-    bottom: 20px; 
-    right: 20px;
-    max-width: 300px;
-    max-height: 80vh; /* Limite altezza */
-    overflow-y: auto; /* Scroll se serve */
+	border-radius: 12px;
+	padding: 15px;
+	bottom: 20px;
+	right: 20px;
+	max-width: 300px;
+	max-height: 80vh;
+	/* Limite altezza */
+	overflow-y: auto;
+	/* Scroll se serve */
 }
 
 .col-toggles-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 10px;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 10px;
+	margin-top: 10px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	padding-top: 10px;
 }
 
 .col-toggles-grid label {
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-text-muted);
+	font-size: 0.9rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--color-text-muted);
 }
 
 .col-toggles-grid label:hover {
-    color: var(--color-text-light);
+	color: var(--color-text-light);
 }
 
 .col-toggles-grid input[type="checkbox"] {
-    accent-color: var(--color-neon-blue);
-    cursor: pointer;
+	accent-color: var(--color-neon-blue);
+	cursor: pointer;
 }
 
 /* ---------------------------------- */
 /* KAMLET-TAFT SLIDER STYLES 🔬 */
 /* ---------------------------------- */
 #kt-slider-filters {
-    margin-top: 15px;
-    padding: 20px; 
-    border-radius: 12px;
-    background: rgba(45, 55, 72, 0.4); 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
+	margin-top: 15px;
+	padding: 20px;
+	border-radius: 12px;
+	background: rgba(45, 55, 72, 0.4);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	width: 100%;
 }
 
 .kt-slider-group {
-    position: relative; 
-    height: 70px; 
-    margin-bottom: 10px;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.15); 
+	position: relative;
+	height: 70px;
+	margin-bottom: 10px;
+	border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
 }
 
 .range-display {
-    color: var(--color-neon-blue); 
-    float: right;
-    font-weight: bold;
+	color: var(--color-neon-blue);
+	float: right;
+	font-weight: bold;
 }
 
-.range-track, .range-fill, .kt-min-slider, .kt-max-slider {
-    position: absolute;
-    top: 50%; 
-    transform: translateY(-50%);
+.range-track,
+.range-fill,
+.kt-min-slider,
+.kt-max-slider {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .range-track {
-    height: 6px; 
-    background: var(--color-mid-bg); 
-    width: 100%;
-    border-radius: 3px;
-    z-index: 1; 
-    left: 0;
+	height: 6px;
+	background: var(--color-mid-bg);
+	width: 100%;
+	border-radius: 3px;
+	z-index: 1;
+	left: 0;
 }
 
 .range-fill {
-    height: 6px; 
-    background: var(--color-neon-blue);
-    border-radius: 3px;
-    z-index: 2; 
-    pointer-events: none;
-    left: 0;
+	height: 6px;
+	background: var(--color-neon-blue);
+	border-radius: 3px;
+	z-index: 2;
+	pointer-events: none;
+	left: 0;
 }
 
-.kt-min-slider, .kt-max-slider {
-    width: calc(100% + 24px); 
-    margin-left: -12px;      
-    left: 0;
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-    outline: none;
-    z-index: 3; 
-    pointer-events: none;
-    height: 0; 
+.kt-min-slider,
+.kt-max-slider {
+	width: calc(100% + 24px);
+	margin-left: -12px;
+	left: 0;
+	-webkit-appearance: none;
+	appearance: none;
+	background: transparent;
+	outline: none;
+	z-index: 3;
+	pointer-events: none;
+	height: 0;
 }
 
 /* THUMB STYLES */
-.kt-min-slider::-webkit-slider-thumb, 
+.kt-min-slider::-webkit-slider-thumb,
 .kt-max-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    pointer-events: all;
-    width: 18px; 
-    height: 18px;
-    border-radius: 50%;
-    background: var(--color-neon-blue);
-    cursor: grab; 
-    border: 3px solid var(--color-dark-bg); 
-    box-shadow: 0 0 5px var(--color-neon-blue);
-    position: relative;
-    z-index: 4;
-    margin-top: 0;
+	-webkit-appearance: none;
+	pointer-events: all;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: var(--color-neon-blue);
+	cursor: grab;
+	border: 3px solid var(--color-dark-bg);
+	box-shadow: 0 0 5px var(--color-neon-blue);
+	position: relative;
+	z-index: 4;
+	margin-top: 0;
 }
 
 .kt-min-slider::-moz-range-thumb,
 .kt-max-slider::-moz-range-thumb {
-    pointer-events: all;
-    width: 18px; 
-    height: 18px;
-    border-radius: 50%;
-    background: var(--color-neon-blue);
-    cursor: grab; 
-    border: 3px solid var(--color-dark-bg);
-    position: relative;
-    z-index: 4;
+	pointer-events: all;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: var(--color-neon-blue);
+	cursor: grab;
+	border: 3px solid var(--color-dark-bg);
+	position: relative;
+	z-index: 4;
 }
 
 .kt-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8em;
-    color: var(--color-text-muted);
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    left: 0;
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.8em;
+	color: var(--color-text-muted);
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+	left: 0;
 }
 
 /* ---------------------------------- */
 /* MODAL STYLES 🪟 (Compatibility) */
 /* ---------------------------------- */
 .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Sfondo scuro semitrasparente */
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	/* Sfondo scuro semitrasparente */
+	backdrop-filter: blur(5px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
 }
 
 .modal.hidden {
-    display: none !important;
+	display: none !important;
 }
 
 .modal-content {
-    background: var(--color-mid-bg);
-    padding: 30px;
-    border-radius: 12px;
-    max-width: 500px;
-    width: 90%;
-    border: 1px solid var(--color-neon-blue);
-    box-shadow: 0 0 20px rgba(0, 174, 239, 0.3);
-    color: var(--color-text-light);
+	background: var(--color-mid-bg);
+	padding: 30px;
+	border-radius: 12px;
+	max-width: 500px;
+	width: 90%;
+	border: 1px solid var(--color-neon-blue);
+	box-shadow: 0 0 20px rgba(0, 174, 239, 0.3);
+	color: var(--color-text-light);
 }
 
 .modal-content h3 {
-    margin-top: 0;
-    color: var(--color-neon-blue);
+	margin-top: 0;
+	color: var(--color-neon-blue);
 }
 
 /* Stili per i Toggle switch del modal */
 .compatibility-filter-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Pulsanti Modal */
 .apply-button {
-    background: var(--color-neon-blue) !important;
-    color: var(--color-dark-bg) !important;
-    width: 100%;
-    margin-top: 10px;
+	background: var(--color-neon-blue) !important;
+	color: var(--color-dark-bg) !important;
+	width: 100%;
+	margin-top: 10px;
 }
+
 .close-button {
-    background: transparent !important;
-    border: 1px solid #ff4444 !important;
-    color: #ff4444 !important;
-    width: 100%;
-    margin-top: 10px;
+	background: transparent !important;
+	border: 1px solid #ff4444 !important;
+	color: #ff4444 !important;
+	width: 100%;
+	margin-top: 10px;
 }
 
 /* ---------------------------------- */
@@ -327,108 +340,131 @@ h1 {
 
 /* WRAPPER CENTRATO E SCROLLABILE */
 .table-wrapper {
-    width: 100%;
-    overflow-x: auto; /* Scroll orizzontale se la tabella è troppo larga */
-    margin-top: 25px;
-    border-radius: 8px;
-    
-    /* Centra la tabella orizzontalmente */
-    display: flex;
-    justify-content: center;
-    /* align-items: flex-start; Rimosso/Commentato per evitare effetti indesiderati sulla vertical-align */
+	width: 100%;
+	overflow-x: auto;
+	/* Permette lo scroll orizzontale se necessario */
+	margin-top: 25px;
+	border-radius: 8px;
+
+	/* MODIFICATO: Rimosso display: flex/justify-content per evitare conflitti con overflow */
 }
 
 #risultati-tabella {
-    /* MODIFICA CHIAVE: */
-    width: max-content; /* La tabella sarà larga ESATTAMENTE quanto il contenuto */
-    min-width: 0;       /* Rimuove l'obbligo di essere larga quanto lo schermo */
-    
-    border-collapse: collapse;
-    background: var(--color-glass-primary);
+	/* Assicurati che la tabella non sia forzata a width: 100% ma si adatti al contenuto */
+	width: max-content;
+	min-width: 0;
+
+	border-collapse: collapse;
+	background: var(--color-glass-primary);
+
+	/* CENTRAGGIO FORZATO: Questo funziona solo quando la larghezza della tabella < 100% del contenitore */
+	margin: 0 auto;
 }
 
-#risultati-tabella th, #risultati-tabella td {
-    /* Riduco il padding per rendere le colonne più "strette" e compatte */
-    padding: 10px 12px; 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-    
-    text-align: center;
-    /* vertical-align: middle; Rimosso per non forzare l'altezza delle celle */
-    
-    white-space: nowrap; 
-    height: auto; /* Aggiunto per essere espliciti (anche se di default) */
+#risultati-tabella th,
+#risultati-tabella td {
+	/* RIGHE COMPATTE: Ridotto il padding verticale a 6px */
+	padding: 6px 10px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    
+    text-align: center;
+    vertical-align: middle; 
+    
+    white-space: nowrap; 
+    height: auto; 
+    box-sizing: border-box; 
 }
 
 #risultati-tabella th {
-    color: var(--color-neon-blue);
-    border-bottom: 2px solid var(--color-neon-blue);
-    position: sticky; 
-    top: 0;
-    background: var(--color-mid-bg); 
-    z-index: 10;
-    font-weight: 600;
+	color: var(--color-neon-blue);
+	border-bottom: 2px solid var(--color-neon-blue);
+	position: sticky;
+	top: 0;
+	background: var(--color-mid-bg);
+	z-index: 10;
+	font-weight: 600;
 }
 
 /* Hover sulle righe */
 #risultati-tabella tr:hover td {
-    background: rgba(17, 137, 180, 0.61);
+	background: rgba(17, 137, 180, 0.61);
 }
+
 /* --- LOGICA ORDINAMENTO (SORTING) --- */
 
 #risultati-tabella th.sortable {
     cursor: pointer;
-    padding-right: 25px; /* Spazio per l'icona di ordinamento */
     position: relative;
+    
+    /* MODIFICA CHIAVE: Aggiungiamo padding extra a sinistra per bilanciare l'icona a destra. */
+    padding-right: 18px; /* Spazio per l'icona */
+    padding-left: 18px; /* Padding extra a sinistra per bilanciare il testo */
 }
 
 #risultati-tabella th.sortable::after {
-    content: '⇅'; /* Freccia generica (default: non ordinato) */
+    content: '⇅'; 
     font-size: 0.8em;
     position: absolute;
-    right: 8px;
+    /* La freccia si posiziona nello spazio extra creato dal padding-right: 18px */
+    right: 3px; 
     top: 50%;
     transform: translateY(-50%);
-    color: var(--color-text-muted); /* Colore sbiadito */
+    color: var(--color-text-muted); 
     transition: color 0.2s;
 }
 
 /* Freccia quando la colonna è ATTIVA, ma non ordinata */
 #risultati-tabella th.sortable:hover::after {
-    color: var(--color-neon-blue);
+	color: var(--color-neon-blue);
 }
 
 /* Stato ASCENDENTE (▲) */
 #risultati-tabella th.sortable.sorted-asc {
-    background: rgba(0, 166, 226, 0.1); /* Sfondo leggero per evidenziare */
+	background: rgba(0, 166, 226, 0.1);
+	/* Sfondo leggero per evidenziare */
 }
+
 #risultati-tabella th.sortable.sorted-asc::after {
-    content: '▲'; /* Mostra freccia SU per ASC */
-    color: var(--color-neon-blue); /* Colore forte */
-    font-weight: bold;
+	content: '▲';
+	/* Mostra freccia SU per ASC */
+	color: var(--color-neon-blue);
+	/* Colore forte */
+	font-weight: bold;
 }
 
 /* Stato DISCENDENTE (▼) */
 #risultati-tabella th.sortable.sorted-desc {
-    background: rgba(0, 166, 226, 0.1); /* Sfondo leggero per evidenziare */
+	background: rgba(0, 166, 226, 0.1);
+	/* Sfondo leggero per evidenziare */
 }
+
 #risultati-tabella th.sortable.sorted-desc::after {
-    content: '▼'; /* Mostra freccia GIÙ per DESC */
-    color: var(--color-neon-blue); /* Colore forte */
-    font-weight: bold;
+	content: '▼';
+	/* Mostra freccia GIÙ per DESC */
+	color: var(--color-neon-blue);
+	/* Colore forte */
+	font-weight: bold;
 }
 
 /* --- LOGICA VISIBILITÀ COLONNE --- */
 .toggle-col {
-    display: none;
+	display: none;
 }
 
-th.toggle-col.visible, 
+th.toggle-col.visible,
 td.toggle-col.visible {
-    display: table-cell !important;
-    animation: fadeIn 0.3s ease-in;
+	display: table-cell !important;
+	animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(-5px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
